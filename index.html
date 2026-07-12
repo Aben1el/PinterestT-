@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TSION1201 | Curated Space</title>
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23e60023'/%3E%3Cpath d='M50 20C33.4 20 20 33.4 20 50c0 12.7 7.9 23.6 19.1 27.9-.3-2.4-.5-6 0-8.6.5-2.3 3.5-14.9 3.5-14.9s-.9-1.8-.9-4.5c0-4.2 2.4-7.3 5.4-7.3 2.6 0 3.8 1.9 3.8 4.2 0 2.6-1.6 6.4-2.5 10-1.1 4.7 2.4 8.5 7 8.5 8.4 0 14.8-8.8 14.8-21.6 0-11.3-8.1-19.2-19.7-19.2-13.4 0-21.3 10.1-21.3 20.5 0 4.1 1.6 8.4 3.5 10.7.4.5.4.9.3 1.3l-1.3 5.3c-.2.9-.7 1.1-1.6.6-5.9-2.7-9.6-11.4-9.6-18.3 0-14.9 10.8-28.6 31.2-28.6 16.4 0 29.1 11.7 29.1 27.3 0 16.3-10.3 29.4-24.5 29.4-4.8 0-9.3-2.5-10.8-5.4l-3 11.2c-1.1 4.1-3.9 9.3-5.9 12.4 4.3 1.3 8.9 2 13.7 2 16.6 0 30-13.4 30-30C80 33.4 66.6 20 50 20z' fill='white'/%3E%3C/svg%3E">
+
     <style>
         :root {
             --bg-color: #0a0a0a;
@@ -150,7 +153,7 @@
             box-shadow: 0 6px 20px rgba(230, 0, 35, 0.4);
         }
 
-        /* Board Curation Layout (Pinterest Masonry Vibe) */
+        /* Board Curation Layout */
         .board-section {
             padding: 3rem 0;
         }
@@ -270,7 +273,7 @@
                 <div class="masonry-grid">
                     <div class="board-card" onclick="window.open('https://www.pinterest.com/TSION1201/', '_blank')">
                         <div class="board-preview">
-                            <span style="color: rgba(255,255,255,0.2); font-size: 0.9rem; tracking-letter: 1px;">Aesthetic Moodboards</span>
+                            <span style="color: rgba(255,255,255,0.2); font-size: 0.9rem; letter-spacing: 1px;">Aesthetic Moodboards</span>
                         </div>
                         <div class="board-info">
                             <h3>Inspirations</h3>
@@ -280,7 +283,7 @@
 
                     <div class="board-card" onclick="window.open('https://www.pinterest.com/TSION1201/', '_blank')">
                         <div class="board-preview">
-                            <span style="color: rgba(255,255,255,0.2); font-size: 0.9rem; tracking-letter: 1px;">Design & Architecture</span>
+                            <span style="color: rgba(255,255,255,0.2); font-size: 0.9rem; letter-spacing: 1px;">Design & Architecture</span>
                         </div>
                         <div class="board-info">
                             <h3>Minimal Interiors</h3>
@@ -290,7 +293,7 @@
 
                     <div class="board-card" onclick="window.open('https://www.pinterest.com/TSION1201/', '_blank')">
                         <div class="board-preview">
-                            <span style="color: rgba(255,255,255,0.2); font-size: 0.9rem; tracking-letter: 1px;">Cybernetic Elements</span>
+                            <span style="color: rgba(255,255,255,0.2); font-size: 0.9rem; letter-spacing: 1px;">Cybernetic Elements</span>
                         </div>
                         <div class="board-info">
                             <h3>Futuristic Tech</h3>
@@ -307,7 +310,7 @@
     </div>
 
     <script>
-        // 1. Fluid Lerp Engine for Top Sunbeam Follow
+        // Fluid Lerp Engine for Top Sunbeam Follow
         const bgGlow = document.getElementById('bg-glow');
         let targetX = window.innerWidth / 2;
         let currentX = window.innerWidth / 2;
@@ -317,14 +320,13 @@
         });
 
         function updateGlowPosition() {
-            // Smooth interpolation (lerp)
             currentX += (targetX - currentX) * 0.08; 
             bgGlow.style.setProperty('--mouse-x', `${currentX}px`);
             requestAnimationFrame(updateGlowPosition);
         }
         updateGlowPosition();
 
-        // 2. High-Performance IntersectionObserver for Scroll Animations
+        // High-Performance IntersectionObserver for Scroll Animations
         const revealElements = document.querySelectorAll('.reveal');
         
         const revealObserver = new IntersectionObserver((entries) => {
@@ -332,7 +334,7 @@
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
                 } else {
-                    entry.target.classList.remove('active'); // Optional: removes class when scrolling away
+                    entry.target.classList.remove('active');
                 }
             });
         }, {
