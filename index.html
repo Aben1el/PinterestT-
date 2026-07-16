@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TSION1201 | Curated Space - Aesthetic Visual Collection</title>
+    <meta name="description" content="Tsi's - A curated visual collection of aesthetics, designs, and inspirations">
+    <title>Tsi's | Curated Visual Space</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,11 +28,13 @@
             --text-dark: #5A4A4A;
             --text-light: #8B7B7B;
             --white: #FFFFFF;
+            --lavender: #E6E6FA;
             
             /* Gradients */
             --gradient-primary: linear-gradient(135deg, #FADADD 0%, #F8E8E8 50%, #FAF6F1 100%);
             --gradient-secondary: linear-gradient(135deg, #FFFBF7 0%, #F5EDE4 100%);
             --gradient-accent: linear-gradient(135deg, #D4A5A5 0%, #FADADD 100%);
+            --gradient-soft: linear-gradient(135deg, #FFE4E8 0%, #F0E6F0 50%, #FFE8F0 100%);
             
             /* Shadows */
             --shadow-soft: 0 4px 20px rgba(212, 165, 165, 0.15);
@@ -91,20 +94,204 @@
             background: var(--blush);
         }
 
-        /* Floating Decorative Elements */
-        .floating-shapes {
+        /* Cute Loading Screen */
+        .loader {
             position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            z-index: 0;
+            background: var(--gradient-soft);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
             pointer-events: none;
         }
 
-        .shape {
+        .loader-content {
+            text-align: center;
+            position: relative;
+        }
+
+        .loader-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--dusty-rose);
+            margin-bottom: 30px;
+            animation: logoFloat 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        .loader-logo::before {
+            content: '✦';
+            position: absolute;
+            left: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--soft-peach);
+            animation: sparkle 1.5s ease-in-out infinite;
+        }
+
+        .loader-logo::after {
+            content: '✦';
+            position: absolute;
+            right: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--soft-peach);
+            animation: sparkle 1.5s ease-in-out infinite 0.5s;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: translateY(-50%) scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-50%) scale(1.2);
+            }
+        }
+
+        .loader-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: visible;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: var(--blush);
+            font-size: 1.5rem;
+            animation: heartFloat 3s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        .floating-heart:nth-child(1) {
+            top: -20px;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .floating-heart:nth-child(2) {
+            top: -10px;
+            right: 25%;
+            animation-delay: 0.5s;
+        }
+
+        .floating-heart:nth-child(3) {
+            bottom: -15px;
+            left: 30%;
+            animation-delay: 1s;
+        }
+
+        .floating-heart:nth-child(4) {
+            bottom: -10px;
+            right: 20%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes heartFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg) scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        .loader-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(212, 165, 165, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 30px;
+            position: relative;
+        }
+
+        .loader-progress-bar {
+            height: 100%;
+            background: var(--gradient-accent);
+            border-radius: 10px;
+            animation: progressLoad 2.5s ease-in-out forwards;
+            box-shadow: 0 0 10px rgba(212, 165, 165, 0.5);
+        }
+
+        @keyframes progressLoad {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        .loader-text {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 15px;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0.4;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Scroll-Reactive Background */
+        .scroll-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .scroll-gradient {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(250, 218, 221, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(212, 165, 165, 0.2) 0%, transparent 40%),
+                        radial-gradient(circle at 20% 80%, rgba(255, 214, 200, 0.2) 0%, transparent 40%);
+            transition: transform 0.3s ease;
+        }
+
+        .floating-shape {
             position: absolute;
             opacity: 0.1;
-            animation: float 20s infinite ease-in-out;
+            animation: shapeFloat 15s infinite ease-in-out;
         }
 
         .shape-1 {
@@ -142,12 +329,12 @@
             right: 20%;
             width: 100px;
             height: 100px;
-            background: var(--muted-gold);
+            background: var(--lavender);
             border-radius: 50%;
             animation-delay: 15s;
         }
 
-        @keyframes float {
+        @keyframes shapeFloat {
             0%, 100% {
                 transform: translateY(0) rotate(0deg);
             }
@@ -625,6 +812,8 @@
             box-shadow: var(--shadow-medium);
             transform: rotate(-3deg);
             transition: var(--transition-smooth);
+            object-fit: cover;
+            height: 500px;
         }
 
         .about-image-main:hover {
@@ -641,6 +830,8 @@
             transform: rotate(5deg);
             border: 8px solid var(--white);
             transition: var(--transition-smooth);
+            object-fit: cover;
+            height: 350px;
         }
 
         .about-image-secondary:hover {
@@ -1025,67 +1216,11 @@
             }
         }
 
-        /* Loading Animation */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--warm-white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-
-        .loader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .loader-content {
-            text-align: center;
-        }
-
-        .loader-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid var(--light-beige);
-            border-top-color: var(--dusty-rose);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .loader-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            color: var(--text-dark);
-            animation: pulse-text 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse-text {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-
         /* Scroll Reveal Animation */
         .reveal {
             opacity: 0;
             transform: translateY(50px);
-            transition: all 0.8s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .reveal.active {
@@ -1093,34 +1228,63 @@
             transform: translateY(0);
         }
 
-        /* Image Placeholder Styles */
-        .img-placeholder {
-            width: 100%;
-            height: 100%;
-            background: var(--gradient-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--dusty-rose);
-            font-size: 3rem;
+        .slide-up {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .fade-in.active {
+            opacity: 1;
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s ease;
+        }
+
+        .scale-in.active {
+            opacity: 1;
+            transform: scale(1);
         }
     </style>
 </head>
 <body>
-    <!-- Loader -->
+    <!-- Cute Loading Screen -->
     <div class="loader" id="loader">
         <div class="loader-content">
-            <div class="loader-spinner"></div>
-            <div class="loader-text">TSION1201</div>
+            <div class="loader-hearts">
+                <span class="floating-heart">💗</span>
+                <span class="floating-heart">💕</span>
+                <span class="floating-heart"></span>
+                <span class="floating-heart">💗</span>
+            </div>
+            <div class="loader-logo">Tsi's</div>
+            <div class="loader-progress">
+                <div class="loader-progress-bar"></div>
+            </div>
+            <div class="loader-text">Loading your inspiration...</div>
         </div>
     </div>
 
-    <!-- Floating Decorative Shapes -->
-    <div class="floating-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-        <div class="shape shape-4"></div>
+    <!-- Scroll-Reactive Background -->
+    <div class="scroll-background">
+        <div class="scroll-gradient" id="scrollGradient"></div>
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
     </div>
 
     <!-- Navigation -->
@@ -1130,7 +1294,7 @@
                 <div class="logo-icon">
                     <i class="fas fa-heart"></i>
                 </div>
-                TSION1201
+                Tsi's
             </a>
             <ul class="nav-links">
                 <li><a href="#boards">Boards</a></li>
@@ -1139,7 +1303,7 @@
                 <li><a href="#gallery">Gallery</a></li>
                 <li><a href="https://www.pinterest.com/TSION1201/" target="_blank" class="nav-cta">
                     <i class="fab fa-pinterest"></i>
-                    Follow on Pinterest
+                    Pinterest Profile
                 </a></li>
             </ul>
             <button class="mobile-menu-btn" id="mobileMenuBtn">
@@ -1200,7 +1364,7 @@
 
         <div class="masonry-grid">
             <!-- Collection Card 1 -->
-            <div class="collection-card reveal">
+            <div class="collection-card slide-up">
                 <div style="height: 400px; background: linear-gradient(135deg, #FADADD 0%, #F8E8E8 100%); position: relative; overflow: hidden;">
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--dusty-rose); font-size: 5rem;">
                         <i class="fas fa-palette"></i>
@@ -1227,7 +1391,7 @@
             </div>
 
             <!-- Collection Card 2 -->
-            <div class="collection-card reveal">
+            <div class="collection-card slide-up">
                 <div style="height: 500px; background: linear-gradient(135deg, #F5EDE4 0%, #FAF6F1 100%); position: relative; overflow: hidden;">
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--dusty-rose); font-size: 5rem;">
                         <i class="fas fa-home"></i>
@@ -1254,7 +1418,7 @@
             </div>
 
             <!-- Collection Card 3 -->
-            <div class="collection-card reveal">
+            <div class="collection-card slide-up">
                 <div style="height: 350px; background: linear-gradient(135deg, #D4A5A5 0%, #FADADD 100%); position: relative; overflow: hidden;">
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--white); font-size: 5rem;">
                         <i class="fas fa-microchip"></i>
@@ -1281,7 +1445,7 @@
             </div>
 
             <!-- Collection Card 4 -->
-            <div class="collection-card reveal">
+            <div class="collection-card slide-up">
                 <div style="height: 450px; background: linear-gradient(135deg, #FFD6C8 0%, #F8E8E8 100%); position: relative; overflow: hidden;">
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--dusty-rose); font-size: 5rem;">
                         <i class="fas fa-camera"></i>
@@ -1308,7 +1472,7 @@
             </div>
 
             <!-- Collection Card 5 -->
-            <div class="collection-card reveal">
+            <div class="collection-card slide-up">
                 <div style="height: 380px; background: linear-gradient(135deg, #FAF6F1 0%, #F5EDE4 100%); position: relative; overflow: hidden;">
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--dusty-rose); font-size: 5rem;">
                         <i class="fas fa-leaf"></i>
@@ -1335,7 +1499,7 @@
             </div>
 
             <!-- Collection Card 6 -->
-            <div class="collection-card reveal">
+            <div class="collection-card slide-up">
                 <div style="height: 420px; background: linear-gradient(135deg, #FADADD 0%, #D4A5A5 100%); position: relative; overflow: hidden;">
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--white); font-size: 5rem;">
                         <i class="fas fa-gem"></i>
@@ -1367,14 +1531,14 @@
     <section class="about" id="about">
         <div class="about-container">
             <div class="about-images reveal">
-                <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&h=700&fit=crop" alt="Aesthetic Space" class="about-image-main">
-                <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400&h=500&fit=crop" alt="Minimal Interior" class="about-image-secondary">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect fill='%23FADADD' width='400' height='500'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='%23D4A5A5' text-anchor='middle' dy='.3em'%3EYour Image Here%3C/text%3E%3C/svg%3E" alt="Aesthetic Space" class="about-image-main" id="aboutImage1">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'%3E%3Crect fill='%23F5EDE4' width='300' height='400'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='16' fill='%23D4A5A5' text-anchor='middle' dy='.3em'%3EYour Image%3C/text%3E%3C/svg%3E" alt="Minimal Interior" class="about-image-secondary" id="aboutImage2">
             </div>
             <div class="about-content reveal">
                 <span class="section-tag">About This Space</span>
                 <h2>Curating Beauty,<br>One Pin at a Time</h2>
                 <p>
-                    Welcome to TSION1201 - a carefully curated visual collection that celebrates aesthetics, design, and creative inspiration. This space is dedicated to those who appreciate the beauty in details and find joy in visual storytelling.
+                    Welcome to Tsi's - a carefully curated visual collection that celebrates aesthetics, design, and creative inspiration. This space is dedicated to those who appreciate the beauty in details and find joy in visual storytelling.
                 </p>
                 <p>
                     From soft feminine aesthetics to bold futuristic concepts, from minimal interiors to cozy lifestyle moments - each board is thoughtfully assembled to inspire, motivate, and spark creativity.
@@ -1435,23 +1599,23 @@
             </p>
         </div>
         <div class="gallery-grid">
-            <div class="gallery-item reveal">
-                <img src="https://images.unsplash.com/photo-1507089947368-1e7124a28433?w=800&h=600&fit=crop" alt="Minimal Interior">
+            <div class="gallery-item scale-in">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect fill='%23FADADD' width='800' height='600'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='%23D4A5A5' text-anchor='middle' dy='.3em'%3EGallery Image 1%3C/text%3E%3C/svg%3E" alt="Gallery Image">
             </div>
-            <div class="gallery-item reveal">
-                <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400&h=400&fit=crop" alt="Pink Aesthetic">
+            <div class="gallery-item scale-in">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%23F5EDE4' width='400' height='400'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='%23D4A5A5' text-anchor='middle' dy='.3em'%3EGallery 2%3C/text%3E%3C/svg%3E" alt="Gallery Image">
             </div>
-            <div class="gallery-item reveal">
-                <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=400&h=600&fit=crop" alt="Cozy Space">
+            <div class="gallery-item scale-in">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 600'%3E%3Crect fill='%23FAF6F1' width='400' height='600'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='%23D4A5A5' text-anchor='middle' dy='.3em'%3EGallery 3%3C/text%3E%3C/svg%3E" alt="Gallery Image">
             </div>
-            <div class="gallery-item reveal">
-                <img src="https://images.unsplash.com/photo-1522771753035-1a5b6562f3a4?w=600&h=600&fit=crop" alt="Living Room">
+            <div class="gallery-item scale-in">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Crect fill='%23FFE4E8' width='600' height='600'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='%23D4A5A5' text-anchor='middle' dy='.3em'%3EGallery 4%3C/text%3E%3C/svg%3E" alt="Gallery Image">
             </div>
-            <div class="gallery-item reveal">
-                <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=400&h=400&fit=crop" alt="Bedroom">
+            <div class="gallery-item scale-in">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%23F0E6F0' width='400' height='400'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='%23D4A5A5' text-anchor='middle' dy='.3em'%3EGallery 5%3C/text%3E%3C/svg%3E" alt="Gallery Image">
             </div>
-            <div class="gallery-item reveal">
-                <img src="https://images.unsplash.com/photo-1522444195799-478538b28823?w=400&h=400&fit=crop" alt="Workspace">
+            <div class="gallery-item scale-in">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%23FFE8F0' width='400' height='400'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='%23D4A5A5' text-anchor='middle' dy='.3em'%3EGallery 6%3C/text%3E%3C/svg%3E" alt="Gallery Image">
             </div>
         </div>
         <div style="text-align: center; margin-top: 50px;">
@@ -1485,7 +1649,7 @@
                         <div class="logo-icon">
                             <i class="fas fa-heart"></i>
                         </div>
-                        TSION1201
+                        Tsi's
                     </a>
                     <p>
                         A curated visual collection exploring aesthetics, designs, and inspirations. Creating beautiful spaces and sharing creative visions daily.
@@ -1534,7 +1698,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 TSION1201. All rights reserved. Crafted with <i class="fas fa-heart" style="color: var(--dusty-rose);"></i> and inspiration.</p>
+                <p>&copy; 2026 Tsi's. All rights reserved. Crafted with <i class="fas fa-heart" style="color: var(--dusty-rose);"></i> and inspiration.</p>
                 <div class="footer-bottom-links">
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Use</a>
@@ -1544,11 +1708,11 @@
     </footer>
 
     <script>
-        // Page Loader
+        // Page Loader - Shows for 2.5 seconds then fades out
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.getElementById('loader').classList.add('hidden');
-            }, 1000);
+            }, 2500);
         });
 
         // Navbar Scroll Effect
@@ -1561,55 +1725,17 @@
             }
         });
 
-        // Scroll Reveal Animation
-        const revealElements = document.querySelectorAll('.reveal');
-        
-        const revealOnScroll = () => {
-            revealElements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                const revealPoint = 150;
-                
-                if (elementTop < windowHeight - revealPoint) {
-                    element.classList.add('active');
-                }
-            });
-        };
-
-        window.addEventListener('scroll', revealOnScroll);
-        window.addEventListener('load', revealOnScroll);
-
-        // Smooth Scroll for Navigation Links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
+        // Scroll-Reactive Background
+        const scrollGradient = document.getElementById('scrollGradient');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxSpeed = scrolled * 0.5;
+            scrollGradient.style.transform = `translateY(${parallaxSpeed}px)`;
         });
 
-        // Masonry Grid Height Adjustment
-        const adjustMasonryHeights = () => {
-            const cards = document.querySelectorAll('.collection-card');
-            cards.forEach(card => {
-                const image = card.querySelector('div[style*="height"]');
-                const content = card.querySelector('.collection-content');
-                if (image && content) {
-                    const contentHeight = content.offsetHeight;
-                    // Heights are already set inline, this is for future adjustments
-                }
-            });
-        };
-
-        window.addEventListener('load', adjustMasonryHeights);
-        window.addEventListener('resize', adjustMasonryHeights);
-
-        // Intersection Observer for Performance
+        // Scroll Reveal Animations with Intersection Observer
+        const revealElements = document.querySelectorAll('.reveal, .slide-up, .fade-in, .scale-in');
+        
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -100px 0px'
@@ -1627,25 +1753,17 @@
             observer.observe(element);
         });
 
-        // Gallery Item Click Handler
-        document.querySelectorAll('.gallery-item').forEach(item => {
-            item.addEventListener('click', function() {
-                // Add click animation
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 200);
-            });
-        });
-
-        // Collection Card Click Handler
-        document.querySelectorAll('.collection-card').forEach(card => {
-            card.addEventListener('click', function() {
-                // Add subtle click effect
-                this.style.transform = 'translateY(-5px)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 200);
+        // Smooth Scroll for Navigation Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
             });
         });
 
@@ -1653,19 +1771,21 @@
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
             const hero = document.querySelector('.hero');
-            if (hero) {
-                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            if (hero && scrolled < window.innerHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
             }
         });
 
-        // Mobile Menu Toggle (Basic Implementation)
+        // Mobile Menu Toggle
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navLinks = document.querySelector('.nav-links');
 
         if (mobileMenuBtn) {
             mobileMenuBtn.addEventListener('click', () => {
-                navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
                 if (navLinks.style.display === 'flex') {
+                    navLinks.style.display = 'none';
+                } else {
+                    navLinks.style.display = 'flex';
                     navLinks.style.position = 'absolute';
                     navLinks.style.top = '100%';
                     navLinks.style.left = '0';
@@ -1679,26 +1799,39 @@
             });
         }
 
-        // Add Loading State to Buttons
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                if (this.getAttribute('href') && this.getAttribute('href').startsWith('#')) {
-                    return;
-                }
-                
-                this.style.pointerEvents = 'none';
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-                
+        // Gallery and Collection Card Click Effects
+        document.querySelectorAll('.gallery-item, .collection-card').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
                 setTimeout(() => {
-                    this.style.pointerEvents = '';
-                    // Restore original content would go here
-                }, 2000);
+                    this.style.transform = '';
+                }, 150);
             });
         });
 
+        // Add stagger delay to masonry cards
+        document.querySelectorAll('.masonry-grid .collection-card').forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.1}s`;
+        });
+
+        // Add stagger delay to gallery items
+        document.querySelectorAll('.gallery-grid .gallery-item').forEach((item, index) => {
+            item.style.transitionDelay = `${index * 0.1}s`;
+        });
+
         // Console Message
-        console.log('%c✨ TSION1201 - Curated Space ', 'color: #D4A5A5; font-size: 20px; font-weight: bold;');
+        console.log('%c✨ Tsi\'s - Curated Visual Space ', 'color: #D4A5A5; font-size: 20px; font-weight: bold;');
         console.log('%cThank you for visiting! Made with love and inspiration.', 'color: #8B7B7B; font-size: 12px;');
+
+        // Image placeholders - Replace these with actual uploaded images
+        // You can update the src attributes in the HTML with your actual image paths
+        const imagePlaceholders = {
+            aboutImage1: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"%3E%3Crect fill="%23FADADD" width="400" height="500"/%3E%3Ctext x="50%25" y="50%25" font-family="Arial" font-size="20" fill="%23D4A5A5" text-anchor="middle" dy=".3em"%3EYour Image Here%3C/text%3E%3C/svg%3E',
+            aboutImage2: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400"%3E%3Crect fill="%23F5EDE4" width="300" height="400"/%3E%3Ctext x="50%25" y="50%25" font-family="Arial" font-size="16" fill="%23D4A5A5" text-anchor="middle" dy=".3em"%3EYour Image%3C/text%3E%3C/svg%3E'
+        };
+
+        // To use your uploaded images, simply replace the placeholder SVGs with actual image paths:
+        // Example: document.getElementById('aboutImage1').src = 'path/to/your/image.jpg';
     </script>
 </body>
 </html>
