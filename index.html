@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tsi's | my little corner </title>
+    <title>Tsi's | my little corner ♡</title>
     <meta name="description" content="a cozy space for aesthetics, inspiration, and pretty things">
     
     <!-- Favicon -->
@@ -482,7 +482,7 @@
         }
 
         /* =========================================
-           8. MINIMAL MASONRY GALLERY (RESTORED LAYOUT & HOVER)
+           8. MINIMAL MASONRY GALLERY
            ========================================= */
         .masonry-grid {
             column-count: 1;
@@ -506,7 +506,6 @@
             text-decoration: none;
             color: inherit;
         }
-        /* Restored subtle hover animation */
         .masonry-item:hover { 
             transform: translateY(-5px); 
             box-shadow: var(--shadow-medium); 
@@ -517,7 +516,6 @@
             display: block;
             transition: transform 0.6s ease;
         }
-        /* Restored gentle image scale */
         .masonry-item:hover img { 
             transform: scale(1.04); 
         }
@@ -746,7 +744,7 @@
                     <span class="polaroid-caption">me 💗</span>
                 </div>
                 <div class="about-content fade-up delay-1">
-                    <span class="section-tag">about me </span>
+                    <span class="section-tag">about me ♡</span>
                     <h2>hi, nice to meet you!</h2>
                     <p>i'm tsi — a lover of soft aesthetics, cozy corners, and finding beauty in the little moments. this is my digital journal, filled with pins and dreams that make my heart happy.</p>
                     <p>from dreamy vibes to slow mornings, every pin here is something i truly love. hope you find something that makes you smile too. 💕</p>
@@ -755,7 +753,7 @@
         </div>
     </section>
 
-    <!-- MINIMAL MASONRY GALLERY WITH CLICKABLE IMAGES & RESTORED HOVER -->
+    <!-- MINIMAL MASONRY GALLERY (AUTOMATIC) -->
     <section id="gallery" class="section">
         <div class="container">
             <div class="fade-up" style="text-align: center; margin-bottom: 2rem;">
@@ -763,37 +761,8 @@
                 <h2 style="font-size: 2rem; font-weight: 500; font-style: italic; margin-top: 0.5rem;">latest inspirations</h2>
             </div>
 
-            <div class="masonry-grid">
-                <!-- Image 1 -->
-                <a href="https://www.pinterest.com/TSION1201/" target="_blank" rel="noopener noreferrer" class="masonry-item pop-in delay-1">
-                    <img src="images/photo1.jpg" alt="Gallery 1" loading="lazy">
-                    <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
-                </a>
-                
-                <!-- Image 2 -->
-                <a href="https://www.pinterest.com/TSION1201/" target="_blank" rel="noopener noreferrer" class="masonry-item pop-in delay-2">
-                    <img src="images/photo2.jpg" alt="Gallery 2" loading="lazy">
-                    <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
-                </a>
-                
-                <!-- Image 3 -->
-                <a href="https://www.pinterest.com/TSION1201/" target="_blank" rel="noopener noreferrer" class="masonry-item pop-in delay-3">
-                    <img src="images/photo3.jpg" alt="Gallery 3" loading="lazy">
-                    <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
-                </a>
-                
-                <!-- Image 4 -->
-                <a href="https://www.pinterest.com/TSION1201/" target="_blank" rel="noopener noreferrer" class="masonry-item pop-in delay-1">
-                    <img src="images/photo4.jpg" alt="Gallery 4" loading="lazy">
-                    <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
-                </a>
-                
-                <!-- Image 5 -->
-                <a href="https://www.pinterest.com/TSION1201/" target="_blank" rel="noopener noreferrer" class="masonry-item pop-in delay-2">
-                    <img src="images/photo5.jpg" alt="Gallery 5" loading="lazy">
-                    <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
-                </a>
-            </div>
+            <!-- The images will be automatically injected here by JavaScript -->
+            <div class="masonry-grid" id="auto-gallery"></div>
         </div>
     </section>
 
@@ -801,7 +770,7 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo"><span>💗</span> Tsi's</div>
+                <div class="footer-logo"><span></span> Tsi's</div>
                 <p class="footer-text">a little corner of the internet filled with pretty things and cozy vibes ✿</p>
                 <div class="social-links">
                     <a href="https://www.pinterest.com/TSION1201/" target="_blank" aria-label="Pinterest"><i class="fa-brands fa-pinterest"></i></a>
@@ -922,6 +891,53 @@ void main() {
 
     <!-- MAIN SCRIPTS -->
     <script>
+        // ==========================================
+        //  YOUR GALLERY IMAGE LIST 🌟
+        // Just add your new image filenames inside the quotes!
+        // ==========================================
+        const galleryImages = [
+            "photo1.jpg",
+            "photo2.jpg",
+            "photo3.jpg",
+            "photo4.jpg",
+            "photo5.jpg",
+            "photo6.jpg",
+            "photo7.jpg",
+            "photo8.jpg",
+            "photo9.jpg"
+            // "photo10.jpg",  <-- Just add new ones here like this!
+        ];
+
+        // This code automatically builds the gallery for you
+        const galleryContainer = document.getElementById('auto-gallery');
+        
+        galleryImages.forEach((img, index) => {
+            // Cycles through delay-1, delay-2, delay-3 for staggered animations
+            const delayClass = `delay-${(index % 3) + 1}`; 
+            
+            const html = `
+                <a href="https://www.pinterest.com/TSION1201/" target="_blank" rel="noopener noreferrer" class="masonry-item pop-in ${delayClass}">
+                    <img src="images/${img}" alt="Gallery ${index + 1}" loading="lazy">
+                    <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
+                </a>
+            `;
+            galleryContainer.innerHTML += html;
+        });
+
+        // Re-apply scroll animations to the new images
+        setTimeout(() => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+            
+            document.querySelectorAll('.masonry-item').forEach(el => observer.observe(el));
+        }, 100);
+
         // Reduced background decorations for a cleaner, minimal look
         const bokehLayer = document.getElementById('bokehLayer');
         const sparkleLayer = document.getElementById('sparkleLayer');
