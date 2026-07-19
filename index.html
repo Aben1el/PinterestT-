@@ -19,33 +19,27 @@
 
     <style>
         /* =========================================
-           1. RICH, ELEGANT COLOR PALETTE
-           Warm evening aesthetic — cozy & romantic
+           1. RICH, ELEGANT COLOR PALETTE (Unchanged)
            ========================================= */
         :root {
-            --blush: #E8C4C4;           /* deep blush pink */
-            --rose: #C99B9B;            /* dusty rose */
-            --deep-rose: #A88080;       /* mauve */
-            --soft-red: #B56B6B;        /* muted cherry red */
-            --burgundy: #8B5A5A;        /* soft burgundy accent */
-            --warm-white: #F5EDE4;      /* warm taupe cream (page background) */
-            --cream: #FAF3EC;           /* warm cream (cards/panels) */
-            --peach: #E8C8B8;           /* warm muted peach */
-            --lavender: #D8C8D0;        /* mauve-lavender */
-            --soft-pink-bg: #EAD8D8;    /* deeper soft pink */
-            --text-dark: #3D2E2E;       /* charcoal brown */
-            --text-light: #7A6565;      /* warm brown */
-            --white: #FFF9F3;           /* warm off-white */
+            --blush: #E8C4C4;
+            --rose: #C99B9B;
+            --deep-rose: #A88080;
+            --soft-red: #B56B6B;
+            --burgundy: #8B5A5A;
+            --warm-white: #F5EDE4;
+            --cream: #FAF3EC;
+            --peach: #E8C8B8;
+            --lavender: #D8C8D0;
+            --text-dark: #3D2E2E;
+            --text-light: #7A6565;
+            --white: #FFF9F3;
             
             --gradient-warm: linear-gradient(135deg, #EAD8D8 0%, #E8C4C4 50%, #FAF3EC 100%);
             --gradient-rose: linear-gradient(135deg, #C99B9B 0%, #E8C4C4 100%);
-            --gradient-soft: linear-gradient(135deg, #E8C4C4 0%, #E8C8B8 100%);
-            --gradient-peach: linear-gradient(135deg, #E8C8B8 0%, #EAD8D8 100%);
-            --gradient-lavender: linear-gradient(135deg, #D8C8D0 0%, #E8C4C4 100%);
             
             --shadow-soft: 0 4px 20px rgba(139, 90, 90, 0.12);
             --shadow-medium: 0 8px 30px rgba(139, 90, 90, 0.18);
-            --shadow-hover: 0 15px 40px rgba(139, 90, 90, 0.25);
             
             --radius-sm: 16px;
             --radius-md: 24px;
@@ -63,16 +57,15 @@
             font-family: 'Quicksand', sans-serif;
             background-color: var(--warm-white);
             color: var(--text-dark);
-            line-height: 1.7;
+            line-height: 1.8;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             background-image: 
                 radial-gradient(circle at 20% 30%, rgba(232, 196, 196, 0.35) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(232, 200, 184, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(216, 200, 208, 0.25) 0%, transparent 70%);
+                radial-gradient(circle at 80% 70%, rgba(232, 200, 184, 0.3) 0%, transparent 50%);
         }
 
-        h1, h2, h3, h4 {
+        h1, h2, h3 {
             font-family: 'Playfair Display', serif;
             color: var(--text-dark);
             line-height: 1.3;
@@ -81,7 +74,7 @@
         img { max-width: 100%; display: block; }
 
         /* =========================================
-           2. LAYERED BACKGROUND SYSTEM
+           2. SUBTLE LAYERED BACKGROUND
            ========================================= */
         .bg-layer {
             position: fixed;
@@ -90,98 +83,62 @@
             overflow: hidden;
         }
 
-        /* Layer 1: Floating blobs */
         .blobs { z-index: 0; }
         .blob {
             position: absolute;
             border-radius: 50%;
             filter: blur(80px);
-            opacity: 0.45;
+            opacity: 0.4;
             animation: blobFloat 20s infinite ease-in-out;
         }
         .blob-1 { width: 400px; height: 400px; background: var(--blush); top: -100px; left: -100px; }
         .blob-2 { width: 500px; height: 500px; background: var(--peach); bottom: -150px; right: -150px; animation-delay: 5s; }
-        .blob-3 { width: 350px; height: 350px; background: var(--lavender); top: 50%; left: 50%; animation-delay: 10s; }
         @keyframes blobFloat {
             0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
+            50% { transform: translate(30px, -50px) scale(1.1); }
         }
 
-        /* Layer 2: SideRays WebGL canvas */
         .side-rays-layer {
             z-index: 1;
             opacity: 0;
             transition: opacity 1.5s ease;
         }
         .side-rays-layer.ready { opacity: 1; }
-        .side-rays-layer canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
+        .side-rays-layer canvas { width: 100%; height: 100%; display: block; }
 
-        /* Layer 3: Origin glow */
         .origin-glow {
             z-index: 2;
-            background: radial-gradient(
-                circle at 90% 10%,
-                rgba(201, 155, 155, 0.38) 0%,
-                rgba(232, 200, 184, 0.2) 15%,
-                rgba(232, 196, 196, 0.1) 30%,
-                transparent 55%
-            );
+            background: radial-gradient(circle at 90% 10%, rgba(201, 155, 155, 0.35) 0%, rgba(232, 200, 184, 0.15) 15%, transparent 50%);
             mix-blend-mode: multiply;
         }
 
-        /* Layer 4: Bokeh circles */
         .bokeh-layer { z-index: 3; }
         .bokeh {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,249,243,0.7) 0%, rgba(232,196,196,0.35) 40%, transparent 70%);
+            background: radial-gradient(circle, rgba(255,249,243,0.6) 0%, rgba(232,196,196,0.3) 40%, transparent 70%);
             filter: blur(2px);
             opacity: 0;
             animation: bokehFloat 18s infinite ease-in-out;
         }
         @keyframes bokehFloat {
             0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; }
-            15% { opacity: 0.5; }
-            50% { transform: translate(30px, -60px) scale(1.2); opacity: 0.7; }
-            85% { opacity: 0.4; }
+            50% { transform: translate(20px, -40px) scale(1.1); opacity: 0.6; }
         }
 
-        /* Layer 5: Sparkles & Twinkles */
         .sparkle-layer { z-index: 4; }
         .sparkle {
             position: absolute;
             color: var(--cream);
-            text-shadow: 0 0 8px rgba(232, 196, 196, 0.9), 0 0 14px rgba(201, 155, 155, 0.5);
+            text-shadow: 0 0 8px rgba(232, 196, 196, 0.8);
             opacity: 0;
             animation: sparkleTwinkle 4s infinite ease-in-out;
-            pointer-events: none;
         }
         @keyframes sparkleTwinkle {
-            0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
-            50% { opacity: 0.9; transform: scale(1.1) rotate(180deg); }
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0.8; transform: scale(1); }
         }
 
-        .twinkle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: var(--cream);
-            box-shadow: 0 0 6px 2px rgba(232, 196, 196, 0.8), 0 0 12px 4px rgba(201, 155, 155, 0.4);
-            opacity: 0;
-            animation: twinklePulse 3s infinite ease-in-out;
-        }
-        @keyframes twinklePulse {
-            0%, 100% { opacity: 0; transform: scale(0.6); }
-            50% { opacity: 1; transform: scale(1.3); }
-        }
-
-        /* Layer 6: Floating hearts */
         .decorations { z-index: 5; }
         .deco {
             position: absolute;
@@ -192,21 +149,12 @@
         }
         @keyframes decoFloat {
             0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.35; }
-            90% { opacity: 0.35; }
+            10%, 90% { opacity: 0.3; }
             100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
 
-        /* Layer 7: Soft gradient overlay */
-        .gradient-overlay {
-            z-index: 6;
-            background: 
-                linear-gradient(180deg, rgba(245, 237, 228, 0.2) 0%, transparent 30%, transparent 70%, rgba(245, 237, 228, 0.3) 100%),
-                linear-gradient(90deg, rgba(245, 237, 228, 0.25) 0%, transparent 20%, transparent 80%, rgba(245, 237, 228, 0.25) 100%);
-        }
-
         /* =========================================
-           3. ORIGINAL LOADER (UNCHANGED STRUCTURE)
+           3. ORIGINAL LOADER (UNCHANGED)
            ========================================= */
         .loader {
             position: fixed;
@@ -249,12 +197,7 @@
             0%, 100% { opacity: 0; transform: translateY(-50%) scale(0.5); }
             50% { opacity: 1; transform: translateY(-50%) scale(1.2); }
         }
-        .loader-hearts {
-            position: absolute;
-            width: 100%; height: 100%;
-            top: 0; left: 0;
-            pointer-events: none;
-        }
+        .loader-hearts { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
         .floating-heart {
             position: absolute;
             color: var(--blush);
@@ -284,10 +227,7 @@
             animation: progressLoad 2.5s ease-in-out forwards;
             box-shadow: 0 0 10px rgba(201, 155, 155, 0.5);
         }
-        @keyframes progressLoad {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
+        @keyframes progressLoad { 0% { width: 0%; } 100% { width: 100%; } }
         .loader-text {
             font-size: 0.85rem;
             color: var(--text-light);
@@ -295,13 +235,10 @@
             letter-spacing: 1px;
             animation: fadeInOut 2s ease-in-out infinite;
         }
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
-        }
+        @keyframes fadeInOut { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
         /* =========================================
-           4. NAVBAR
+           4. NAVBAR (UNCHANGED)
            ========================================= */
         .navbar {
             position: fixed;
@@ -336,7 +273,6 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            transition: var(--transition-smooth);
         }
         .logo:hover { transform: scale(1.05); color: var(--soft-red); }
         .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
@@ -359,18 +295,10 @@
         }
         .nav-links a:not(.btn-cute):hover { color: var(--soft-red); }
         .nav-links a:not(.btn-cute):hover::after { width: 100%; }
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.25rem;
-            color: var(--text-dark);
-            cursor: pointer;
-            padding: 0.5rem;
-        }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.25rem; color: var(--text-dark); cursor: pointer; padding: 0.5rem; }
 
         /* =========================================
-           5. BUTTONS
+           5. BUTTONS (UNCHANGED)
            ========================================= */
         .btn-cute {
             display: inline-flex;
@@ -400,10 +328,7 @@
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
             transition: left 0.5s ease;
         }
-        .btn-cute:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 8px 25px rgba(139, 90, 90, 0.35), 0 0 20px rgba(232, 196, 196, 0.3);
-        }
+        .btn-cute:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 8px 25px rgba(139, 90, 90, 0.35); }
         .btn-cute:hover::before { left: 100%; }
         .btn-soft {
             background: var(--white);
@@ -411,17 +336,13 @@
             border: 2px solid var(--blush);
             box-shadow: 0 4px 15px rgba(139, 90, 90, 0.1);
         }
-        .btn-soft:hover {
-            background: var(--blush);
-            color: var(--text-dark);
-            border-color: var(--rose);
-        }
+        .btn-soft:hover { background: var(--blush); color: var(--text-dark); border-color: var(--rose); }
 
         /* =========================================
-           6. HERO
+           6. SIMPLIFIED HERO
            ========================================= */
         .hero {
-            min-height: 100vh;
+            min-height: 90vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -430,11 +351,11 @@
             position: relative;
             z-index: 10;
         }
-        .hero-content { max-width: 700px; position: relative; }
+        .hero-content { max-width: 600px; position: relative; }
         .greeting {
             display: inline-block;
             font-family: 'Quicksand', sans-serif;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: var(--soft-red);
             letter-spacing: 2px;
@@ -447,7 +368,7 @@
             border: 1px solid rgba(232, 196, 196, 0.5);
         }
         .hero h1 {
-            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-size: clamp(2.2rem, 5vw, 3.2rem);
             margin-bottom: 1.5rem;
             font-weight: 500;
             font-style: italic;
@@ -461,48 +382,81 @@
         .hero h1 .highlight::after {
             content: '';
             position: absolute;
-            bottom: 5px; left: 0;
+            bottom: 4px; left: 0;
             width: 100%; height: 8px;
             background: var(--blush);
-            opacity: 0.55;
+            opacity: 0.5;
             z-index: -1;
             border-radius: 4px;
         }
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--text-light);
             margin-bottom: 2.5rem;
-            max-width: 500px;
+            max-width: 450px;
             margin-left: auto;
             margin-right: auto;
             font-weight: 400;
         }
         .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-        .hero-deco {
-            position: absolute;
-            font-size: 2rem;
-            opacity: 0.3;
-            animation: floatDeco 4s ease-in-out infinite;
-        }
-        .hero-deco-1 { top: 10%; left: 10%; animation-delay: 0s; }
-        .hero-deco-2 { top: 20%; right: 15%; animation-delay: 1s; }
-        .hero-deco-3 { bottom: 20%; left: 20%; animation-delay: 2s; }
-        .hero-deco-4 { bottom: 15%; right: 10%; animation-delay: 1.5s; }
-        @keyframes floatDeco {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(10deg); }
-        }
 
         /* =========================================
-           7. SECTIONS
+           7. SIMPLIFIED ABOUT
            ========================================= */
-        .section { padding: 5rem 0; position: relative; z-index: 10; }
-        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-        .section-header { text-align: center; margin-bottom: 3.5rem; }
+        .section { padding: 6rem 0; position: relative; z-index: 10; }
+        .container { width: 90%; max-width: 900px; margin: 0 auto; padding: 0 1rem; }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .polaroid {
+            background: var(--white);
+            padding: 1.25rem 1.25rem 2.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            transition: var(--transition-bounce);
+            transform: rotate(-2deg);
+            max-width: 320px;
+            margin: 0 auto;
+        }
+        .polaroid:hover { transform: rotate(0deg) scale(1.02); }
+        .polaroid::before {
+            content: '♡';
+            position: absolute;
+            top: -12px; right: -12px;
+            width: 36px; height: 36px;
+            background: var(--gradient-rose);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(139, 90, 90, 0.25);
+        }
+        .polaroid img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+        }
+        .polaroid-caption {
+            position: absolute;
+            bottom: 0.75rem; left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
         .section-tag {
             display: inline-block;
             font-family: 'Quicksand', sans-serif;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             color: var(--soft-red);
             letter-spacing: 2px;
@@ -514,185 +468,30 @@
             border-radius: var(--radius-xl);
             border: 1px solid rgba(232, 196, 196, 0.45);
         }
-        .section-header h2 {
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            font-weight: 500;
-            font-style: italic;
-            color: var(--text-dark);
-            margin-bottom: 0.75rem;
-        }
-        .section-header p { max-width: 500px; margin: 0 auto; color: var(--text-light); font-size: 1rem; }
-
-        /* =========================================
-           8. BOARDS
-           ========================================= */
-        .boards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.75rem;
-        }
-        .board-card {
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-soft);
-            transition: var(--transition-bounce);
-            cursor: pointer;
-            border: 1px solid rgba(232, 196, 196, 0.3);
-            position: relative;
-        }
-        .board-card:hover { transform: translateY(-8px) rotate(-0.5deg); box-shadow: var(--shadow-hover); }
-        .board-card:nth-child(even):hover { transform: translateY(-8px) rotate(0.5deg); }
-        .board-image-wrapper { overflow: hidden; height: 240px; position: relative; }
-        .board-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
-        .board-card:hover .board-image { transform: scale(1.08); }
-        .board-heart {
-            position: absolute;
-            top: 1rem; right: 1rem;
-            width: 40px; height: 40px;
-            background: rgba(255, 249, 243, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--soft-red);
-            font-size: 1rem;
-            transition: var(--transition-bounce);
-            box-shadow: 0 4px 12px rgba(139, 90, 90, 0.15);
-        }
-        .board-card:hover .board-heart {
-            transform: scale(1.15) rotate(-10deg);
-            background: var(--soft-red);
-            color: var(--white);
-        }
-        .board-content { padding: 1.5rem; }
-        .board-tag {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--soft-red);
-            text-transform: lowercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-            display: inline-block;
-        }
-        .board-content h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            font-style: italic;
-        }
-        .board-content p {
-            font-size: 0.9rem;
-            color: var(--text-light);
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-        .board-meta {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.85rem;
-            color: var(--text-light);
-            padding-top: 1rem;
-            border-top: 1px dashed rgba(232, 196, 196, 0.6);
-        }
-        .board-meta span { display: flex; align-items: center; gap: 0.3rem; }
-        .board-meta i { color: var(--rose); }
-
-        /* =========================================
-           9. ABOUT
-           ========================================= */
-        .about-section {
-            background: linear-gradient(180deg, transparent 0%, rgba(234, 216, 216, 0.35) 50%, transparent 100%);
-        }
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 4rem;
-            align-items: center;
-        }
-        .polaroid {
-            background: var(--white);
-            padding: 1.5rem 1.5rem 3rem;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-medium);
-            position: relative;
-            transition: var(--transition-bounce);
-            transform: rotate(-2deg);
-        }
-        .polaroid:hover { transform: rotate(0deg) scale(1.02); }
-        .polaroid::before {
-            content: '♡';
-            position: absolute;
-            top: -15px; right: -15px;
-            width: 40px; height: 40px;
-            background: var(--gradient-rose);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-size: 1.2rem;
-            box-shadow: 0 4px 15px rgba(139, 90, 90, 0.25);
-        }
-        .polaroid img {
-            width: 100%;
-            height: 380px;
-            object-fit: cover;
-            border-radius: var(--radius-sm);
-        }
-        .polaroid-caption {
-            position: absolute;
-            bottom: 1rem; left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 1rem;
-            color: var(--text-light);
-        }
-        .about-content .section-tag { margin-bottom: 1rem; }
         .about-content h2 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 500;
             font-style: italic;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
         }
-        .about-content p { margin-bottom: 1.25rem; color: var(--text-light); font-size: 1rem; }
-        .likes-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
-            margin: 1.5rem 0 2rem;
-            list-style: none;
+        .about-content p {
+            margin-bottom: 1.25rem;
+            color: var(--text-light);
+            font-size: 1rem;
+            line-height: 1.8;
         }
-        .likes-list li {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: var(--text-dark);
-            padding: 0.75rem 1rem;
-            background: rgba(255, 249, 243, 0.75);
-            backdrop-filter: blur(10px);
-            border-radius: var(--radius-md);
-            border: 1px solid rgba(232, 196, 196, 0.45);
-            transition: var(--transition-smooth);
-        }
-        .likes-list li:hover {
-            background: var(--white);
-            transform: translateX(5px);
-            box-shadow: var(--shadow-soft);
-        }
-        .likes-list i { color: var(--soft-red); font-size: 1rem; }
 
         /* =========================================
-           10. GALLERY
+           8. MINIMAL MASONRY GALLERY
            ========================================= */
-        .masonry-grid { column-count: 1; column-gap: 1.25rem; }
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 1.25rem;
+            margin-top: 3rem;
+        }
         @media (min-width: 640px) { .masonry-grid { column-count: 2; } }
         @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
-        @media (min-width: 1280px) { .masonry-grid { column-count: 4; } }
+        
         .masonry-item {
             break-inside: avoid;
             margin-bottom: 1.25rem;
@@ -704,18 +503,18 @@
             transition: var(--transition-bounce);
             cursor: zoom-in;
         }
-        .masonry-item:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+        .masonry-item:hover { transform: translateY(-5px); box-shadow: var(--shadow-medium); }
         .masonry-item img {
             width: 100%;
             height: auto;
             display: block;
             transition: transform 0.6s ease;
         }
-        .masonry-item:hover img { transform: scale(1.05); }
+        .masonry-item:hover img { transform: scale(1.04); }
         .masonry-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(61, 46, 46, 0.6), transparent 60%);
+            background: linear-gradient(to top, rgba(61, 46, 46, 0.5), transparent 60%);
             opacity: 0;
             transition: opacity 0.3s ease;
             display: flex;
@@ -736,65 +535,19 @@
             border-radius: var(--radius-xl);
             border: 1px solid rgba(255, 249, 243, 0.4);
         }
-        .gallery-cta { text-align: center; margin-top: 3rem; }
 
         /* =========================================
-           11. CONNECT / CTA
-           ========================================= */
-        .connect-section { text-align: center; padding: 5rem 1rem; position: relative; z-index: 10; }
-        .connect-box {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 3.5rem 2rem;
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-medium);
-            position: relative;
-            border: 1px solid rgba(232, 196, 196, 0.45);
-            overflow: hidden;
-        }
-        .connect-box::before {
-            content: '';
-            position: absolute;
-            top: -50px; left: -50px;
-            width: 150px; height: 150px;
-            background: var(--blush);
-            border-radius: 50%;
-            opacity: 0.3;
-            filter: blur(40px);
-        }
-        .connect-box::after {
-            content: '';
-            position: absolute;
-            bottom: -50px; right: -50px;
-            width: 150px; height: 150px;
-            background: var(--peach);
-            border-radius: 50%;
-            opacity: 0.3;
-            filter: blur(40px);
-        }
-        .connect-box h2 {
-            font-size: 2rem;
-            font-weight: 500;
-            font-style: italic;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
-        }
-        .connect-box p { margin-bottom: 2rem; color: var(--text-light); position: relative; z-index: 1; }
-        .connect-box .btn-cute { position: relative; z-index: 1; }
-
-        /* =========================================
-           12. FOOTER
+           9. MINIMAL FOOTER
            ========================================= */
         footer {
             background: var(--white);
-            border-top: 1px solid rgba(232, 196, 196, 0.4);
-            padding: 3rem 0 2rem;
+            border-top: 1px solid rgba(232, 196, 196, 0.3);
+            padding: 4rem 0 2rem;
             position: relative;
             z-index: 10;
+            text-align: center;
         }
-        .footer-content { text-align: center; max-width: 600px; margin: 0 auto; }
+        .footer-content { max-width: 500px; margin: 0 auto; }
         .footer-logo {
             font-family: 'Playfair Display', serif;
             font-size: 1.75rem;
@@ -806,7 +559,7 @@
             align-items: center;
             gap: 0.5rem;
         }
-        .footer-text { color: var(--text-light); font-size: 0.95rem; margin-bottom: 1.5rem; }
+        .footer-text { color: var(--text-light); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.6; }
         .social-links { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
         .social-links a {
             width: 44px; height: 44px;
@@ -822,20 +575,18 @@
         .social-links a:hover {
             background: var(--gradient-rose);
             color: var(--white);
-            transform: translateY(-5px) scale(1.1) rotate(-5deg);
+            transform: translateY(-4px) scale(1.1);
             box-shadow: 0 8px 20px rgba(139, 90, 90, 0.25);
         }
         .footer-bottom {
             padding-top: 1.5rem;
-            border-top: 1px dashed rgba(232, 196, 196, 0.6);
+            border-top: 1px dashed rgba(232, 196, 196, 0.4);
             font-size: 0.85rem;
             color: var(--text-light);
         }
-        .footer-bottom a { color: var(--soft-red); margin: 0 0.5rem; }
-        .footer-bottom a:hover { color: var(--burgundy); }
 
         /* =========================================
-           13. LIGHTBOX
+           10. LIGHTBOX
            ========================================= */
         .lightbox {
             display: none;
@@ -858,10 +609,7 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.15);
             animation: zoomIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        @keyframes zoomIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
+        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .lightbox-close {
             position: absolute;
             top: 2rem; right: 2rem;
@@ -877,102 +625,68 @@
             background: var(--white);
             box-shadow: var(--shadow-soft);
         }
-        .lightbox-close:hover {
-            transform: rotate(90deg) scale(1.1);
-            background: var(--blush);
-            color: var(--soft-red);
-        }
+        .lightbox-close:hover { transform: rotate(90deg) scale(1.1); background: var(--blush); color: var(--soft-red); }
 
         /* =========================================
-           14. SCROLL ANIMATIONS
+           11. SCROLL ANIMATIONS
            ========================================= */
         .fade-up {
             opacity: 0;
             transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
-                        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .fade-up.visible { opacity: 1; transform: translateY(0); }
         .pop-in {
             opacity: 0;
-            transform: scale(0.9);
-            transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                        transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: scale(0.95);
+            transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .pop-in.visible { opacity: 1; transform: scale(1); }
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.2s; }
         .delay-3 { transition-delay: 0.3s; }
-        .delay-4 { transition-delay: 0.4s; }
-        .delay-5 { transition-delay: 0.5s; }
 
         /* =========================================
-           15. RESPONSIVE
+           12. RESPONSIVE
            ========================================= */
-        @media (max-width: 968px) {
-            .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-            .polaroid { max-width: 400px; margin: 0 auto; }
-            .likes-list { grid-template-columns: 1fr; }
-        }
         @media (max-width: 768px) {
             .navbar {
-                top: 0;
-                width: 100%;
-                max-width: 100%;
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-                border-top: none;
+                top: 0; width: 100%; max-width: 100%;
+                border-radius: 0; border-left: none; border-right: none; border-top: none;
                 padding: 0.75rem 1.5rem;
             }
             .navbar.scrolled { top: 0; width: 100%; }
             .nav-links {
-                position: fixed;
-                top: 0; right: -100%;
+                position: fixed; top: 0; right: -100%;
                 width: 75%; height: 100vh;
                 background: rgba(245, 237, 228, 0.98);
                 backdrop-filter: blur(20px);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 2rem;
+                flex-direction: column; justify-content: center; align-items: center; gap: 2rem;
                 transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 box-shadow: -10px 0 30px rgba(139, 90, 90, 0.1);
             }
             .nav-links.active { right: 0; }
             .mobile-menu-btn { display: block; z-index: 1001; }
-            .hero { padding-top: 6rem; }
-            .hero-deco { display: none; }
-            .boards-grid { grid-template-columns: 1fr; }
+            .hero { padding-top: 6rem; min-height: 80vh; }
+            .about-grid { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+            .polaroid { margin-bottom: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- =========================================
-         LAYERED BACKGROUND SYSTEM
-         ========================================= -->
+    <!-- SIMPLIFIED BACKGROUND LAYERS -->
     <div class="bg-layer blobs">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
     </div>
-
     <div class="bg-layer side-rays-layer" id="sideRaysLayer"></div>
-
     <div class="bg-layer origin-glow" id="originGlow"></div>
-
     <div class="bg-layer bokeh-layer" id="bokehLayer"></div>
-
     <div class="bg-layer sparkle-layer" id="sparkleLayer"></div>
-
     <div class="bg-layer decorations" id="decorations"></div>
 
-    <div class="bg-layer gradient-overlay"></div>
-
-    <!-- =========================================
-         ORIGINAL LOADER (UNCHANGED)
-         ========================================= -->
+    <!-- ORIGINAL LOADER -->
     <div class="loader" id="loader">
         <div class="loader-content">
             <div class="loader-hearts">
@@ -982,309 +696,116 @@
                 <span class="floating-heart">💗</span>
             </div>
             <div class="loader-logo">Tsi's</div>
-            <div class="loader-progress">
-                <div class="loader-progress-bar"></div>
-            </div>
+            <div class="loader-progress"><div class="loader-progress-bar"></div></div>
             <div class="loader-text">Curating your experience...</div>
         </div>
     </div>
 
-    <!-- =========================================
-         NAVBAR
-         ========================================= -->
+    <!-- NAVBAR -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="#" class="logo">
-                <span>💗</span> Tsi's
-            </a>
+            <a href="#" class="logo"><span>💗</span> Tsi's</a>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#boards">boards</a></li>
-                <li><a href="#about">about me</a></li>
+                <li><a href="#about">about</a></li>
                 <li><a href="#gallery">gallery</a></li>
-                <li>
-                    <a href="https://www.pinterest.com/TSION1201/" target="_blank" class="btn-cute">
-                        <i class="fa-brands fa-pinterest"></i> pinterest
-                    </a>
-                </li>
+                <li><a href="https://www.pinterest.com/TSION1201/" target="_blank" class="btn-cute"><i class="fa-brands fa-pinterest"></i> pinterest</a></li>
             </ul>
-            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
-                <i class="fa-solid fa-bars"></i>
-            </button>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
         </div>
     </nav>
 
-    <!-- =========================================
-         HERO
-         ========================================= -->
+    <!-- SIMPLIFIED HERO -->
     <section class="hero">
-        <span class="hero-deco hero-deco-1">💗</span>
-        <span class="hero-deco hero-deco-2">✨</span>
-        <span class="hero-deco hero-deco-3">🌸</span>
-        <span class="hero-deco hero-deco-4">♡</span>
-        
         <div class="hero-content fade-up">
             <span class="greeting">hi, i'm tsi 💗</span>
-            <h1>welcome to my <span class="highlight">little corner</span> of the internet</h1>
-            <p>a cozy space for aesthetics, pretty things, and all the inspiration my heart can hold ✿</p>
+            <h1>welcome to my <span class="highlight">little corner</span></h1>
+            <p>a cozy space for aesthetics, pretty things, and quiet inspiration.</p>
             <div class="hero-buttons">
-                <a href="#boards" class="btn-cute">
-                    explore my boards <i class="fa-solid fa-arrow-down"></i>
-                </a>
-                <a href="https://www.pinterest.com/TSION1201/" target="_blank" class="btn-cute btn-soft">
-                    <i class="fa-brands fa-pinterest"></i> visit pinterest
-                </a>
+                <a href="#gallery" class="btn-cute">explore gallery <i class="fa-solid fa-arrow-down"></i></a>
+                <a href="https://www.pinterest.com/TSION1201/" target="_blank" class="btn-cute btn-soft"><i class="fa-brands fa-pinterest"></i> visit pinterest</a>
             </div>
         </div>
     </section>
 
-    <!-- =========================================
-         BOARDS
-         ========================================= -->
-    <section id="boards" class="section">
-        <div class="container">
-            <div class="section-header fade-up">
-                <span class="section-tag">my boards ✿</span>
-                <h2>things i love</h2>
-                <p>a little collection of all the pretty things that make my heart happy ♡</p>
-            </div>
-            
-            <div class="boards-grid">
-                <div class="board-card pop-in delay-1">
-                    <div class="board-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=600&h=800&fit=crop" alt="Aesthetic" class="board-image" loading="lazy">
-                        <div class="board-heart"><i class="fa-solid fa-heart"></i></div>
-                    </div>
-                    <div class="board-content">
-                        <span class="board-tag">aesthetic</span>
-                        <h3>soft moodboards</h3>
-                        <p>dreamy vibes, pastel tones, and visual poetry for the soul ✿</p>
-                        <div class="board-meta">
-                            <span><i class="fa-solid fa-thumbtack"></i> 156 pins</span>
-                            <span><i class="fa-solid fa-heart"></i> 2.3k</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="board-card pop-in delay-2">
-                    <div class="board-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=600&h=900&fit=crop" alt="Design" class="board-image" loading="lazy">
-                        <div class="board-heart"><i class="fa-solid fa-heart"></i></div>
-                    </div>
-                    <div class="board-content">
-                        <span class="board-tag">interiors</span>
-                        <h3>cozy spaces</h3>
-                        <p>warm corners, soft textures, and rooms that feel like a hug ♡</p>
-                        <div class="board-meta">
-                            <span><i class="fa-solid fa-thumbtack"></i> 203 pins</span>
-                            <span><i class="fa-solid fa-heart"></i> 3.1k</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="board-card pop-in delay-3">
-                    <div class="board-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=600&h=700&fit=crop" alt="Futuristic" class="board-image" loading="lazy">
-                        <div class="board-heart"><i class="fa-solid fa-heart"></i></div>
-                    </div>
-                    <div class="board-content">
-                        <span class="board-tag">dreamy</span>
-                        <h3>cyber cute</h3>
-                        <p>where futuristic meets feminine — sparkles and circuits ✨</p>
-                        <div class="board-meta">
-                            <span><i class="fa-solid fa-thumbtack"></i> 98 pins</span>
-                            <span><i class="fa-solid fa-heart"></i> 1.8k</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="board-card pop-in delay-1">
-                    <div class="board-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1493863641943-9b68992a8d07?w=600&h=850&fit=crop" alt="Photography" class="board-image" loading="lazy">
-                        <div class="board-heart"><i class="fa-solid fa-heart"></i></div>
-                    </div>
-                    <div class="board-content">
-                        <span class="board-tag">moments</span>
-                        <h3>visual stories</h3>
-                        <p>little snapshots of beauty found in everyday life 🌸</p>
-                        <div class="board-meta">
-                            <span><i class="fa-solid fa-thumbtack"></i> 187 pins</span>
-                            <span><i class="fa-solid fa-heart"></i> 2.7k</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="board-card pop-in delay-2">
-                    <div class="board-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1513694203232-7e9680d5c543?w=600&h=750&fit=crop" alt="Lifestyle" class="board-image" loading="lazy">
-                        <div class="board-heart"><i class="fa-solid fa-heart"></i></div>
-                    </div>
-                    <div class="board-content">
-                        <span class="board-tag">lifestyle</span>
-                        <h3>slow living</h3>
-                        <p>cozy mornings, warm tea, and the art of taking it slow ☕</p>
-                        <div class="board-meta">
-                            <span><i class="fa-solid fa-thumbtack"></i> 142 pins</span>
-                            <span><i class="fa-solid fa-heart"></i> 2.1k</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="board-card pop-in delay-3">
-                    <div class="board-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&h=800&fit=crop" alt="Fashion" class="board-image" loading="lazy">
-                        <div class="board-heart"><i class="fa-solid fa-heart"></i></div>
-                    </div>
-                    <div class="board-content">
-                        <span class="board-tag">fashion</span>
-                        <h3>pretty outfits</h3>
-                        <p>soft girl aesthetics, timeless style, and outfit inspirations 💕</p>
-                        <div class="board-meta">
-                            <span><i class="fa-solid fa-thumbtack"></i> 176 pins</span>
-                            <span><i class="fa-solid fa-heart"></i> 3.4k</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- =========================================
-         ABOUT
-         ========================================= -->
-    <section id="about" class="section about-section">
+    <!-- SIMPLIFIED ABOUT -->
+    <section id="about" class="section">
         <div class="container">
             <div class="about-grid">
                 <div class="polaroid fade-up">
-                    <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&h=1000&fit=crop" alt="about me" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&h=700&fit=crop" alt="about me" loading="lazy">
                     <span class="polaroid-caption">me 💗</span>
                 </div>
-                <div class="about-content fade-up">
+                <div class="about-content fade-up delay-1">
                     <span class="section-tag">about me ♡</span>
                     <h2>hi, nice to meet you!</h2>
-                    <p>i'm tsi — just a girl who loves collecting pretty things and finding beauty in the little moments. this is my little digital journal where i share all the aesthetics, inspirations, and dreams that make my heart happy ✿</p>
-                    <p>from soft pinks to cozy corners, from dreamy vibes to slow mornings — every pin here is something i truly love. hope you find something that makes you smile too 💕</p>
-                    
-                    <ul class="likes-list">
-                        <li><i class="fa-solid fa-heart"></i> soft aesthetics</li>
-                        <li><i class="fa-solid fa-heart"></i> cozy corners</li>
-                        <li><i class="fa-solid fa-heart"></i> pink everything</li>
-                        <li><i class="fa-solid fa-heart"></i> slow mornings</li>
-                        <li><i class="fa-solid fa-heart"></i> dreamy vibes</li>
-                        <li><i class="fa-solid fa-heart"></i> pretty things</li>
-                    </ul>
-
-                    <a href="https://www.pinterest.com/TSION1201/" target="_blank" class="btn-cute">
-                        <i class="fa-brands fa-pinterest"></i> let's be friends
-                    </a>
-                </div>
+                    <p>i'm tsi — a lover of soft aesthetics, cozy corners, and finding beauty in the little moments. this is my digital journal, filled with pins and dreams that make my heart happy.</p>
+                    <p>from dreamy vibes to slow mornings, every pin here is something i truly love. hope you find something that makes you smile too. 💕</p>
+                </div.
             </div>
         </div>
     </section>
 
-    <!-- =========================================
-         GALLERY
-         ========================================= -->
+    <!-- MINIMAL MASONRY GALLERY -->
     <section id="gallery" class="section">
         <div class="container">
-            <div class="section-header fade-up">
+            <div class="fade-up" style="text-align: center; margin-bottom: 2rem;">
                 <span class="section-tag">gallery ✨</span>
-                <h2>latest inspirations</h2>
-                <p>a peek into my most recent pins and pretty discoveries ♡</p>
+                <h2 style="font-size: 2rem; font-weight: 500; font-style: italic; margin-top: 0.5rem;">latest inspirations</h2>
             </div>
 
             <div class="masonry-grid">
                 <div class="masonry-item pop-in delay-1" onclick="openLightbox(this)">
-                    <img src="https://images.unsplash.com/photo-1507089947368-1e7124a28433?w=800&h=600&fit=crop" alt="Gallery 1" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=600&h=800&fit=crop" alt="Gallery 1" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
                 <div class="masonry-item pop-in delay-2" onclick="openLightbox(this)">
-                    <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400&h=500&fit=crop" alt="Gallery 2" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=600&h=700&fit=crop" alt="Gallery 2" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
                 <div class="masonry-item pop-in delay-3" onclick="openLightbox(this)">
-                    <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=400&h=600&fit=crop" alt="Gallery 3" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1513694203232-7e9680d5c543?w=600&h=900&fit=crop" alt="Gallery 3" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
                 <div class="masonry-item pop-in delay-1" onclick="openLightbox(this)">
-                    <img src="https://images.unsplash.com/photo-1522771753035-1a5b6562f3a4?w=600&h=600&fit=crop" alt="Gallery 4" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1493863641943-9b68992a8d07?w=600&h=600&fit=crop" alt="Gallery 4" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
                 <div class="masonry-item pop-in delay-2" onclick="openLightbox(this)">
-                    <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=400&h=400&fit=crop" alt="Gallery 5" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&h=750&fit=crop" alt="Gallery 5" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
                 <div class="masonry-item pop-in delay-3" onclick="openLightbox(this)">
-                    <img src="https://images.unsplash.com/photo-1522444195799-478538b28823?w=400&h=400&fit=crop" alt="Gallery 6" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&h=800&fit=crop" alt="Gallery 6" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
-                <div class="masonry-item pop-in delay-1" onclick="openLightbox(this)">
-                    <img src="https://images.unsplash.com/photo-1513694203232-7e9680d5c543?w=600&h=800&fit=crop" alt="Gallery 7" loading="lazy">
-                    <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
-                </div>
-                <div class="masonry-item pop-in delay-2" onclick="openLightbox(this)">
-                    <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=400&h=500&fit=crop" alt="Gallery 8" loading="lazy">
-                    <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
-                </div>
-            </div>
-
-            <div class="gallery-cta fade-up">
-                <a href="https://www.pinterest.com/TSION1201/" target="_blank" class="btn-cute btn-soft">
-                    see more on pinterest <i class="fa-solid fa-arrow-right"></i>
-                </a>
             </div>
         </div>
     </section>
 
-    <!-- =========================================
-         CONNECT
-         ========================================= -->
-    <section class="connect-section">
-        <div class="connect-box fade-up">
-            <h2>let's be friends ♡</h2>
-            <p>come join my pinterest world — full of pretty things, cozy vibes, and endless inspiration ✿</p>
-            <a href="https://www.pinterest.com/TSION1201/" target="_blank" class="btn-cute">
-                <i class="fa-brands fa-pinterest"></i> follow me on pinterest
-            </a>
-        </div>
-    </section>
-
-    <!-- =========================================
-         FOOTER
-         ========================================= -->
+    <!-- MINIMAL FOOTER -->
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">
-                    <span>💗</span> Tsi's
-                </div>
+                <div class="footer-logo"><span>💗</span> Tsi's</div>
                 <p class="footer-text">a little corner of the internet filled with pretty things and cozy vibes ✿</p>
                 <div class="social-links">
                     <a href="https://www.pinterest.com/TSION1201/" target="_blank" aria-label="Pinterest"><i class="fa-brands fa-pinterest"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/heartz_blizz?igsh=MTJtMzRwMG9wdHFoZg==" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
                 </div>
                 <div class="footer-bottom">
                     <p>© 2026 Tsi's · made with 💗 and lots of inspiration</p>
-                    <div style="margin-top: 0.75rem;">
-                        <a href="#">privacy</a> · 
-                        <a href="#">terms</a>
-                    </div>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- =========================================
-         LIGHTBOX
-         ========================================= -->
+    <!-- LIGHTBOX -->
     <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
         <span class="lightbox-close" onclick="closeLightbox(event)"><i class="fa-solid fa-xmark"></i></span>
         <img class="lightbox-content" id="lightbox-img" src="" alt="Lightbox Image">
     </div>
 
-    <!-- =========================================
-         SIDE RAYS (ogl WebGL) + MAIN SCRIPTS
-         ========================================= -->
+    <!-- SIDE RAYS SCRIPT -->
     <script type="module">
         import { Renderer, Program, Triangle, Mesh } from 'https://unpkg.com/ogl@1.0.8/dist/ogl.mjs';
 
@@ -1297,114 +818,63 @@
                 return m ? [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255] : [1, 1, 1];
             };
 
-            // Richer, deeper evening palette — dusty rose + warm taupe-rose
             const config = {
-                speed: 0.6,
-                rayColor1: '#C99B9B',  // dusty rose
-                rayColor2: '#D4A898',  // warm taupe-rose
-                intensity: 0.9,
-                spread: 1.8,
-                origin: 'top-right',
-                tilt: -8,
-                saturation: 0.85,
-                blend: 0.55,
-                falloff: 2.4,
-                opacity: 0.55
+                speed: 0.6, rayColor1: '#C99B9B', rayColor2: '#D4A898',
+                intensity: 0.9, spread: 1.8, origin: 'top-right', tilt: -8,
+                saturation: 0.85, blend: 0.55, falloff: 2.4, opacity: 0.55
             };
 
-            const renderer = new Renderer({
-                dpr: Math.min(window.devicePixelRatio, 2),
-                alpha: true,
-                antialias: true
-            });
+            const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 2), alpha: true, antialias: true });
             const gl = renderer.gl;
-            gl.canvas.style.width = '100%';
-            gl.canvas.style.height = '100%';
+            gl.canvas.style.width = '100%'; gl.canvas.style.height = '100%';
             gl.clearColor(0, 0, 0, 0);
             container.appendChild(gl.canvas);
 
-            const vert = `
-attribute vec2 position;
-void main() {
-  gl_Position = vec4(position, 0.0, 1.0);
-}`;
-
+            const vert = `attribute vec2 position; void main() { gl_Position = vec4(position, 0.0, 1.0); }`;
             const frag = `precision highp float;
-
-uniform float iTime;
-uniform vec2 iResolution;
-uniform float iSpeed;
-uniform vec3 iRayColor1;
-uniform vec3 iRayColor2;
-uniform float iIntensity;
-uniform float iSpread;
-uniform float iFlipX;
-uniform float iFlipY;
-uniform float iTilt;
-uniform float iSaturation;
-uniform float iBlend;
-uniform float iFalloff;
-uniform float iOpacity;
+uniform float iTime; uniform vec2 iResolution; uniform float iSpeed;
+uniform vec3 iRayColor1; uniform vec3 iRayColor2; uniform float iIntensity;
+uniform float iSpread; uniform float iFlipX; uniform float iFlipY;
+uniform float iTilt; uniform float iSaturation; uniform float iBlend;
+uniform float iFalloff; uniform float iOpacity;
 
 float rayStrength(vec2 raySource, vec2 rayRefDirection, vec2 coord, float seedA, float seedB, float speed) {
   vec2 sourceToCoord = coord - raySource;
   float cosAngle = dot(normalize(sourceToCoord), rayRefDirection);
-  return clamp(
-    (0.45 + 0.15 * sin(cosAngle * seedA + iTime * speed)) +
-    (0.3 + 0.2 * cos(-cosAngle * seedB + iTime * speed)),
-    0.0, 1.0) *
-    clamp((iResolution.x - length(sourceToCoord)) / iResolution.x, 0.5, 1.0);
+  return clamp((0.45 + 0.15 * sin(cosAngle * seedA + iTime * speed)) + (0.3 + 0.2 * cos(-cosAngle * seedB + iTime * speed)), 0.0, 1.0) * clamp((iResolution.x - length(sourceToCoord)) / iResolution.x, 0.5, 1.0);
 }
-
 void main() {
   vec2 fragCoord = gl_FragCoord.xy;
   if (iFlipX > 0.5) fragCoord.x = iResolution.x - fragCoord.x;
   if (iFlipY > 0.5) fragCoord.y = iResolution.y - fragCoord.y;
-
   vec2 coord = vec2(fragCoord.x, iResolution.y - fragCoord.y);
   vec2 rayPos = vec2(iResolution.x * 1.1, -0.5 * iResolution.y);
-
   float tiltRad = iTilt * 3.14159265 / 180.0;
-  float cs = cos(tiltRad);
-  float sn = sin(tiltRad);
+  float cs = cos(tiltRad); float sn = sin(tiltRad);
   vec2 rel = coord - rayPos;
   vec2 tiltedCoord = vec2(rel.x * cs - rel.y * sn, rel.x * sn + rel.y * cs) + rayPos;
-
   float halfSpread = iSpread * 0.275;
   vec2 rayRefDir1 = normalize(vec2(cos(0.785398 + halfSpread), sin(0.785398 + halfSpread)));
   vec2 rayRefDir2 = normalize(vec2(cos(0.785398 - halfSpread), sin(0.785398 - halfSpread)));
-
   vec4 rays1 = vec4(iRayColor1, 1.0) * rayStrength(rayPos, rayRefDir1, tiltedCoord, 36.2214, 21.11349, iSpeed);
   vec4 rays2 = vec4(iRayColor2, 1.0) * rayStrength(rayPos, rayRefDir2, tiltedCoord, 22.3991, 18.0234, iSpeed * 0.2);
-
   vec4 color = rays1 * (1.0 - iBlend) * 0.9 + rays2 * iBlend * 0.9;
-
   float distanceToLight = length(fragCoord.xy - vec2(rayPos.x, iResolution.y - rayPos.y)) / iResolution.y;
   float brightness = iIntensity * 0.4 / pow(max(distanceToLight, 0.001), iFalloff);
   color.rgb *= brightness;
-
   float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
   color.rgb = mix(vec3(gray), color.rgb, iSaturation);
-
   color.a = max(color.r, max(color.g, color.b)) * iOpacity;
   gl_FragColor = color;
 }`;
 
             const uniforms = {
-                iTime: { value: 0 },
-                iResolution: { value: [1, 1] },
-                iSpeed: { value: config.speed },
-                iRayColor1: { value: hexToRgb(config.rayColor1) },
-                iRayColor2: { value: hexToRgb(config.rayColor2) },
-                iIntensity: { value: config.intensity },
-                iSpread: { value: config.spread },
-                iFlipX: { value: 0 },
-                iFlipY: { value: 0 },
-                iTilt: { value: config.tilt },
-                iSaturation: { value: config.saturation },
-                iBlend: { value: config.blend },
-                iFalloff: { value: config.falloff },
-                iOpacity: { value: config.opacity }
+                iTime: { value: 0 }, iResolution: { value: [1, 1] }, iSpeed: { value: config.speed },
+                iRayColor1: { value: hexToRgb(config.rayColor1) }, iRayColor2: { value: hexToRgb(config.rayColor2) },
+                iIntensity: { value: config.intensity }, iSpread: { value: config.spread },
+                iFlipX: { value: 0 }, iFlipY: { value: 0 }, iTilt: { value: config.tilt },
+                iSaturation: { value: config.saturation }, iBlend: { value: config.blend },
+                iFalloff: { value: config.falloff }, iOpacity: { value: config.opacity }
             };
 
             const geometry = new Triangle(gl);
@@ -1414,85 +884,60 @@ void main() {
             const updateSize = () => {
                 if (!container || !renderer) return;
                 renderer.dpr = Math.min(window.devicePixelRatio, 2);
-                const w = container.clientWidth;
-                const h = container.clientHeight;
+                const w = container.clientWidth, h = container.clientHeight;
                 renderer.setSize(w, h);
                 uniforms.iResolution.value = [w * renderer.dpr, h * renderer.dpr];
             };
 
             const loop = t => {
                 uniforms.iTime.value = t * 0.001;
-                try {
-                    renderer.render({ scene: mesh });
-                    requestAnimationFrame(loop);
-                } catch (e) { /* silent */ }
+                try { renderer.render({ scene: mesh }); requestAnimationFrame(loop); } catch (e) {}
             };
 
             window.addEventListener('resize', updateSize);
             updateSize();
             requestAnimationFrame(loop);
-
             setTimeout(() => container.classList.add('ready'), 300);
 
             return { uniforms };
         })();
-
         window.__sideRays = SideRays;
     </script>
 
+    <!-- MAIN SCRIPTS -->
     <script>
-        // =========================================
-        // BACKGROUND DECORATIONS
-        // =========================================
+        // Reduced background decorations for a cleaner, minimal look
         const bokehLayer = document.getElementById('bokehLayer');
         const sparkleLayer = document.getElementById('sparkleLayer');
         const decorationsContainer = document.getElementById('decorations');
-
         const isMobile = window.innerWidth < 768;
-        const bokehCount = isMobile ? 8 : 16;
-        const sparkleCount = isMobile ? 10 : 22;
-        const twinkleCount = isMobile ? 12 : 28;
 
-        for (let i = 0; i < bokehCount; i++) {
+        for (let i = 0; i < (isMobile ? 6 : 10); i++) {
             const b = document.createElement('div');
             b.className = 'bokeh';
-            const size = Math.random() * 80 + 30;
-            b.style.width = size + 'px';
-            b.style.height = size + 'px';
-            b.style.left = Math.random() * 100 + '%';
-            b.style.top = Math.random() * 100 + '%';
+            const size = Math.random() * 60 + 20;
+            b.style.width = size + 'px'; b.style.height = size + 'px';
+            b.style.left = Math.random() * 100 + '%'; b.style.top = Math.random() * 100 + '%';
             b.style.animationDuration = (Math.random() * 12 + 14) + 's';
             b.style.animationDelay = (Math.random() * 10) + 's';
             b.dataset.parallax = (Math.random() * 0.3 + 0.1).toFixed(2);
             bokehLayer.appendChild(b);
         }
 
-        const sparkleSymbols = ['✦', '✧', '✵', '✶'];
-        for (let i = 0; i < sparkleCount; i++) {
+        const sparkleSymbols = ['✦', '✧', '✵'];
+        for (let i = 0; i < (isMobile ? 8 : 14); i++) {
             const s = document.createElement('div');
             s.className = 'sparkle';
             s.textContent = sparkleSymbols[Math.floor(Math.random() * sparkleSymbols.length)];
-            s.style.left = Math.random() * 100 + '%';
-            s.style.top = Math.random() * 100 + '%';
-            s.style.fontSize = (Math.random() * 0.8 + 0.6) + 'rem';
+            s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
+            s.style.fontSize = (Math.random() * 0.6 + 0.5) + 'rem';
             s.style.animationDuration = (Math.random() * 3 + 3) + 's';
             s.style.animationDelay = (Math.random() * 5) + 's';
             s.dataset.parallax = (Math.random() * 0.4 + 0.15).toFixed(2);
             sparkleLayer.appendChild(s);
         }
 
-        for (let i = 0; i < twinkleCount; i++) {
-            const t = document.createElement('div');
-            t.className = 'twinkle';
-            t.style.left = Math.random() * 100 + '%';
-            t.style.top = Math.random() * 100 + '%';
-            t.style.animationDuration = (Math.random() * 2 + 2) + 's';
-            t.style.animationDelay = (Math.random() * 4) + 's';
-            t.dataset.parallax = (Math.random() * 0.5 + 0.2).toFixed(2);
-            sparkleLayer.appendChild(t);
-        }
-
-        const decoSymbols = ['💗', '💕', '✨', '✿', '❀', '♡', '🌸', '✦'];
+        const decoSymbols = ['💗', '💕', '✨', '✿', '♡', '🌸'];
         function createDeco() {
             const deco = document.createElement('div');
             deco.className = 'deco';
@@ -1504,15 +949,10 @@ void main() {
             decorationsContainer.appendChild(deco);
             setTimeout(() => deco.remove(), 22000);
         }
-        const initialDecos = isMobile ? 6 : 12;
-        for (let i = 0; i < initialDecos; i++) {
-            setTimeout(createDeco, i * 800);
-        }
-        setInterval(createDeco, 2500);
+        for (let i = 0; i < (isMobile ? 4 : 8); i++) setTimeout(createDeco, i * 1000);
+        setInterval(createDeco, 3500);
 
-        // =========================================
-        // PARALLAX SCROLL
-        // =========================================
+        // Parallax Scroll
         const parallaxElements = document.querySelectorAll('[data-parallax]');
         const originGlow = document.getElementById('originGlow');
         let ticking = false;
@@ -1527,80 +967,47 @@ void main() {
                 u.iTilt.value = -8 + Math.sin(progress * Math.PI * 2) * 3;
                 u.iOpacity.value = 0.55 + Math.sin(progress * Math.PI) * 0.08;
             }
-
             if (originGlow) {
-                const glowShift = scrollY * 0.05;
-                originGlow.style.background = `radial-gradient(
-                    circle at ${90 - progress * 5}% ${10 + progress * 8}%,
-                    rgba(201, 155, 155, 0.38) 0%,
-                    rgba(232, 200, 184, 0.2) 15%,
-                    rgba(232, 196, 196, 0.1) 30%,
-                    transparent 55%
-                )`;
-                originGlow.style.transform = `translateY(${glowShift}px)`;
+                originGlow.style.background = `radial-gradient(circle at ${90 - progress * 5}% ${10 + progress * 8}%, rgba(201, 155, 155, 0.35) 0%, rgba(232, 200, 184, 0.15) 15%, transparent 50%)`;
+                originGlow.style.transform = `translateY(${scrollY * 0.05}px)`;
             }
-
             parallaxElements.forEach(el => {
-                const speed = parseFloat(el.dataset.parallax);
-                const y = scrollY * speed;
-                el.style.transform = `translateY(${-y}px)`;
+                el.style.transform = `translateY(${-scrollY * parseFloat(el.dataset.parallax)}px)`;
             });
-
             ticking = false;
         }
-
         window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(updateParallax);
-                ticking = true;
-            }
+            if (!ticking) { requestAnimationFrame(updateParallax); ticking = true; }
         }, { passive: true });
 
-        // =========================================
-        // LOADER
-        // =========================================
+        // Loader
         window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('hidden');
-            }, 2500);
+            setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2500);
         });
 
-        // =========================================
-        // NAVBAR
-        // =========================================
+        // Navbar
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) navbar.classList.add('scrolled');
-            else navbar.classList.remove('scrolled');
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        // =========================================
-        // MOBILE MENU
-        // =========================================
+        // Mobile Menu
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navLinks = document.getElementById('navLinks');
         mobileMenuBtn.addEventListener('click', () => {
             navLinks.classList.toggle('active');
             const icon = mobileMenuBtn.querySelector('i');
-            if (navLinks.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-xmark');
-            } else {
-                icon.classList.remove('fa-xmark');
-                icon.classList.add('fa-bars');
-            }
+            icon.classList.toggle('fa-bars', !navLinks.classList.contains('active'));
+            icon.classList.toggle('fa-xmark', navLinks.classList.contains('active'));
         });
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
-                mobileMenuBtn.querySelector('i').classList.remove('fa-xmark');
-                mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+                mobileMenuBtn.querySelector('i').classList.replace('fa-xmark', 'fa-bars');
             });
         });
 
-        // =========================================
-        // SCROLL ANIMATIONS
-        // =========================================
+        // Scroll Animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1611,9 +1018,7 @@ void main() {
         }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
         document.querySelectorAll('.fade-up, .pop-in').forEach(el => observer.observe(el));
 
-        // =========================================
-        // LIGHTBOX
-        // =========================================
+        // Lightbox
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         window.openLightbox = function(element) {
@@ -1630,26 +1035,17 @@ void main() {
             }
         };
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-                closeLightbox({ target: lightbox });
-            }
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) closeLightbox({ target: lightbox });
         });
 
-        // =========================================
-        // SMOOTH SCROLL
-        // =========================================
+        // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
                 if (href !== '#') {
                     e.preventDefault();
                     const target = document.querySelector(href);
-                    if (target) {
-                        window.scrollTo({
-                            top: target.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
+                    if (target) window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
                 }
             });
         });
