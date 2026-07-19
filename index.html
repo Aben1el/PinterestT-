@@ -314,7 +314,7 @@
         .mobile-menu-btn:hover { color: var(--soft-red); transform: scale(1.1); }
 
         /* =========================================
-           BUTTONS (with press animation)
+           BUTTONS (SMOOTHED HOVER + PRESS)
            ========================================= */
         .btn-cute {
             display: inline-flex;
@@ -330,7 +330,13 @@
             background: var(--gradient-rose);
             border: none;
             box-shadow: 0 4px 15px rgba(139, 90, 90, 0.25);
-            transition: transform 0.35s var(--transition-bounce), box-shadow 0.35s ease;
+            /* Smooth, fluid easing — no overshoot, gentle settle */
+            transition:
+                transform 0.5s var(--ease-out-expo),
+                box-shadow 0.5s var(--ease-out-expo),
+                background-color 0.5s var(--ease-out-expo),
+                color 0.4s ease,
+                border-color 0.4s ease;
             cursor: pointer;
             text-decoration: none;
             position: relative;
@@ -342,7 +348,7 @@
             top: 0; left: -100%;
             width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
+            transition: left 0.6s var(--ease-out-expo);
         }
         .btn-cute:hover {
             transform: translateY(-3px) scale(1.04);
@@ -352,7 +358,8 @@
         .btn-cute:active {
             transform: translateY(-1px) scale(0.97);
             box-shadow: 0 4px 12px rgba(139, 90, 90, 0.3);
-            transition: transform 0.12s ease, box-shadow 0.12s ease;
+            /* Tactile but not abrupt */
+            transition: transform 0.18s ease-out, box-shadow 0.18s ease-out;
         }
         .btn-soft {
             background: var(--white);
@@ -361,7 +368,7 @@
             box-shadow: 0 4px 15px rgba(139, 90, 90, 0.1);
         }
         .btn-soft:hover { background: var(--blush); color: var(--text-dark); border-color: var(--rose); }
-        .btn-soft:active { transform: translateY(-1px) scale(0.97); transition: transform 0.12s ease; }
+        .btn-soft:active { transform: translateY(-1px) scale(0.97); transition: transform 0.18s ease-out; }
 
         /* =========================================
            HERO
@@ -504,7 +511,6 @@
 
         /* =========================================
            PINTEREST MASONRY — ORIGINAL IMAGE SIZES
-           (no cropping; real aspect ratios shine)
            ========================================= */
         .masonry-grid {
             column-count: 1;
@@ -529,12 +535,10 @@
             color: inherit;
             will-change: transform;
         }
-        /* Subtle, premium hover: lift + soft glow ring */
         .masonry-item:hover {
             transform: translateY(-6px);
             box-shadow: 0 16px 42px rgba(139, 90, 90, 0.24), 0 0 0 1px rgba(232, 196, 196, 0.45);
         }
-        /* Image keeps its TRUE dimensions — width fills column, height is natural */
         .masonry-item img {
             width: 100%;
             height: auto;
@@ -570,7 +574,6 @@
         }
         .masonry-item:hover .masonry-overlay span { transform: translateY(0); }
 
-        /* Organic spacing so it never looks like a rigid grid */
         .masonry-item:nth-child(3n) { margin-bottom: 2rem; }
         .masonry-item:nth-child(5n) { margin-bottom: 0.75rem; }
         .masonry-item:nth-child(7n) { margin-bottom: 1.75rem; }
@@ -668,7 +671,7 @@
         .lightbox-close:hover { transform: rotate(90deg) scale(1.1); background: var(--blush); color: var(--soft-red); }
 
         /* =========================================
-           SCROLL ANIMATIONS — softer, blur reveal
+           SCROLL ANIMATIONS
            ========================================= */
         .fade-up {
             opacity: 0;
@@ -690,7 +693,6 @@
         .delay-2 { transition-delay: 0.2s; }
         .delay-3 { transition-delay: 0.3s; }
 
-        /* Respect users who prefer reduced motion */
         @media (prefers-reduced-motion: reduce) {
             .fade-up, .pop-in { transition: opacity 0.4s ease; transform: none; filter: none; }
             .blob, .bokeh, .sparkle, .deco, .floating-heart, .loader-logo { animation: none; }
@@ -927,9 +929,6 @@ void main() {
     <script>
         // ==========================================
         //  YOUR GALLERY IMAGE LIST 🌟
-        //  Just add new filenames here — the gallery
-        //  builds itself and shows each photo at its
-        //  REAL size (no cropping).
         // ==========================================
         const galleryImages = [
             "photo1.jpg",
@@ -956,7 +955,7 @@ void main() {
             galleryContainer.innerHTML += html;
         });
 
-        // Scroll-reveal observer (covers hero, about, AND auto-built gallery items)
+        // Scroll-reveal observer
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -967,9 +966,7 @@ void main() {
         }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
         document.querySelectorAll('.fade-up, .pop-in').forEach(el => revealObserver.observe(el));
 
-        // ==========================================
-        //  SCROLL-SPY: highlight the active nav link
-        // ==========================================
+        // Scroll-spy: highlight the active nav link
         const spySections = document.querySelectorAll('section[id]');
         const spyLinks = document.querySelectorAll('.nav-links a[href^="#"]');
         const spyObserver = new IntersectionObserver((entries) => {
@@ -982,9 +979,7 @@ void main() {
         }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
         spySections.forEach(s => spyObserver.observe(s));
 
-        // ==========================================
-        //  BACKGROUND DECORATIONS
-        // ==========================================
+        // Background decorations
         const bokehLayer = document.getElementById('bokehLayer');
         const sparkleLayer = document.getElementById('sparkleLayer');
         const decorationsContainer = document.getElementById('decorations');
@@ -1015,7 +1010,7 @@ void main() {
             sparkleLayer.appendChild(s);
         }
 
-        const decoSymbols = ['💗', '💕', '✨', '✿', '♡'];
+        const decoSymbols = ['💗', '', '✨', '✿', '♡'];
         function createDeco() {
             const deco = document.createElement('div');
             deco.className = 'deco';
@@ -1030,9 +1025,7 @@ void main() {
         for (let i = 0; i < (isMobile ? 4 : 8); i++) setTimeout(createDeco, i * 1000);
         setInterval(createDeco, 3500);
 
-        // ==========================================
-        //  PARALLAX (blobs + bokeh + sparkles + glow)
-        // ==========================================
+        // Parallax
         const parallaxElements = document.querySelectorAll('[data-parallax]');
         const originGlow = document.getElementById('originGlow');
         const blobsLayer = document.getElementById('blobs');
@@ -1052,7 +1045,6 @@ void main() {
                 originGlow.style.background = `radial-gradient(circle at ${90 - progress * 5}% ${10 + progress * 8}%, rgba(201, 155, 155, 0.35) 0%, rgba(232, 200, 184, 0.15) 15%, transparent 50%)`;
                 originGlow.style.transform = `translateY(${scrollY * 0.05}px)`;
             }
-            // Soft depth parallax on the whole blob layer (doesn't fight the per-blob keyframes)
             if (blobsLayer) blobsLayer.style.transform = `translateY(${scrollY * -0.08}px)`;
 
             parallaxElements.forEach(el => {
