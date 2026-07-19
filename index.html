@@ -740,12 +740,12 @@
                     <h2>hi, nice to meet you!</h2>
                     <p>i'm tsi — a lover of soft aesthetics, cozy corners, and finding beauty in the little moments. this is my digital journal, filled with pins and dreams that make my heart happy.</p>
                     <p>from dreamy vibes to slow mornings, every pin here is something i truly love. hope you find something that makes you smile too. 💕</p>
-                </div.
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- MINIMAL MASONRY GALLERY -->
+    <!-- MINIMAL MASONRY GALLERY WITH UPLOADED IMAGES -->
     <section id="gallery" class="section">
         <div class="container">
             <div class="fade-up" style="text-align: center; margin-bottom: 2rem;">
@@ -754,28 +754,33 @@
             </div>
 
             <div class="masonry-grid">
+                <!-- Image 1: Close-up selfie -->
                 <div class="masonry-item pop-in delay-1" onclick="openLightbox(this)">
-                    <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=600&h=800&fit=crop" alt="Gallery 1" loading="lazy">
+                    <img src="https://i.ibb.co/7XqJvYp/image1.jpg" alt="Gallery 1" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
+                
+                <!-- Image 2: Curly hair selfie -->
                 <div class="masonry-item pop-in delay-2" onclick="openLightbox(this)">
-                    <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=600&h=700&fit=crop" alt="Gallery 2" loading="lazy">
+                    <img src="https://i.ibb.co/k2RqL8N/image2.jpg" alt="Gallery 2" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
+                
+                <!-- Image 3: Full body with earmuffs -->
                 <div class="masonry-item pop-in delay-3" onclick="openLightbox(this)">
-                    <img src="https://images.unsplash.com/photo-1513694203232-7e9680d5c543?w=600&h=900&fit=crop" alt="Gallery 3" loading="lazy">
+                    <img src="https://i.ibb.co/9pKxHvz/image3.jpg" alt="Gallery 3" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
+                
+                <!-- Image 4: Bed selfie with heart -->
                 <div class="masonry-item pop-in delay-1" onclick="openLightbox(this)">
-                    <img src="https://images.unsplash.com/photo-1493863641943-9b68992a8d07?w=600&h=600&fit=crop" alt="Gallery 4" loading="lazy">
+                    <img src="https://i.ibb.co/8sKqYmP/image4.jpg" alt="Gallery 4" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
+                
+                <!-- Image 5: Outdoor photo -->
                 <div class="masonry-item pop-in delay-2" onclick="openLightbox(this)">
-                    <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&h=750&fit=crop" alt="Gallery 5" loading="lazy">
-                    <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
-                </div>
-                <div class="masonry-item pop-in delay-3" onclick="openLightbox(this)">
-                    <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&h=800&fit=crop" alt="Gallery 6" loading="lazy">
+                    <img src="https://i.ibb.co/mNzQvRt/image5.jpg" alt="Gallery 5" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
             </div>
@@ -791,6 +796,7 @@
                 <div class="social-links">
                     <a href="https://www.pinterest.com/TSION1201/" target="_blank" aria-label="Pinterest"><i class="fa-brands fa-pinterest"></i></a>
                     <a href="https://www.instagram.com/heartz_blizz?igsh=MTJtMzRwMG9wdHFoZg==" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@heartz_blizz2?is_from_webapp=1&sender_device=pc" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
                 </div>
                 <div class="footer-bottom">
                     <p>© 2026 Tsi's · made with 💗 and lots of inspiration</p>
@@ -937,7 +943,7 @@ void main() {
             sparkleLayer.appendChild(s);
         }
 
-        const decoSymbols = ['💗', '💕', '✨', '✿', '♡', '🌸'];
+        const decoSymbols = ['💗', '💕', '✨', '✿', '♡', ''];
         function createDeco() {
             const deco = document.createElement('div');
             deco.className = 'deco';
