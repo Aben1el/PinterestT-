@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tsi's | my little corner ♡</title>
+    <title>Tsi's | my little corner </title>
     <meta name="description" content="a cozy space for aesthetics, inspiration, and pretty things">
     
-    <!-- Favicon: Solid Muted Cherry Red Heart -->
+    <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 88.5C50 88.5 10 60 10 35C10 20 22 10 35 10C42 10 48 14 50 20C52 14 58 10 65 10C78 10 90 20 90 35C90 60 50 88.5 50 88.5Z' fill='%23B56B6B'/></svg>">
     
     <!-- Google Fonts -->
@@ -18,9 +18,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* =========================================
-           1. RICH, ELEGANT COLOR PALETTE
-           ========================================= */
         :root {
             --blush: #E8C4C4;
             --rose: #C99B9B;
@@ -73,9 +70,6 @@
         a { text-decoration: none; color: inherit; transition: var(--transition-smooth); }
         img { max-width: 100%; display: block; }
 
-        /* =========================================
-           2. SUBTLE LAYERED BACKGROUND
-           ========================================= */
         .bg-layer {
             position: fixed;
             inset: 0;
@@ -153,9 +147,6 @@
             100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
 
-        /* =========================================
-           3. ORIGINAL LOADER (UNCHANGED)
-           ========================================= */
         .loader {
             position: fixed;
             top: 0; left: 0;
@@ -180,7 +171,7 @@
             letter-spacing: 2px;
         }
         .loader-logo::before, .loader-logo::after {
-            content: '✦';
+            content: '';
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
@@ -237,9 +228,6 @@
         }
         @keyframes fadeInOut { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-        /* =========================================
-           4. NAVBAR
-           ========================================= */
         .navbar {
             position: fixed;
             top: 1.5rem;
@@ -297,9 +285,6 @@
         .nav-links a:not(.btn-cute):hover::after { width: 100%; }
         .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.25rem; color: var(--text-dark); cursor: pointer; padding: 0.5rem; }
 
-        /* =========================================
-           5. BUTTONS
-           ========================================= */
         .btn-cute {
             display: inline-flex;
             align-items: center;
@@ -338,9 +323,6 @@
         }
         .btn-soft:hover { background: var(--blush); color: var(--text-dark); border-color: var(--rose); }
 
-        /* =========================================
-           6. SIMPLIFIED HERO
-           ========================================= */
         .hero {
             min-height: 90vh;
             display: flex;
@@ -400,9 +382,6 @@
         }
         .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
-        /* =========================================
-           7. SIMPLIFIED ABOUT
-           ========================================= */
         .section { padding: 6rem 0; position: relative; z-index: 10; }
         .container { width: 90%; max-width: 900px; margin: 0 auto; padding: 0 1rem; }
         
@@ -481,9 +460,6 @@
             line-height: 1.8;
         }
 
-        /* =========================================
-           8. MINIMAL MASONRY GALLERY
-           ========================================= */
         .masonry-grid {
             column-count: 1;
             column-gap: 1.25rem;
@@ -536,9 +512,6 @@
             border: 1px solid rgba(255, 249, 243, 0.4);
         }
 
-        /* =========================================
-           9. MINIMAL FOOTER
-           ========================================= */
         footer {
             background: var(--white);
             border-top: 1px solid rgba(232, 196, 196, 0.3);
@@ -585,9 +558,6 @@
             color: var(--text-light);
         }
 
-        /* =========================================
-           10. LIGHTBOX
-           ========================================= */
         .lightbox {
             display: none;
             position: fixed;
@@ -627,9 +597,6 @@
         }
         .lightbox-close:hover { transform: rotate(90deg) scale(1.1); background: var(--blush); color: var(--soft-red); }
 
-        /* =========================================
-           11. SCROLL ANIMATIONS
-           ========================================= */
         .fade-up {
             opacity: 0;
             transform: translateY(30px);
@@ -646,9 +613,6 @@
         .delay-2 { transition-delay: 0.2s; }
         .delay-3 { transition-delay: 0.3s; }
 
-        /* =========================================
-           12. RESPONSIVE
-           ========================================= */
         @media (max-width: 768px) {
             .navbar {
                 top: 0; width: 100%; max-width: 100%;
@@ -675,7 +639,6 @@
 </head>
 <body>
 
-    <!-- SIMPLIFIED BACKGROUND LAYERS -->
     <div class="bg-layer blobs">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
@@ -686,12 +649,11 @@
     <div class="bg-layer sparkle-layer" id="sparkleLayer"></div>
     <div class="bg-layer decorations" id="decorations"></div>
 
-    <!-- ORIGINAL LOADER -->
     <div class="loader" id="loader">
         <div class="loader-content">
             <div class="loader-hearts">
+                <span class="floating-heart">💗</span>
                 <span class="floating-heart"></span>
-                <span class="floating-heart">💕</span>
                 <span class="floating-heart">💖</span>
                 <span class="floating-heart">💗</span>
             </div>
@@ -701,10 +663,9 @@
         </div>
     </div>
 
-    <!-- NAVBAR -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="#" class="logo"><span>💗</span> Tsi's</a>
+            <a href="#" class="logo"><span></span> Tsi's</a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#about">about</a></li>
                 <li><a href="#gallery">gallery</a></li>
@@ -714,10 +675,9 @@
         </div>
     </nav>
 
-    <!-- SIMPLIFIED HERO -->
     <section class="hero">
         <div class="hero-content fade-up">
-            <span class="greeting">hi, i'm tsi 💗</span>
+            <span class="greeting">hi, i'm tsi </span>
             <h1>welcome to my <span class="highlight">little corner</span></h1>
             <p>a cozy space for aesthetics, pretty things, and quiet inspiration.</p>
             <div class="hero-buttons">
@@ -727,12 +687,11 @@
         </div>
     </section>
 
-    <!-- SIMPLIFIED ABOUT -->
     <section id="about" class="section">
         <div class="container">
             <div class="about-grid">
                 <div class="polaroid fade-up">
-                    <img src="photo1.jpg" alt="about me" loading="lazy">
+                    <img src="images/photo1.jpg" alt="about me" loading="lazy">
                     <span class="polaroid-caption">me 💗</span>
                 </div>
                 <div class="about-content fade-up delay-1">
@@ -745,49 +704,42 @@
         </div>
     </section>
 
-    <!-- MINIMAL MASONRY GALLERY WITH LOCAL IMAGES -->
     <section id="gallery" class="section">
         <div class="container">
             <div class="fade-up" style="text-align: center; margin-bottom: 2rem;">
-                <span class="section-tag">gallery </span>
+                <span class="section-tag">gallery ✨</span>
                 <h2 style="font-size: 2rem; font-weight: 500; font-style: italic; margin-top: 0.5rem;">latest inspirations</h2>
             </div>
 
             <div class="masonry-grid">
-                <!-- Image 1 -->
                 <div class="masonry-item pop-in delay-1" onclick="openLightbox(this)">
-                    <img src="photo1.jpg" alt="Gallery 1" loading="lazy">
+                    <img src="images/photo1.jpg" alt="Gallery 1" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
                 
-                <!-- Image 2 -->
                 <div class="masonry-item pop-in delay-2" onclick="openLightbox(this)">
-                    <img src="photo2.jpg" alt="Gallery 2" loading="lazy">
+                    <img src="images/photo2.jpg" alt="Gallery 2" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
                 
-                <!-- Image 3 -->
                 <div class="masonry-item pop-in delay-3" onclick="openLightbox(this)">
-                    <img src="photo3.jpg" alt="Gallery 3" loading="lazy">
+                    <img src="images/photo3.jpg" alt="Gallery 3" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
                 
-                <!-- Image 4 -->
                 <div class="masonry-item pop-in delay-1" onclick="openLightbox(this)">
-                    <img src="photo4.jpg" alt="Gallery 4" loading="lazy">
+                    <img src="images/photo4.jpg" alt="Gallery 4" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
                 
-                <!-- Image 5 -->
                 <div class="masonry-item pop-in delay-2" onclick="openLightbox(this)">
-                    <img src="photo5.jpg" alt="Gallery 5" loading="lazy">
+                    <img src="images/photo5.jpg" alt="Gallery 5" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- MINIMAL FOOTER -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -805,13 +757,11 @@
         </div>
     </footer>
 
-    <!-- LIGHTBOX -->
     <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
         <span class="lightbox-close" onclick="closeLightbox(event)"><i class="fa-solid fa-xmark"></i></span>
         <img class="lightbox-content" id="lightbox-img" src="" alt="Lightbox Image">
     </div>
 
-    <!-- SIDE RAYS SCRIPT -->
     <script type="module">
         import { Renderer, Program, Triangle, Mesh } from 'https://unpkg.com/ogl@1.0.8/dist/ogl.mjs';
 
@@ -910,9 +860,7 @@ void main() {
         window.__sideRays = SideRays;
     </script>
 
-    <!-- MAIN SCRIPTS -->
     <script>
-        // Reduced background decorations for a cleaner, minimal look
         const bokehLayer = document.getElementById('bokehLayer');
         const sparkleLayer = document.getElementById('sparkleLayer');
         const decorationsContainer = document.getElementById('decorations');
@@ -943,7 +891,7 @@ void main() {
             sparkleLayer.appendChild(s);
         }
 
-        const decoSymbols = ['💗', '💕', '✨', '✿', '♡', ''];
+        const decoSymbols = ['💗', '', '✨', '✿', '♡'];
         function createDeco() {
             const deco = document.createElement('div');
             deco.className = 'deco';
@@ -958,7 +906,6 @@ void main() {
         for (let i = 0; i < (isMobile ? 4 : 8); i++) setTimeout(createDeco, i * 1000);
         setInterval(createDeco, 3500);
 
-        // Parallax Scroll
         const parallaxElements = document.querySelectorAll('[data-parallax]');
         const originGlow = document.getElementById('originGlow');
         let ticking = false;
@@ -986,18 +933,15 @@ void main() {
             if (!ticking) { requestAnimationFrame(updateParallax); ticking = true; }
         }, { passive: true });
 
-        // Loader
         window.addEventListener('load', () => {
             setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2500);
         });
 
-        // Navbar
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             navbar.classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        // Mobile Menu
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navLinks = document.getElementById('navLinks');
         mobileMenuBtn.addEventListener('click', () => {
@@ -1013,7 +957,6 @@ void main() {
             });
         });
 
-        // Scroll Animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1024,7 +967,6 @@ void main() {
         }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
         document.querySelectorAll('.fade-up, .pop-in').forEach(el => observer.observe(el));
 
-        // Lightbox
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         window.openLightbox = function(element) {
@@ -1044,7 +986,6 @@ void main() {
             if (e.key === 'Escape' && lightbox.classList.contains('active')) closeLightbox({ target: lightbox });
         });
 
-        // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
