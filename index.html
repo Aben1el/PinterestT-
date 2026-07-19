@@ -45,6 +45,7 @@
             
             --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -70,6 +71,16 @@
         a { text-decoration: none; color: inherit; transition: var(--transition-smooth); }
         img { max-width: 100%; display: block; }
 
+        /* Polished focus ring for accessibility + premium feel */
+        a:focus-visible, button:focus-visible {
+            outline: 2px solid var(--rose);
+            outline-offset: 3px;
+            border-radius: 10px;
+        }
+
+        /* =========================================
+           BACKGROUND LAYERS
+           ========================================= */
         .bg-layer {
             position: fixed;
             inset: 0;
@@ -77,7 +88,7 @@
             overflow: hidden;
         }
 
-        .blobs { z-index: 0; }
+        .blobs { z-index: 0; will-change: transform; }
         .blob {
             position: absolute;
             border-radius: 50%;
@@ -92,11 +103,7 @@
             50% { transform: translate(30px, -50px) scale(1.1); }
         }
 
-        .side-rays-layer {
-            z-index: 1;
-            opacity: 0;
-            transition: opacity 1.5s ease;
-        }
+        .side-rays-layer { z-index: 1; opacity: 0; transition: opacity 1.5s ease; }
         .side-rays-layer.ready { opacity: 1; }
         .side-rays-layer canvas { width: 100%; height: 100%; display: block; }
 
@@ -147,6 +154,9 @@
             100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
 
+        /* =========================================
+           LOADER (UNCHANGED)
+           ========================================= */
         .loader {
             position: fixed;
             top: 0; left: 0;
@@ -180,10 +190,7 @@
         }
         .loader-logo::before { left: -40px; }
         .loader-logo::after { right: -40px; animation-delay: 0.5s; }
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
+        @keyframes logoFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         @keyframes sparkle {
             0%, 100% { opacity: 0; transform: translateY(-50%) scale(0.5); }
             50% { opacity: 1; transform: translateY(-50%) scale(1.2); }
@@ -228,6 +235,9 @@
         }
         @keyframes fadeInOut { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
+        /* =========================================
+           NAVBAR (with scroll-spy active state)
+           ========================================= */
         .navbar {
             position: fixed;
             top: 1.5rem;
@@ -263,6 +273,13 @@
             gap: 0.5rem;
         }
         .logo:hover { transform: scale(1.05); color: var(--soft-red); }
+        .logo span { display: inline-block; transition: transform 0.3s ease; }
+        .logo:hover span { animation: heartBeat 0.6s ease; }
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            30% { transform: scale(1.35) rotate(-8deg); }
+            60% { transform: scale(0.9); }
+        }
         .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
         .nav-links a:not(.btn-cute) {
             font-weight: 500;
@@ -270,6 +287,7 @@
             color: var(--text-dark);
             position: relative;
             padding: 0.4rem 0;
+            transition: color 0.35s ease, text-shadow 0.35s ease;
         }
         .nav-links a:not(.btn-cute)::after {
             content: '';
@@ -278,13 +296,26 @@
             transform: translateX(-50%);
             width: 0; height: 2px;
             background: var(--gradient-rose);
-            transition: width 0.3s ease;
+            transition: width 0.35s var(--ease-out-expo);
             border-radius: 2px;
         }
-        .nav-links a:not(.btn-cute):hover { color: var(--soft-red); }
+        .nav-links a:not(.btn-cute):hover {
+            color: var(--soft-red);
+            text-shadow: 0 0 14px rgba(181, 107, 107, 0.3);
+        }
         .nav-links a:not(.btn-cute):hover::after { width: 100%; }
-        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.25rem; color: var(--text-dark); cursor: pointer; padding: 0.5rem; }
+        /* Active section highlight (scroll-spy) */
+        .nav-links a:not(.btn-cute).active {
+            color: var(--soft-red);
+            text-shadow: 0 0 14px rgba(181, 107, 107, 0.35);
+        }
+        .nav-links a:not(.btn-cute).active::after { width: 100%; }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.25rem; color: var(--text-dark); cursor: pointer; padding: 0.5rem; transition: var(--transition-smooth); }
+        .mobile-menu-btn:hover { color: var(--soft-red); transform: scale(1.1); }
 
+        /* =========================================
+           BUTTONS (with press animation)
+           ========================================= */
         .btn-cute {
             display: inline-flex;
             align-items: center;
@@ -299,7 +330,7 @@
             background: var(--gradient-rose);
             border: none;
             box-shadow: 0 4px 15px rgba(139, 90, 90, 0.25);
-            transition: var(--transition-bounce);
+            transition: transform 0.35s var(--transition-bounce), box-shadow 0.35s ease;
             cursor: pointer;
             text-decoration: none;
             position: relative;
@@ -313,8 +344,16 @@
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
             transition: left 0.5s ease;
         }
-        .btn-cute:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 8px 25px rgba(139, 90, 90, 0.35); }
+        .btn-cute:hover {
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 0 10px 28px rgba(139, 90, 90, 0.38), 0 0 18px rgba(232, 196, 196, 0.4);
+        }
         .btn-cute:hover::before { left: 100%; }
+        .btn-cute:active {
+            transform: translateY(-1px) scale(0.97);
+            box-shadow: 0 4px 12px rgba(139, 90, 90, 0.3);
+            transition: transform 0.12s ease, box-shadow 0.12s ease;
+        }
         .btn-soft {
             background: var(--white);
             color: var(--soft-red);
@@ -322,7 +361,11 @@
             box-shadow: 0 4px 15px rgba(139, 90, 90, 0.1);
         }
         .btn-soft:hover { background: var(--blush); color: var(--text-dark); border-color: var(--rose); }
+        .btn-soft:active { transform: translateY(-1px) scale(0.97); transition: transform 0.12s ease; }
 
+        /* =========================================
+           HERO
+           ========================================= */
         .hero {
             min-height: 90vh;
             display: flex;
@@ -356,11 +399,7 @@
             font-style: italic;
             color: var(--text-dark);
         }
-        .hero h1 .highlight {
-            color: var(--soft-red);
-            position: relative;
-            display: inline-block;
-        }
+        .hero h1 .highlight { color: var(--soft-red); position: relative; display: inline-block; }
         .hero h1 .highlight::after {
             content: '';
             position: absolute;
@@ -382,6 +421,9 @@
         }
         .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
+        /* =========================================
+           ABOUT
+           ========================================= */
         .section { padding: 6rem 0; position: relative; z-index: 10; }
         .container { width: 90%; max-width: 900px; margin: 0 auto; padding: 0 1rem; }
         
@@ -402,7 +444,7 @@
             max-width: 320px;
             margin: 0 auto;
         }
-        .polaroid:hover { transform: rotate(0deg) scale(1.02); }
+        .polaroid:hover { transform: rotate(0deg) scale(1.02); box-shadow: 0 14px 40px rgba(139, 90, 90, 0.25); }
         .polaroid::before {
             content: '♡';
             position: absolute;
@@ -461,7 +503,8 @@
         }
 
         /* =========================================
-           PINTEREST-STYLE MASONRY GALLERY
+           PINTEREST MASONRY — ORIGINAL IMAGE SIZES
+           (no cropping; real aspect ratios shine)
            ========================================= */
         .masonry-grid {
             column-count: 1;
@@ -479,37 +522,32 @@
             position: relative;
             background: var(--white);
             box-shadow: var(--shadow-soft);
-            transition: var(--transition-bounce);
+            transition: transform 0.45s var(--ease-out-expo), box-shadow 0.45s ease;
             cursor: pointer;
             display: block;
             text-decoration: none;
             color: inherit;
+            will-change: transform;
         }
-        
-        /* Subtle hover animation */
-        .masonry-item:hover { 
-            transform: translateY(-4px); 
-            box-shadow: var(--shadow-medium); 
+        /* Subtle, premium hover: lift + soft glow ring */
+        .masonry-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 42px rgba(139, 90, 90, 0.24), 0 0 0 1px rgba(232, 196, 196, 0.45);
         }
-        
+        /* Image keeps its TRUE dimensions — width fills column, height is natural */
         .masonry-item img {
             width: 100%;
             height: auto;
             display: block;
-            transition: transform 0.5s ease;
+            transition: transform 0.6s var(--ease-out-expo);
         }
-        
-        /* Gentle zoom on hover */
-        .masonry-item:hover img { 
-            transform: scale(1.03); 
-        }
-        
+        .masonry-item:hover img { transform: scale(1.04); }
         .masonry-overlay {
             position: absolute;
             inset: 0;
             background: linear-gradient(to top, rgba(61, 46, 46, 0.4), transparent 50%);
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.35s ease;
             display: flex;
             align-items: flex-end;
             padding: 1rem;
@@ -527,20 +565,19 @@
             padding: 6px 14px;
             border-radius: var(--radius-xl);
             border: 1px solid rgba(255, 249, 243, 0.3);
+            transform: translateY(8px);
+            transition: transform 0.4s var(--ease-out-expo);
         }
+        .masonry-item:hover .masonry-overlay span { transform: translateY(0); }
 
-        /* Varying heights for Pinterest effect */
-        .masonry-item.tall img { aspect-ratio: 3/4; object-fit: cover; }
-        .masonry-item.medium img { aspect-ratio: 4/5; object-fit: cover; }
-        .masonry-item.square img { aspect-ratio: 1/1; object-fit: cover; }
-        .masonry-item.short img { aspect-ratio: 4/3; object-fit: cover; }
-        .masonry-item.panoramic img { aspect-ratio: 16/9; object-fit: cover; }
-
-        /* Organic spacing variations */
+        /* Organic spacing so it never looks like a rigid grid */
         .masonry-item:nth-child(3n) { margin-bottom: 2rem; }
         .masonry-item:nth-child(5n) { margin-bottom: 0.75rem; }
         .masonry-item:nth-child(7n) { margin-bottom: 1.75rem; }
 
+        /* =========================================
+           FOOTER
+           ========================================= */
         footer {
             background: var(--white);
             border-top: 1px solid rgba(232, 196, 196, 0.3);
@@ -580,6 +617,7 @@
             transform: translateY(-4px) scale(1.1);
             box-shadow: 0 8px 20px rgba(139, 90, 90, 0.25);
         }
+        .social-links a:active { transform: translateY(-1px) scale(0.95); transition: transform 0.12s ease; }
         .footer-bottom {
             padding-top: 1.5rem;
             border-top: 1px dashed rgba(232, 196, 196, 0.4);
@@ -587,6 +625,9 @@
             color: var(--text-light);
         }
 
+        /* =========================================
+           LIGHTBOX
+           ========================================= */
         .lightbox {
             display: none;
             position: fixed;
@@ -626,22 +667,38 @@
         }
         .lightbox-close:hover { transform: rotate(90deg) scale(1.1); background: var(--blush); color: var(--soft-red); }
 
+        /* =========================================
+           SCROLL ANIMATIONS — softer, blur reveal
+           ========================================= */
         .fade-up {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(42px);
+            filter: blur(6px);
+            transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo), filter 0.9s ease;
+            will-change: transform, opacity, filter;
         }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
+        .fade-up.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
         .pop-in {
             opacity: 0;
-            transform: scale(0.95);
-            transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: translateY(26px) scale(0.94);
+            filter: blur(6px);
+            transition: opacity 0.7s var(--ease-out-expo), transform 0.7s cubic-bezier(0.34, 1.4, 0.64, 1), filter 0.7s ease;
+            will-change: transform, opacity, filter;
         }
-        .pop-in.visible { opacity: 1; transform: scale(1); }
+        .pop-in.visible { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.2s; }
         .delay-3 { transition-delay: 0.3s; }
 
+        /* Respect users who prefer reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .fade-up, .pop-in { transition: opacity 0.4s ease; transform: none; filter: none; }
+            .blob, .bokeh, .sparkle, .deco, .floating-heart, .loader-logo { animation: none; }
+        }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
         @media (max-width: 768px) {
             .navbar {
                 top: 0; width: 100%; max-width: 100%;
@@ -668,7 +725,7 @@
 </head>
 <body>
 
-    <div class="bg-layer blobs">
+    <div class="bg-layer blobs" id="blobs">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
     </div>
@@ -678,6 +735,7 @@
     <div class="bg-layer sparkle-layer" id="sparkleLayer"></div>
     <div class="bg-layer decorations" id="decorations"></div>
 
+    <!-- LOADER (UNCHANGED) -->
     <div class="loader" id="loader">
         <div class="loader-content">
             <div class="loader-hearts">
@@ -724,7 +782,7 @@
                     <span class="polaroid-caption">me 💗</span>
                 </div>
                 <div class="about-content fade-up delay-1">
-                    <span class="section-tag">about me </span>
+                    <span class="section-tag">about me ♡</span>
                     <h2>hi, nice to meet you!</h2>
                     <p>i'm tsi — a lover of soft aesthetics, cozy corners, and finding beauty in the little moments. this is my digital journal, filled with pins and dreams that make my heart happy.</p>
                     <p>from dreamy vibes to slow mornings, every pin here is something i truly love. hope you find something that makes you smile too. 💕</p>
@@ -766,6 +824,7 @@
         <img class="lightbox-content" id="lightbox-img" src="" alt="Lightbox Image">
     </div>
 
+    <!-- SIDE RAYS -->
     <script type="module">
         import { Renderer, Program, Triangle, Mesh } from 'https://unpkg.com/ogl@1.0.8/dist/ogl.mjs';
 
@@ -864,10 +923,13 @@ void main() {
         window.__sideRays = SideRays;
     </script>
 
+    <!-- MAIN SCRIPTS -->
     <script>
         // ==========================================
         //  YOUR GALLERY IMAGE LIST 🌟
-        // Just add your new image filenames inside the quotes!
+        //  Just add new filenames here — the gallery
+        //  builds itself and shows each photo at its
+        //  REAL size (no cropping).
         // ==========================================
         const galleryImages = [
             "photo1.jpg",
@@ -879,21 +941,14 @@ void main() {
             "photo7.jpg",
             "photo8.jpg",
             "photo9.jpg"
+            // "photo10.jpg",  <-- add more like this
         ];
 
-        // Height classes for Pinterest-style variety
-        const heightClasses = ['tall', 'medium', 'square', 'short', 'panoramic'];
-
-        // This code automatically builds the gallery for you
         const galleryContainer = document.getElementById('auto-gallery');
-        
         galleryImages.forEach((img, index) => {
-            // Cycle through height classes for variety
-            const heightClass = heightClasses[index % heightClasses.length];
-            const delayClass = `delay-${(index % 3) + 1}`; 
-            
+            const delayClass = `delay-${(index % 3) + 1}`;
             const html = `
-                <a href="https://www.pinterest.com/TSION1201/" target="_blank" rel="noopener noreferrer" class="masonry-item pop-in ${heightClass} ${delayClass}">
+                <a href="https://www.pinterest.com/TSION1201/" target="_blank" rel="noopener noreferrer" class="masonry-item pop-in ${delayClass}">
                     <img src="images/${img}" alt="Gallery ${index + 1}" loading="lazy">
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </a>
@@ -901,21 +956,35 @@ void main() {
             galleryContainer.innerHTML += html;
         });
 
-        // Re-apply scroll animations to the new images
-        setTimeout(() => {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-            
-            document.querySelectorAll('.masonry-item').forEach(el => observer.observe(el));
-        }, 100);
+        // Scroll-reveal observer (covers hero, about, AND auto-built gallery items)
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.fade-up, .pop-in').forEach(el => revealObserver.observe(el));
 
-        // Background decorations
+        // ==========================================
+        //  SCROLL-SPY: highlight the active nav link
+        // ==========================================
+        const spySections = document.querySelectorAll('section[id]');
+        const spyLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+        const spyObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    spyLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+                }
+            });
+        }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+        spySections.forEach(s => spyObserver.observe(s));
+
+        // ==========================================
+        //  BACKGROUND DECORATIONS
+        // ==========================================
         const bokehLayer = document.getElementById('bokehLayer');
         const sparkleLayer = document.getElementById('sparkleLayer');
         const decorationsContainer = document.getElementById('decorations');
@@ -961,9 +1030,12 @@ void main() {
         for (let i = 0; i < (isMobile ? 4 : 8); i++) setTimeout(createDeco, i * 1000);
         setInterval(createDeco, 3500);
 
-        // Parallax Scroll
+        // ==========================================
+        //  PARALLAX (blobs + bokeh + sparkles + glow)
+        // ==========================================
         const parallaxElements = document.querySelectorAll('[data-parallax]');
         const originGlow = document.getElementById('originGlow');
+        const blobsLayer = document.getElementById('blobs');
         let ticking = false;
 
         function updateParallax() {
@@ -980,6 +1052,9 @@ void main() {
                 originGlow.style.background = `radial-gradient(circle at ${90 - progress * 5}% ${10 + progress * 8}%, rgba(201, 155, 155, 0.35) 0%, rgba(232, 200, 184, 0.15) 15%, transparent 50%)`;
                 originGlow.style.transform = `translateY(${scrollY * 0.05}px)`;
             }
+            // Soft depth parallax on the whole blob layer (doesn't fight the per-blob keyframes)
+            if (blobsLayer) blobsLayer.style.transform = `translateY(${scrollY * -0.08}px)`;
+
             parallaxElements.forEach(el => {
                 el.style.transform = `translateY(${-scrollY * parseFloat(el.dataset.parallax)}px)`;
             });
@@ -994,7 +1069,7 @@ void main() {
             setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2500);
         });
 
-        // Navbar
+        // Navbar shrink on scroll
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             navbar.classList.toggle('scrolled', window.scrollY > 50);
@@ -1015,17 +1090,6 @@ void main() {
                 mobileMenuBtn.querySelector('i').classList.replace('fa-xmark', 'fa-bars');
             });
         });
-
-        // Scroll Animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-        document.querySelectorAll('.fade-up, .pop-in').forEach(el => observer.observe(el));
 
         // Lightbox
         const lightbox = document.getElementById('lightbox');
