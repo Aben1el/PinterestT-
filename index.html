@@ -54,15 +54,8 @@
             --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Quicksand', sans-serif;
@@ -82,29 +75,21 @@
             color: var(--text-dark);
             line-height: 1.3;
         }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-            transition: var(--transition-smooth);
-        }
-
-        img {
-            max-width: 100%;
-            display: block;
-        }
+        a { text-decoration: none; color: inherit; transition: var(--transition-smooth); }
+        img { max-width: 100%; display: block; }
 
         /* =========================================
-           2. FLOATING BACKGROUND BLOBS
+           2. LAYERED BACKGROUND SYSTEM
            ========================================= */
-        .blobs {
+        .bg-layer {
             position: fixed;
             inset: 0;
-            z-index: 0;
             pointer-events: none;
             overflow: hidden;
         }
 
+        /* Layer 1: Floating blobs (softest, deepest) */
+        .blobs { z-index: 0; }
         .blob {
             position: absolute;
             border-radius: 50%;
@@ -112,51 +97,90 @@
             opacity: 0.4;
             animation: blobFloat 20s infinite ease-in-out;
         }
-
-        .blob-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--blush);
-            top: -100px;
-            left: -100px;
-            animation-delay: 0s;
-        }
-
-        .blob-2 {
-            width: 500px;
-            height: 500px;
-            background: var(--peach);
-            bottom: -150px;
-            right: -150px;
-            animation-delay: 5s;
-        }
-
-        .blob-3 {
-            width: 350px;
-            height: 350px;
-            background: var(--lavender);
-            top: 50%;
-            left: 50%;
-            animation-delay: 10s;
-        }
-
+        .blob-1 { width: 400px; height: 400px; background: var(--blush); top: -100px; left: -100px; }
+        .blob-2 { width: 500px; height: 500px; background: var(--peach); bottom: -150px; right: -150px; animation-delay: 5s; }
+        .blob-3 { width: 350px; height: 350px; background: var(--lavender); top: 50%; left: 50%; animation-delay: 10s; }
         @keyframes blobFloat {
             0%, 100% { transform: translate(0, 0) scale(1); }
             33% { transform: translate(30px, -50px) scale(1.1); }
             66% { transform: translate(-20px, 20px) scale(0.9); }
         }
 
-        /* =========================================
-           3. FLOATING DECORATIONS (HEARTS, SPARKLES)
-           ========================================= */
-        .decorations {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
+        /* Layer 2: SideRays WebGL canvas */
+        .side-rays-layer {
             z-index: 1;
-            overflow: hidden;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+        .side-rays-layer.ready { opacity: 1; }
+        .side-rays-layer canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
 
+        /* Layer 3: Origin glow (soft bloom where rays start) */
+        .origin-glow {
+            z-index: 2;
+            background: radial-gradient(
+                circle at 90% 10%,
+                rgba(245, 214, 213, 0.35) 0%,
+                rgba(255, 240, 238, 0.18) 15%,
+                rgba(245, 230, 232, 0.08) 30%,
+                transparent 55%
+            );
+            mix-blend-mode: screen;
+        }
+
+        /* Layer 4: Bokeh circles */
+        .bokeh-layer { z-index: 3; }
+        .bokeh {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(245,230,232,0.3) 40%, transparent 70%);
+            filter: blur(2px);
+            opacity: 0;
+            animation: bokehFloat 18s infinite ease-in-out;
+        }
+        @keyframes bokehFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; }
+            15% { opacity: 0.5; }
+            50% { transform: translate(30px, -60px) scale(1.2); opacity: 0.7; }
+            85% { opacity: 0.4; }
+        }
+
+        /* Layer 5: Sparkles & Twinkles */
+        .sparkle-layer { z-index: 4; }
+        .sparkle {
+            position: absolute;
+            color: #FFF5EE;
+            text-shadow: 0 0 8px rgba(245, 214, 213, 0.9), 0 0 14px rgba(212, 165, 165, 0.5);
+            opacity: 0;
+            animation: sparkleTwinkle 4s infinite ease-in-out;
+            pointer-events: none;
+        }
+        @keyframes sparkleTwinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+            50% { opacity: 0.9; transform: scale(1.1) rotate(180deg); }
+        }
+
+        .twinkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #FFF5EE;
+            box-shadow: 0 0 6px 2px rgba(245, 214, 213, 0.8), 0 0 12px 4px rgba(212, 165, 165, 0.4);
+            opacity: 0;
+            animation: twinklePulse 3s infinite ease-in-out;
+        }
+        @keyframes twinklePulse {
+            0%, 100% { opacity: 0; transform: scale(0.6); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        /* Layer 6: Floating hearts & decorations (existing) */
+        .decorations { z-index: 5; }
         .deco {
             position: absolute;
             color: var(--rose);
@@ -164,29 +188,28 @@
             animation: decoFloat 15s infinite ease-in-out;
             font-size: 1.2rem;
         }
-
         @keyframes decoFloat {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
             10% { opacity: 0.3; }
             90% { opacity: 0.3; }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Layer 7: Soft gradient overlay to blend everything */
+        .gradient-overlay {
+            z-index: 6;
+            background: 
+                linear-gradient(180deg, rgba(255, 251, 247, 0.15) 0%, transparent 30%, transparent 70%, rgba(255, 251, 247, 0.25) 100%),
+                linear-gradient(90deg, rgba(255, 251, 247, 0.2) 0%, transparent 20%, transparent 80%, rgba(255, 251, 247, 0.2) 100%);
         }
 
         /* =========================================
-           4. ORIGINAL LOADER (UNCHANGED)
+           3. ORIGINAL LOADER (UNCHANGED)
            ========================================= */
         .loader {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: var(--gradient-warm);
             display: flex;
             flex-direction: column;
@@ -195,18 +218,8 @@
             z-index: 9999;
             transition: opacity 0.8s ease, visibility 0.8s ease;
         }
-
-        .loader.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .loader-content {
-            text-align: center;
-            position: relative;
-        }
-
+        .loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loader-content { text-align: center; position: relative; }
         .loader-logo {
             font-family: 'Playfair Display', serif;
             font-size: 3.5rem;
@@ -216,7 +229,6 @@
             position: relative;
             letter-spacing: 2px;
         }
-
         .loader-logo::before, .loader-logo::after {
             content: '✦';
             position: absolute;
@@ -227,26 +239,20 @@
         }
         .loader-logo::before { left: -40px; }
         .loader-logo::after { right: -40px; animation-delay: 0.5s; }
-
         @keyframes logoFloat {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
         }
-
         @keyframes sparkle {
             0%, 100% { opacity: 0; transform: translateY(-50%) scale(0.5); }
             50% { opacity: 1; transform: translateY(-50%) scale(1.2); }
         }
-
         .loader-hearts {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
+            width: 100%; height: 100%;
+            top: 0; left: 0;
             pointer-events: none;
         }
-
         .floating-heart {
             position: absolute;
             color: var(--blush);
@@ -258,21 +264,17 @@
         .floating-heart:nth-child(2) { top: -10px; right: 25%; animation-delay: 0.5s; }
         .floating-heart:nth-child(3) { bottom: -15px; left: 30%; animation-delay: 1s; }
         .floating-heart:nth-child(4) { bottom: -10px; right: 20%; animation-delay: 1.5s; }
-
         @keyframes heartFloat {
             0%, 100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.6; }
             50% { transform: translateY(-20px) rotate(10deg) scale(1.2); opacity: 1; }
         }
-
         .loader-progress {
-            width: 200px;
-            height: 3px;
+            width: 200px; height: 3px;
             background: rgba(212, 165, 165, 0.2);
             border-radius: 10px;
             overflow: hidden;
             margin-top: 30px;
         }
-
         .loader-progress-bar {
             height: 100%;
             background: var(--gradient-rose);
@@ -280,12 +282,10 @@
             animation: progressLoad 2.5s ease-in-out forwards;
             box-shadow: 0 0 10px rgba(212, 165, 165, 0.4);
         }
-
         @keyframes progressLoad {
             0% { width: 0%; }
             100% { width: 100%; }
         }
-
         .loader-text {
             font-size: 0.85rem;
             color: var(--text-light);
@@ -293,14 +293,13 @@
             letter-spacing: 1px;
             animation: fadeInOut 2s ease-in-out infinite;
         }
-
         @keyframes fadeInOut {
             0%, 100% { opacity: 0.4; }
             50% { opacity: 1; }
         }
 
         /* =========================================
-           5. TRUE TRANSPARENT GLASSMORPHISM NAVBAR
+           4. NAVBAR
            ========================================= */
         .navbar {
             position: fixed;
@@ -319,20 +318,13 @@
             box-shadow: 0 4px 30px rgba(212, 165, 165, 0.08);
             transition: var(--transition-smooth);
         }
-
         .navbar.scrolled {
             top: 1rem;
             width: calc(100% - 2rem);
             background: rgba(255, 255, 255, 0.15);
             box-shadow: 0 8px 32px rgba(212, 165, 165, 0.12);
         }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
         .logo {
             font-family: 'Playfair Display', serif;
             font-size: 1.5rem;
@@ -344,19 +336,8 @@
             gap: 0.5rem;
             transition: var(--transition-smooth);
         }
-
-        .logo:hover {
-            transform: scale(1.05);
-            color: var(--soft-red);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-            align-items: center;
-        }
-
+        .logo:hover { transform: scale(1.05); color: var(--soft-red); }
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
         .nav-links a:not(.btn-cute) {
             font-weight: 500;
             font-size: 0.95rem;
@@ -364,28 +345,18 @@
             position: relative;
             padding: 0.4rem 0;
         }
-
         .nav-links a:not(.btn-cute)::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 50%;
+            bottom: 0; left: 50%;
             transform: translateX(-50%);
-            width: 0;
-            height: 2px;
+            width: 0; height: 2px;
             background: var(--gradient-rose);
             transition: width 0.3s ease;
             border-radius: 2px;
         }
-
-        .nav-links a:not(.btn-cute):hover {
-            color: var(--soft-red);
-        }
-
-        .nav-links a:not(.btn-cute):hover::after {
-            width: 100%;
-        }
-
+        .nav-links a:not(.btn-cute):hover { color: var(--soft-red); }
+        .nav-links a:not(.btn-cute):hover::after { width: 100%; }
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -397,7 +368,7 @@
         }
 
         /* =========================================
-           6. CUTE BUTTONS
+           5. BUTTONS
            ========================================= */
         .btn-cute {
             display: inline-flex;
@@ -419,34 +390,25 @@
             position: relative;
             overflow: hidden;
         }
-
         .btn-cute::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
             transition: left 0.5s ease;
         }
-
         .btn-cute:hover {
             transform: translateY(-3px) scale(1.03);
             box-shadow: 0 8px 25px rgba(212, 165, 165, 0.35), 0 0 20px rgba(245, 230, 232, 0.3);
         }
-
-        .btn-cute:hover::before {
-            left: 100%;
-        }
-
+        .btn-cute:hover::before { left: 100%; }
         .btn-soft {
             background: var(--white);
             color: var(--soft-red);
             border: 2px solid var(--blush);
             box-shadow: 0 4px 15px rgba(212, 165, 165, 0.1);
         }
-
         .btn-soft:hover {
             background: var(--blush);
             color: var(--text-dark);
@@ -454,7 +416,7 @@
         }
 
         /* =========================================
-           7. HERO - PERSONAL & WARM
+           6. HERO
            ========================================= */
         .hero {
             min-height: 100vh;
@@ -464,14 +426,9 @@
             text-align: center;
             padding: 8rem 1rem 4rem;
             position: relative;
-            z-index: 2;
+            z-index: 10;
         }
-
-        .hero-content {
-            max-width: 700px;
-            position: relative;
-        }
-
+        .hero-content { max-width: 700px; position: relative; }
         .greeting {
             display: inline-block;
             font-family: 'Quicksand', sans-serif;
@@ -487,7 +444,6 @@
             border-radius: var(--radius-xl);
             border: 1px solid rgba(245, 230, 232, 0.5);
         }
-
         .hero h1 {
             font-size: clamp(2.2rem, 5vw, 3.5rem);
             margin-bottom: 1.5rem;
@@ -495,26 +451,21 @@
             font-style: italic;
             color: var(--text-dark);
         }
-
         .hero h1 .highlight {
             color: var(--soft-red);
             position: relative;
             display: inline-block;
         }
-
         .hero h1 .highlight::after {
             content: '';
             position: absolute;
-            bottom: 5px;
-            left: 0;
-            width: 100%;
-            height: 8px;
+            bottom: 5px; left: 0;
+            width: 100%; height: 8px;
             background: var(--blush);
             opacity: 0.5;
             z-index: -1;
             border-radius: 4px;
         }
-
         .hero p {
             font-size: 1.1rem;
             color: var(--text-light);
@@ -524,52 +475,28 @@
             margin-right: auto;
             font-weight: 400;
         }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
         .hero-deco {
             position: absolute;
             font-size: 2rem;
             opacity: 0.25;
             animation: floatDeco 4s ease-in-out infinite;
         }
-
         .hero-deco-1 { top: 10%; left: 10%; animation-delay: 0s; }
         .hero-deco-2 { top: 20%; right: 15%; animation-delay: 1s; }
         .hero-deco-3 { bottom: 20%; left: 20%; animation-delay: 2s; }
         .hero-deco-4 { bottom: 15%; right: 10%; animation-delay: 1.5s; }
-
         @keyframes floatDeco {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             50% { transform: translateY(-15px) rotate(10deg); }
         }
 
         /* =========================================
-           8. SECTION STYLING
+           7. SECTIONS
            ========================================= */
-        .section {
-            padding: 5rem 0;
-            position: relative;
-            z-index: 2;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 3.5rem;
-        }
-
+        .section { padding: 5rem 0; position: relative; z-index: 10; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        .section-header { text-align: center; margin-bottom: 3.5rem; }
         .section-tag {
             display: inline-block;
             font-family: 'Quicksand', sans-serif;
@@ -585,7 +512,6 @@
             border-radius: var(--radius-xl);
             border: 1px solid rgba(245, 230, 232, 0.4);
         }
-
         .section-header h2 {
             font-size: clamp(1.8rem, 4vw, 2.5rem);
             font-weight: 500;
@@ -593,23 +519,16 @@
             color: var(--text-dark);
             margin-bottom: 0.75rem;
         }
-
-        .section-header p {
-            max-width: 500px;
-            margin: 0 auto;
-            color: var(--text-light);
-            font-size: 1rem;
-        }
+        .section-header p { max-width: 500px; margin: 0 auto; color: var(--text-light); font-size: 1rem; }
 
         /* =========================================
-           9. MOODBOARDS SECTION (CUTE CARDS)
+           8. BOARDS
            ========================================= */
         .boards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.75rem;
         }
-
         .board-card {
             background: var(--white);
             border-radius: var(--radius-lg);
@@ -620,39 +539,15 @@
             border: 1px solid rgba(245, 230, 232, 0.3);
             position: relative;
         }
-
-        .board-card:hover {
-            transform: translateY(-8px) rotate(-0.5deg);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .board-card:nth-child(even):hover {
-            transform: translateY(-8px) rotate(0.5deg);
-        }
-
-        .board-image-wrapper {
-            overflow: hidden;
-            height: 240px;
-            position: relative;
-        }
-
-        .board-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-        }
-
-        .board-card:hover .board-image {
-            transform: scale(1.08);
-        }
-
+        .board-card:hover { transform: translateY(-8px) rotate(-0.5deg); box-shadow: var(--shadow-hover); }
+        .board-card:nth-child(even):hover { transform: translateY(-8px) rotate(0.5deg); }
+        .board-image-wrapper { overflow: hidden; height: 240px; position: relative; }
+        .board-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .board-card:hover .board-image { transform: scale(1.08); }
         .board-heart {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            width: 40px;
-            height: 40px;
+            top: 1rem; right: 1rem;
+            width: 40px; height: 40px;
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
             border-radius: 50%;
@@ -664,17 +559,12 @@
             transition: var(--transition-bounce);
             box-shadow: 0 4px 12px rgba(212, 165, 165, 0.15);
         }
-
         .board-card:hover .board-heart {
             transform: scale(1.15) rotate(-10deg);
             background: var(--soft-red);
             color: var(--white);
         }
-
-        .board-content {
-            padding: 1.5rem;
-        }
-
+        .board-content { padding: 1.5rem; }
         .board-tag {
             font-size: 0.75rem;
             font-weight: 600;
@@ -684,21 +574,18 @@
             margin-bottom: 0.5rem;
             display: inline-block;
         }
-
         .board-content h3 {
             font-size: 1.3rem;
             margin-bottom: 0.5rem;
             font-weight: 500;
             font-style: italic;
         }
-
         .board-content p {
             font-size: 0.9rem;
             color: var(--text-light);
             margin-bottom: 1rem;
             line-height: 1.5;
         }
-
         .board-meta {
             display: flex;
             gap: 1rem;
@@ -707,31 +594,21 @@
             padding-top: 1rem;
             border-top: 1px dashed rgba(245, 230, 232, 0.6);
         }
-
-        .board-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .board-meta i {
-            color: var(--rose);
-        }
+        .board-meta span { display: flex; align-items: center; gap: 0.3rem; }
+        .board-meta i { color: var(--rose); }
 
         /* =========================================
-           10. ABOUT ME - JOURNAL STYLE
+           9. ABOUT
            ========================================= */
         .about-section {
             background: linear-gradient(180deg, transparent 0%, rgba(250, 240, 240, 0.3) 50%, transparent 100%);
         }
-
         .about-grid {
             display: grid;
             grid-template-columns: 1fr 1.2fr;
             gap: 4rem;
             align-items: center;
         }
-
         .polaroid {
             background: var(--white);
             padding: 1.5rem 1.5rem 3rem;
@@ -741,18 +618,12 @@
             transition: var(--transition-bounce);
             transform: rotate(-2deg);
         }
-
-        .polaroid:hover {
-            transform: rotate(0deg) scale(1.02);
-        }
-
+        .polaroid:hover { transform: rotate(0deg) scale(1.02); }
         .polaroid::before {
             content: '♡';
             position: absolute;
-            top: -15px;
-            right: -15px;
-            width: 40px;
-            height: 40px;
+            top: -15px; right: -15px;
+            width: 40px; height: 40px;
             background: var(--gradient-rose);
             border-radius: 50%;
             display: flex;
@@ -762,46 +633,29 @@
             font-size: 1.2rem;
             box-shadow: 0 4px 15px rgba(212, 165, 165, 0.25);
         }
-
         .polaroid img {
             width: 100%;
             height: 380px;
             object-fit: cover;
             border-radius: var(--radius-sm);
         }
-
         .polaroid-caption {
             position: absolute;
-            bottom: 1rem;
-            left: 50%;
+            bottom: 1rem; left: 50%;
             transform: translateX(-50%);
             font-family: 'Playfair Display', serif;
             font-style: italic;
             font-size: 1rem;
             color: var(--text-light);
         }
-
-        .about-content .section-tag {
-            margin-bottom: 1rem;
-        }
-
+        .about-content .section-tag { margin-bottom: 1rem; }
         .about-content h2 {
             font-size: 2.2rem;
             font-weight: 500;
             font-style: italic;
             margin-bottom: 1.5rem;
         }
-
-        .about-content h2 .heart {
-            color: var(--soft-red);
-        }
-
-        .about-content p {
-            margin-bottom: 1.25rem;
-            color: var(--text-light);
-            font-size: 1rem;
-        }
-
+        .about-content p { margin-bottom: 1.25rem; color: var(--text-light); font-size: 1rem; }
         .likes-list {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -809,7 +663,6 @@
             margin: 1.5rem 0 2rem;
             list-style: none;
         }
-
         .likes-list li {
             display: flex;
             align-items: center;
@@ -824,30 +677,20 @@
             border: 1px solid rgba(245, 230, 232, 0.4);
             transition: var(--transition-smooth);
         }
-
         .likes-list li:hover {
             background: var(--white);
             transform: translateX(5px);
             box-shadow: var(--shadow-soft);
         }
-
-        .likes-list i {
-            color: var(--soft-red);
-            font-size: 1rem;
-        }
+        .likes-list i { color: var(--soft-red); font-size: 1rem; }
 
         /* =========================================
-           11. MASONRY GALLERY (PINTEREST STYLE)
+           10. GALLERY
            ========================================= */
-        .masonry-grid {
-            column-count: 1;
-            column-gap: 1.25rem;
-        }
-
+        .masonry-grid { column-count: 1; column-gap: 1.25rem; }
         @media (min-width: 640px) { .masonry-grid { column-count: 2; } }
         @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
         @media (min-width: 1280px) { .masonry-grid { column-count: 4; } }
-
         .masonry-item {
             break-inside: avoid;
             margin-bottom: 1.25rem;
@@ -859,23 +702,14 @@
             transition: var(--transition-bounce);
             cursor: zoom-in;
         }
-
-        .masonry-item:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-
+        .masonry-item:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
         .masonry-item img {
             width: 100%;
             height: auto;
             display: block;
             transition: transform 0.6s ease;
         }
-
-        .masonry-item:hover img {
-            transform: scale(1.05);
-        }
-
+        .masonry-item:hover img { transform: scale(1.05); }
         .masonry-overlay {
             position: absolute;
             inset: 0;
@@ -886,11 +720,7 @@
             align-items: flex-end;
             padding: 1.25rem;
         }
-
-        .masonry-item:hover .masonry-overlay {
-            opacity: 1;
-        }
-
+        .masonry-item:hover .masonry-overlay { opacity: 1; }
         .masonry-overlay span {
             color: white;
             font-weight: 600;
@@ -904,22 +734,12 @@
             border-radius: var(--radius-xl);
             border: 1px solid rgba(255, 255, 255, 0.4);
         }
-
-        .gallery-cta {
-            text-align: center;
-            margin-top: 3rem;
-        }
+        .gallery-cta { text-align: center; margin-top: 3rem; }
 
         /* =========================================
-           12. CONNECT / CTA SECTION
+           11. CONNECT / CTA
            ========================================= */
-        .connect-section {
-            text-align: center;
-            padding: 5rem 1rem;
-            position: relative;
-            z-index: 2;
-        }
-
+        .connect-section { text-align: center; padding: 5rem 1rem; position: relative; z-index: 10; }
         .connect-box {
             max-width: 600px;
             margin: 0 auto;
@@ -931,33 +751,26 @@
             border: 1px solid rgba(245, 230, 232, 0.4);
             overflow: hidden;
         }
-
         .connect-box::before {
             content: '';
             position: absolute;
-            top: -50px;
-            left: -50px;
-            width: 150px;
-            height: 150px;
+            top: -50px; left: -50px;
+            width: 150px; height: 150px;
             background: var(--blush);
             border-radius: 50%;
             opacity: 0.25;
             filter: blur(40px);
         }
-
         .connect-box::after {
             content: '';
             position: absolute;
-            bottom: -50px;
-            right: -50px;
-            width: 150px;
-            height: 150px;
+            bottom: -50px; right: -50px;
+            width: 150px; height: 150px;
             background: var(--peach);
             border-radius: 50%;
             opacity: 0.25;
             filter: blur(40px);
         }
-
         .connect-box h2 {
             font-size: 2rem;
             font-weight: 500;
@@ -966,36 +779,20 @@
             position: relative;
             z-index: 1;
         }
-
-        .connect-box p {
-            margin-bottom: 2rem;
-            color: var(--text-light);
-            position: relative;
-            z-index: 1;
-        }
-
-        .connect-box .btn-cute {
-            position: relative;
-            z-index: 1;
-        }
+        .connect-box p { margin-bottom: 2rem; color: var(--text-light); position: relative; z-index: 1; }
+        .connect-box .btn-cute { position: relative; z-index: 1; }
 
         /* =========================================
-           13. FOOTER
+           12. FOOTER
            ========================================= */
         footer {
             background: var(--white);
             border-top: 1px solid rgba(245, 230, 232, 0.4);
             padding: 3rem 0 2rem;
             position: relative;
-            z-index: 2;
+            z-index: 10;
         }
-
-        .footer-content {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
+        .footer-content { text-align: center; max-width: 600px; margin: 0 auto; }
         .footer-logo {
             font-family: 'Playfair Display', serif;
             font-size: 1.75rem;
@@ -1007,23 +804,10 @@
             align-items: center;
             gap: 0.5rem;
         }
-
-        .footer-text {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-
+        .footer-text { color: var(--text-light); font-size: 0.95rem; margin-bottom: 1.5rem; }
+        .social-links { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
         .social-links a {
-            width: 44px;
-            height: 44px;
+            width: 44px; height: 44px;
             border-radius: 50%;
             background: var(--gradient-warm);
             display: flex;
@@ -1033,41 +817,30 @@
             transition: var(--transition-bounce);
             border: 1px solid rgba(245, 230, 232, 0.5);
         }
-
         .social-links a:hover {
             background: var(--gradient-rose);
             color: var(--white);
             transform: translateY(-5px) scale(1.1) rotate(-5deg);
             box-shadow: 0 8px 20px rgba(212, 165, 165, 0.25);
         }
-
         .footer-bottom {
             padding-top: 1.5rem;
             border-top: 1px dashed rgba(245, 230, 232, 0.6);
             font-size: 0.85rem;
             color: var(--text-light);
         }
-
-        .footer-bottom a {
-            color: var(--soft-red);
-            margin: 0 0.5rem;
-        }
-
-        .footer-bottom a:hover {
-            color: var(--deep-rose);
-        }
+        .footer-bottom a { color: var(--soft-red); margin: 0 0.5rem; }
+        .footer-bottom a:hover { color: var(--deep-rose); }
 
         /* =========================================
-           14. LIGHTBOX
+           13. LIGHTBOX
            ========================================= */
         .lightbox {
             display: none;
             position: fixed;
             z-index: 10000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
             background-color: rgba(255, 251, 247, 0.95);
             backdrop-filter: blur(20px);
             justify-content: center;
@@ -1075,12 +848,7 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-
-        .lightbox.active {
-            display: flex;
-            opacity: 1;
-        }
-
+        .lightbox.active { display: flex; opacity: 1; }
         .lightbox-content {
             max-width: 90%;
             max-height: 90vh;
@@ -1088,22 +856,18 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.12);
             animation: zoomIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
         @keyframes zoomIn {
             from { transform: scale(0.9); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
-
         .lightbox-close {
             position: absolute;
-            top: 2rem;
-            right: 2rem;
+            top: 2rem; right: 2rem;
             font-size: 1.5rem;
             color: var(--text-dark);
             cursor: pointer;
             transition: var(--transition-bounce);
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1111,7 +875,6 @@
             background: var(--white);
             box-shadow: var(--shadow-soft);
         }
-
         .lightbox-close:hover {
             transform: rotate(90deg) scale(1.1);
             background: var(--blush);
@@ -1119,7 +882,7 @@
         }
 
         /* =========================================
-           15. SCROLL ANIMATIONS
+           14. SCROLL ANIMATIONS
            ========================================= */
         .fade-up {
             opacity: 0;
@@ -1127,25 +890,14 @@
             transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
                         transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
         .pop-in {
             opacity: 0;
             transform: scale(0.9);
             transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), 
                         transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
-        .pop-in.visible {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* Stagger delays */
+        .pop-in.visible { opacity: 1; transform: scale(1); }
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.2s; }
         .delay-3 { transition-delay: 0.3s; }
@@ -1153,22 +905,13 @@
         .delay-5 { transition-delay: 0.5s; }
 
         /* =========================================
-           16. RESPONSIVE DESIGN
+           15. RESPONSIVE
            ========================================= */
         @media (max-width: 968px) {
-            .about-grid { 
-                grid-template-columns: 1fr; 
-                gap: 3rem; 
-            }
-            .polaroid {
-                max-width: 400px;
-                margin: 0 auto;
-            }
-            .likes-list {
-                grid-template-columns: 1fr;
-            }
+            .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .polaroid { max-width: 400px; margin: 0 auto; }
+            .likes-list { grid-template-columns: 1fr; }
         }
-
         @media (max-width: 768px) {
             .navbar {
                 top: 0;
@@ -1180,16 +923,11 @@
                 border-top: none;
                 padding: 0.75rem 1.5rem;
             }
-            .navbar.scrolled {
-                top: 0;
-                width: 100%;
-            }
+            .navbar.scrolled { top: 0; width: 100%; }
             .nav-links {
                 position: fixed;
-                top: 0;
-                right: -100%;
-                width: 75%;
-                height: 100vh;
+                top: 0; right: -100%;
+                width: 75%; height: 100vh;
                 background: rgba(255, 251, 247, 0.98);
                 backdrop-filter: blur(20px);
                 flex-direction: column;
@@ -1203,25 +941,43 @@
             .mobile-menu-btn { display: block; z-index: 1001; }
             .hero { padding-top: 6rem; }
             .hero-deco { display: none; }
-            .boards-grid {
-                grid-template-columns: 1fr;
-            }
+            .boards-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- FLOATING BACKGROUND BLOBS -->
-    <div class="blobs">
+    <!-- =========================================
+         LAYERED BACKGROUND SYSTEM
+         ========================================= -->
+    <!-- Layer 1: Floating blobs -->
+    <div class="bg-layer blobs">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
         <div class="blob blob-3"></div>
     </div>
 
-    <!-- FLOATING DECORATIONS -->
-    <div class="decorations" id="decorations"></div>
+    <!-- Layer 2: SideRays WebGL (feminine soft rays) -->
+    <div class="bg-layer side-rays-layer" id="sideRaysLayer"></div>
 
-    <!-- ORIGINAL LOADER (UNCHANGED) -->
+    <!-- Layer 3: Origin glow -->
+    <div class="bg-layer origin-glow" id="originGlow"></div>
+
+    <!-- Layer 4: Bokeh circles -->
+    <div class="bg-layer bokeh-layer" id="bokehLayer"></div>
+
+    <!-- Layer 5: Sparkles & Twinkles -->
+    <div class="bg-layer sparkle-layer" id="sparkleLayer"></div>
+
+    <!-- Layer 6: Floating hearts (existing) -->
+    <div class="bg-layer decorations" id="decorations"></div>
+
+    <!-- Layer 7: Soft gradient overlay -->
+    <div class="bg-layer gradient-overlay"></div>
+
+    <!-- =========================================
+         ORIGINAL LOADER (UNCHANGED)
+         ========================================= -->
     <div class="loader" id="loader">
         <div class="loader-content">
             <div class="loader-hearts">
@@ -1238,7 +994,9 @@
         </div>
     </div>
 
-    <!-- TRANSPARENT GLASSMORPHISM NAVBAR -->
+    <!-- =========================================
+         NAVBAR
+         ========================================= -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="#" class="logo">
@@ -1260,7 +1018,9 @@
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
+    <!-- =========================================
+         HERO
+         ========================================= -->
     <section class="hero">
         <span class="hero-deco hero-deco-1">💗</span>
         <span class="hero-deco hero-deco-2">✨</span>
@@ -1282,7 +1042,9 @@
         </div>
     </section>
 
-    <!-- MOODBOARDS SECTION -->
+    <!-- =========================================
+         BOARDS
+         ========================================= -->
     <section id="boards" class="section">
         <div class="container">
             <div class="section-header fade-up">
@@ -1391,7 +1153,9 @@
         </div>
     </section>
 
-    <!-- ABOUT ME SECTION -->
+    <!-- =========================================
+         ABOUT
+         ========================================= -->
     <section id="about" class="section about-section">
         <div class="container">
             <div class="about-grid">
@@ -1422,7 +1186,9 @@
         </div>
     </section>
 
-    <!-- GALLERY SECTION -->
+    <!-- =========================================
+         GALLERY
+         ========================================= -->
     <section id="gallery" class="section">
         <div class="container">
             <div class="section-header fade-up">
@@ -1474,7 +1240,9 @@
         </div>
     </section>
 
-    <!-- CONNECT SECTION -->
+    <!-- =========================================
+         CONNECT
+         ========================================= -->
     <section class="connect-section">
         <div class="connect-box fade-up">
             <h2>let's be friends ♡</h2>
@@ -1485,7 +1253,9 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- =========================================
+         FOOTER
+         ========================================= -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -1509,17 +1279,240 @@
         </div>
     </footer>
 
-    <!-- LIGHTBOX -->
+    <!-- =========================================
+         LIGHTBOX
+         ========================================= -->
     <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
         <span class="lightbox-close" onclick="closeLightbox(event)"><i class="fa-solid fa-xmark"></i></span>
         <img class="lightbox-content" id="lightbox-img" src="" alt="Lightbox Image">
     </div>
 
+    <!-- =========================================
+         SIDE RAYS (ogl WebGL) + MAIN SCRIPTS
+         ========================================= -->
+    <script type="module">
+        import { Renderer, Program, Triangle, Mesh } from 'https://unpkg.com/ogl@1.0.8/dist/ogl.mjs';
+
+        // --- SideRays: Vanilla port, customized for feminine aesthetic ---
+        const SideRays = (() => {
+            const container = document.getElementById('sideRaysLayer');
+            if (!container) return { uniforms: null, setTilt: () => {}, setOriginOffset: () => {} };
+
+            const hexToRgb = hex => {
+                const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return m ? [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255] : [1, 1, 1];
+            };
+
+            // Feminine palette: soft blush pink + warm cream/rose
+            const config = {
+                speed: 0.6,            // slow, dreamy
+                rayColor1: '#F5C6D0',  // soft blush pink
+                rayColor2: '#F5DDD5',  // warm peach-cream
+                intensity: 0.9,        // softer than default
+                spread: 1.8,           // gentle fan
+                origin: 'top-right',
+                tilt: -8,              // slight tilt for elegance
+                saturation: 0.85,      // slightly muted
+                blend: 0.55,           // balanced mix
+                falloff: 2.4,          // tighter, softer glow
+                opacity: 0.55          // subtle, not dominant
+            };
+
+            const renderer = new Renderer({
+                dpr: Math.min(window.devicePixelRatio, 2),
+                alpha: true,
+                antialias: true
+            });
+            const gl = renderer.gl;
+            gl.canvas.style.width = '100%';
+            gl.canvas.style.height = '100%';
+            gl.clearColor(0, 0, 0, 0);
+            container.appendChild(gl.canvas);
+
+            const vert = `
+attribute vec2 position;
+void main() {
+  gl_Position = vec4(position, 0.0, 1.0);
+}`;
+
+            const frag = `precision highp float;
+
+uniform float iTime;
+uniform vec2 iResolution;
+uniform float iSpeed;
+uniform vec3 iRayColor1;
+uniform vec3 iRayColor2;
+uniform float iIntensity;
+uniform float iSpread;
+uniform float iFlipX;
+uniform float iFlipY;
+uniform float iTilt;
+uniform float iSaturation;
+uniform float iBlend;
+uniform float iFalloff;
+uniform float iOpacity;
+
+float rayStrength(vec2 raySource, vec2 rayRefDirection, vec2 coord, float seedA, float seedB, float speed) {
+  vec2 sourceToCoord = coord - raySource;
+  float cosAngle = dot(normalize(sourceToCoord), rayRefDirection);
+  return clamp(
+    (0.45 + 0.15 * sin(cosAngle * seedA + iTime * speed)) +
+    (0.3 + 0.2 * cos(-cosAngle * seedB + iTime * speed)),
+    0.0, 1.0) *
+    clamp((iResolution.x - length(sourceToCoord)) / iResolution.x, 0.5, 1.0);
+}
+
+void main() {
+  vec2 fragCoord = gl_FragCoord.xy;
+  if (iFlipX > 0.5) fragCoord.x = iResolution.x - fragCoord.x;
+  if (iFlipY > 0.5) fragCoord.y = iResolution.y - fragCoord.y;
+
+  vec2 coord = vec2(fragCoord.x, iResolution.y - fragCoord.y);
+  vec2 rayPos = vec2(iResolution.x * 1.1, -0.5 * iResolution.y);
+
+  float tiltRad = iTilt * 3.14159265 / 180.0;
+  float cs = cos(tiltRad);
+  float sn = sin(tiltRad);
+  vec2 rel = coord - rayPos;
+  vec2 tiltedCoord = vec2(rel.x * cs - rel.y * sn, rel.x * sn + rel.y * cs) + rayPos;
+
+  float halfSpread = iSpread * 0.275;
+  vec2 rayRefDir1 = normalize(vec2(cos(0.785398 + halfSpread), sin(0.785398 + halfSpread)));
+  vec2 rayRefDir2 = normalize(vec2(cos(0.785398 - halfSpread), sin(0.785398 - halfSpread)));
+
+  vec4 rays1 = vec4(iRayColor1, 1.0) * rayStrength(rayPos, rayRefDir1, tiltedCoord, 36.2214, 21.11349, iSpeed);
+  vec4 rays2 = vec4(iRayColor2, 1.0) * rayStrength(rayPos, rayRefDir2, tiltedCoord, 22.3991, 18.0234, iSpeed * 0.2);
+
+  vec4 color = rays1 * (1.0 - iBlend) * 0.9 + rays2 * iBlend * 0.9;
+
+  float distanceToLight = length(fragCoord.xy - vec2(rayPos.x, iResolution.y - rayPos.y)) / iResolution.y;
+  float brightness = iIntensity * 0.4 / pow(max(distanceToLight, 0.001), iFalloff);
+  color.rgb *= brightness;
+
+  float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
+  color.rgb = mix(vec3(gray), color.rgb, iSaturation);
+
+  color.a = max(color.r, max(color.g, color.b)) * iOpacity;
+  gl_FragColor = color;
+}`;
+
+            const uniforms = {
+                iTime: { value: 0 },
+                iResolution: { value: [1, 1] },
+                iSpeed: { value: config.speed },
+                iRayColor1: { value: hexToRgb(config.rayColor1) },
+                iRayColor2: { value: hexToRgb(config.rayColor2) },
+                iIntensity: { value: config.intensity },
+                iSpread: { value: config.spread },
+                iFlipX: { value: 0 },
+                iFlipY: { value: 0 },
+                iTilt: { value: config.tilt },
+                iSaturation: { value: config.saturation },
+                iBlend: { value: config.blend },
+                iFalloff: { value: config.falloff },
+                iOpacity: { value: config.opacity }
+            };
+
+            const geometry = new Triangle(gl);
+            const program = new Program(gl, { vertex: vert, fragment: frag, uniforms });
+            const mesh = new Mesh(gl, { geometry, program });
+
+            const updateSize = () => {
+                if (!container || !renderer) return;
+                renderer.dpr = Math.min(window.devicePixelRatio, 2);
+                const w = container.clientWidth;
+                const h = container.clientHeight;
+                renderer.setSize(w, h);
+                uniforms.iResolution.value = [w * renderer.dpr, h * renderer.dpr];
+            };
+
+            const loop = t => {
+                uniforms.iTime.value = t * 0.001;
+                try {
+                    renderer.render({ scene: mesh });
+                    requestAnimationFrame(loop);
+                } catch (e) { /* silent */ }
+            };
+
+            window.addEventListener('resize', updateSize);
+            updateSize();
+            requestAnimationFrame(loop);
+
+            // Fade in after a moment
+            setTimeout(() => container.classList.add('ready'), 300);
+
+            return {
+                uniforms,
+                setTilt: (deg) => { uniforms.iTilt.value = deg; },
+                setOriginOffset: (ox, oy) => {
+                    // Subtle positional shift via resolution offset (keeps rays anchored but breathing)
+                    // We'll just slightly adjust tilt for parallax feel
+                    uniforms.iTilt.value = config.tilt + ox * 0.02;
+                }
+            };
+        })();
+
+        // Expose to global for scroll handler
+        window.__sideRays = SideRays;
+    </script>
+
     <script>
-        // 1. Floating Decorations Generator
+        // =========================================
+        // BACKGROUND DECORATIONS: Bokeh, Sparkles, Twinkles, Hearts
+        // =========================================
+        const bokehLayer = document.getElementById('bokehLayer');
+        const sparkleLayer = document.getElementById('sparkleLayer');
         const decorationsContainer = document.getElementById('decorations');
+
+        const isMobile = window.innerWidth < 768;
+        const bokehCount = isMobile ? 8 : 16;
+        const sparkleCount = isMobile ? 10 : 22;
+        const twinkleCount = isMobile ? 12 : 28;
+
+        // Bokeh circles
+        for (let i = 0; i < bokehCount; i++) {
+            const b = document.createElement('div');
+            b.className = 'bokeh';
+            const size = Math.random() * 80 + 30;
+            b.style.width = size + 'px';
+            b.style.height = size + 'px';
+            b.style.left = Math.random() * 100 + '%';
+            b.style.top = Math.random() * 100 + '%';
+            b.style.animationDuration = (Math.random() * 12 + 14) + 's';
+            b.style.animationDelay = (Math.random() * 10) + 's';
+            b.dataset.parallax = (Math.random() * 0.3 + 0.1).toFixed(2);
+            bokehLayer.appendChild(b);
+        }
+
+        // Sparkles (✦ ✧ ✵)
+        const sparkleSymbols = ['✦', '✧', '✵', '✶'];
+        for (let i = 0; i < sparkleCount; i++) {
+            const s = document.createElement('div');
+            s.className = 'sparkle';
+            s.textContent = sparkleSymbols[Math.floor(Math.random() * sparkleSymbols.length)];
+            s.style.left = Math.random() * 100 + '%';
+            s.style.top = Math.random() * 100 + '%';
+            s.style.fontSize = (Math.random() * 0.8 + 0.6) + 'rem';
+            s.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            s.style.animationDelay = (Math.random() * 5) + 's';
+            s.dataset.parallax = (Math.random() * 0.4 + 0.15).toFixed(2);
+            sparkleLayer.appendChild(s);
+        }
+
+        // Twinkles (tiny dots)
+        for (let i = 0; i < twinkleCount; i++) {
+            const t = document.createElement('div');
+            t.className = 'twinkle';
+            t.style.left = Math.random() * 100 + '%';
+            t.style.top = Math.random() * 100 + '%';
+            t.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            t.style.animationDelay = (Math.random() * 4) + 's';
+            t.dataset.parallax = (Math.random() * 0.5 + 0.2).toFixed(2);
+            sparkleLayer.appendChild(t);
+        }
+
+        // Floating hearts (existing)
         const decoSymbols = ['💗', '💕', '✨', '✿', '❀', '♡', '🌸', '✦'];
-        
         function createDeco() {
             const deco = document.createElement('div');
             deco.className = 'deco';
@@ -1529,36 +1522,90 @@
             deco.style.animationDuration = (Math.random() * 10 + 12) + 's';
             deco.style.animationDelay = Math.random() * 3 + 's';
             decorationsContainer.appendChild(deco);
-            
             setTimeout(() => deco.remove(), 22000);
         }
-        
-        for (let i = 0; i < 12; i++) {
-            setTimeout(createDeco, i * 1000);
+        const initialDecos = isMobile ? 6 : 12;
+        for (let i = 0; i < initialDecos; i++) {
+            setTimeout(createDeco, i * 800);
         }
         setInterval(createDeco, 2500);
 
-        // 2. Loader (Original Behavior)
+        // =========================================
+        // PARALLAX SCROLL — rays + bokeh + sparkles
+        // =========================================
+        const parallaxElements = document.querySelectorAll('[data-parallax]');
+        const originGlow = document.getElementById('originGlow');
+        let lastScrollY = 0;
+        let ticking = false;
+
+        function updateParallax() {
+            const scrollY = window.scrollY;
+            const maxScroll = document.body.scrollHeight - window.innerHeight;
+            const progress = Math.min(scrollY / Math.max(maxScroll, 1), 1);
+
+            // SideRays: gentle tilt shift + breathing opacity
+            if (window.__sideRays && window.__sideRays.uniforms) {
+                const u = window.__sideRays.uniforms;
+                // Subtle tilt based on scroll (-8 base + small oscillation)
+                u.iTilt.value = -8 + Math.sin(progress * Math.PI * 2) * 3;
+                // Very subtle opacity breathing
+                u.iOpacity.value = 0.55 + Math.sin(progress * Math.PI) * 0.08;
+            }
+
+            // Origin glow: soft parallax shift
+            if (originGlow) {
+                const glowShift = scrollY * 0.05;
+                originGlow.style.background = `radial-gradient(
+                    circle at ${90 - progress * 5}% ${10 + progress * 8}%,
+                    rgba(245, 214, 213, 0.35) 0%,
+                    rgba(255, 240, 238, 0.18) 15%,
+                    rgba(245, 230, 232, 0.08) 30%,
+                    transparent 55%
+                )`;
+                originGlow.style.transform = `translateY(${glowShift}px)`;
+            }
+
+            // Parallax on bokeh + sparkles (each at its own speed)
+            parallaxElements.forEach(el => {
+                const speed = parseFloat(el.dataset.parallax);
+                const y = scrollY * speed;
+                el.style.transform = `translateY(${-y}px)`;
+            });
+
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            lastScrollY = window.scrollY;
+            if (!ticking) {
+                requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // =========================================
+        // LOADER
+        // =========================================
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.getElementById('loader').classList.add('hidden');
             }, 2500);
         });
 
-        // 3. Navbar Scroll Effect
+        // =========================================
+        // NAVBAR
+        // =========================================
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
+            if (window.scrollY > 50) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
         });
 
-        // 4. Mobile Menu
+        // =========================================
+        // MOBILE MENU
+        // =========================================
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navLinks = document.getElementById('navLinks');
-        
         mobileMenuBtn.addEventListener('click', () => {
             navLinks.classList.toggle('active');
             const icon = mobileMenuBtn.querySelector('i');
@@ -1570,7 +1617,6 @@
                 icon.classList.add('fa-bars');
             }
         });
-
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
@@ -1579,12 +1625,9 @@
             });
         });
 
-        // 5. Scroll Animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
+        // =========================================
+        // SCROLL ANIMATIONS
+        // =========================================
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1592,37 +1635,36 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
-
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
         document.querySelectorAll('.fade-up, .pop-in').forEach(el => observer.observe(el));
 
-        // 6. Lightbox
+        // =========================================
+        // LIGHTBOX
+        // =========================================
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
-
-        function openLightbox(element) {
+        window.openLightbox = function(element) {
             const img = element.querySelector('img');
-            const highResSrc = img.src.replace(/w=\d+/, 'w=1200').replace(/h=\d+/, 'h=1600');
-            lightboxImg.src = highResSrc;
+            lightboxImg.src = img.src.replace(/w=\d+/, 'w=1200').replace(/h=\d+/, 'h=1600');
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox(event) {
+        };
+        window.closeLightbox = function(event) {
             if (event.target === lightbox || event.target.closest('.lightbox-close')) {
                 lightbox.classList.remove('active');
                 document.body.style.overflow = '';
                 setTimeout(() => lightboxImg.src = '', 300);
             }
-        }
-
+        };
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && lightbox.classList.contains('active')) {
                 closeLightbox({ target: lightbox });
             }
         });
 
-        // 7. Smooth Scroll
+        // =========================================
+        // SMOOTH SCROLL
+        // =========================================
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
