@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tsi's | my little corner ♡</title>
+    <title>Tsi's | my little corner </title>
     <meta name="description" content="a cozy space for aesthetics, inspiration, and pretty things">
     
     <!-- Favicon -->
@@ -482,7 +482,7 @@
         }
 
         /* =========================================
-           8. MINIMAL MASONRY GALLERY
+           8. MINIMAL MASONRY GALLERY (RESTORED LAYOUT & HOVER)
            ========================================= */
         .masonry-grid {
             column-count: 1;
@@ -502,11 +502,14 @@
             box-shadow: var(--shadow-soft);
             transition: var(--transition-bounce);
             cursor: pointer;
+            display: block;
+            text-decoration: none;
+            color: inherit;
         }
+        /* Restored subtle hover animation */
         .masonry-item:hover { 
-            transform: translateY(-8px) scale(1.02); 
-            box-shadow: 0 12px 40px rgba(139, 90, 90, 0.25);
-            z-index: 2;
+            transform: translateY(-5px); 
+            box-shadow: var(--shadow-medium); 
         }
         .masonry-item img {
             width: 100%;
@@ -514,7 +517,10 @@
             display: block;
             transition: transform 0.6s ease;
         }
-        .masonry-item:hover img { transform: scale(1.04); }
+        /* Restored gentle image scale */
+        .masonry-item:hover img { 
+            transform: scale(1.04); 
+        }
         .masonry-overlay {
             position: absolute;
             inset: 0;
@@ -740,7 +746,7 @@
                     <span class="polaroid-caption">me 💗</span>
                 </div>
                 <div class="about-content fade-up delay-1">
-                    <span class="section-tag">about me ♡</span>
+                    <span class="section-tag">about me </span>
                     <h2>hi, nice to meet you!</h2>
                     <p>i'm tsi — a lover of soft aesthetics, cozy corners, and finding beauty in the little moments. this is my digital journal, filled with pins and dreams that make my heart happy.</p>
                     <p>from dreamy vibes to slow mornings, every pin here is something i truly love. hope you find something that makes you smile too. 💕</p>
@@ -749,7 +755,7 @@
         </div>
     </section>
 
-    <!-- MINIMAL MASONRY GALLERY WITH CLICKABLE IMAGES -->
+    <!-- MINIMAL MASONRY GALLERY WITH CLICKABLE IMAGES & RESTORED HOVER -->
     <section id="gallery" class="section">
         <div class="container">
             <div class="fade-up" style="text-align: center; margin-bottom: 2rem;">
@@ -758,34 +764,34 @@
             </div>
 
             <div class="masonry-grid">
-                <!-- Image 1 - Links to Pinterest -->
+                <!-- Image 1 -->
                 <a href="https://www.pinterest.com/TSION1201/" target="_blank" rel="noopener noreferrer" class="masonry-item pop-in delay-1">
                     <img src="images/photo1.jpg" alt="Gallery 1" loading="lazy">
-                    <div class="masonry-overlay"><span><i class="fa-brands fa-pinterest"></i> view on pinterest</span></div>
+                    <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </a>
                 
-                <!-- Image 2 - Links to Pinterest -->
+                <!-- Image 2 -->
                 <a href="https://www.pinterest.com/TSION1201/" target="_blank" rel="noopener noreferrer" class="masonry-item pop-in delay-2">
                     <img src="images/photo2.jpg" alt="Gallery 2" loading="lazy">
-                    <div class="masonry-overlay"><span><i class="fa-brands fa-pinterest"></i> view on pinterest</span></div>
+                    <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </a>
                 
-                <!-- Image 3 - Links to Pinterest -->
+                <!-- Image 3 -->
                 <a href="https://www.pinterest.com/TSION1201/" target="_blank" rel="noopener noreferrer" class="masonry-item pop-in delay-3">
                     <img src="images/photo3.jpg" alt="Gallery 3" loading="lazy">
-                    <div class="masonry-overlay"><span><i class="fa-brands fa-pinterest"></i> view on pinterest</span></div>
+                    <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </a>
                 
-                <!-- Image 4 - Links to Pinterest -->
+                <!-- Image 4 -->
                 <a href="https://www.pinterest.com/TSION1201/" target="_blank" rel="noopener noreferrer" class="masonry-item pop-in delay-1">
                     <img src="images/photo4.jpg" alt="Gallery 4" loading="lazy">
-                    <div class="masonry-overlay"><span><i class="fa-brands fa-pinterest"></i> view on pinterest</span></div>
+                    <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </a>
                 
-                <!-- Image 5 - Links to Pinterest -->
+                <!-- Image 5 -->
                 <a href="https://www.pinterest.com/TSION1201/" target="_blank" rel="noopener noreferrer" class="masonry-item pop-in delay-2">
                     <img src="images/photo5.jpg" alt="Gallery 5" loading="lazy">
-                    <div class="masonry-overlay"><span><i class="fa-brands fa-pinterest"></i> view on pinterest</span></div>
+                    <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
                 </a>
             </div>
         </div>
