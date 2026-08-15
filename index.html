@@ -1075,16 +1075,16 @@ void main() {
 
         // ==========================================
         //  CURSOR IMAGE TRAIL ✨ (zone-limited)
-        //  Only blooms in the blank band BETWEEN the
-        //  hero and the gallery — exactly the area
-        //  you marked. Photos are a bit bigger now.
+        //  Blooms ONLY in the space between the
+        //  "explore gallery" buttons and the
+        //  "gallery / latest inspirations" header.
         // ==========================================
         const canTrail = window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
                          !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         if (canTrail) {
-            const zoneTopEl = document.querySelector('.hero');        // band starts at hero bottom
-            const zoneBottomEl = document.querySelector('.masonry-grid'); // band ends at gallery top
+            const zoneTopEl = document.querySelector('.hero-buttons');        // band starts just below the buttons
+            const zoneBottomEl = document.querySelector('#gallery .fade-up'); // band ends just above the gallery header
             let lastX = null, lastY = null, trailIndex = 0;
             const MAX_TRAIL = 14;          // max photos alive at once
             const TRAIL_GAP = 80;          // px between blooms (higher = sparser)
@@ -1093,7 +1093,7 @@ void main() {
             const spawnTrailImage = (x, y) => {
                 const el = document.createElement('div');
                 el.className = 'trail-img';
-                const size = Math.round(95 + Math.random() * 55);   // 95–150px (a bit bigger)
+                const size = Math.round(95 + Math.random() * 55);   // 95–150px
                 el.style.width = size + 'px';
                 el.style.height = Math.round(size * 1.15) + 'px';
                 el.style.left = x + 'px';
@@ -1121,7 +1121,8 @@ void main() {
             };
 
             document.addEventListener('mousemove', (e) => {
-                // 1) ONLY inside the marked band (hero bottom → gallery top)
+                // 1) ONLY inside the marked circle:
+                //    below "explore gallery" → above "latest inspirations"
                 if (zoneTopEl && zoneBottomEl) {
                     const bandTop = zoneTopEl.getBoundingClientRect().bottom;
                     const bandBottom = zoneBottomEl.getBoundingClientRect().top;
