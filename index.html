@@ -1074,16 +1074,17 @@ void main() {
         document.querySelectorAll('.fade-up, .pop-in').forEach(el => revealObserver.observe(el));
 
         // ==========================================
-        //  CURSOR IMAGE TRAIL ✨
-        //  Hover blank space → little photos bloom
-        //  along your cursor, then fade away.
-        //  (Uses the same photos as your gallery —
-        //   no extra uploads needed!)
+        //  CURSOR IMAGE TRAIL ✨ (zone-limited)
+        //  Only blooms in the blank band BETWEEN the
+        //  hero and the gallery — exactly the area
+        //  you marked. Photos are a bit bigger now.
         // ==========================================
         const canTrail = window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
                          !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         if (canTrail) {
+            const zoneTopEl = document.querySelector('.hero');        // band starts at hero bottom
+            const zoneBottomEl = document.querySelector('.masonry-grid'); // band ends at gallery top
             let lastX = null, lastY = null, trailIndex = 0;
             const MAX_TRAIL = 14;          // max photos alive at once
             const TRAIL_GAP = 80;          // px between blooms (higher = sparser)
@@ -1092,7 +1093,7 @@ void main() {
             const spawnTrailImage = (x, y) => {
                 const el = document.createElement('div');
                 el.className = 'trail-img';
-                const size = Math.round(70 + Math.random() * 50);   // 70–120px
+                const size = Math.round(95 + Math.random() * 55);   // 95–150px (a bit bigger)
                 el.style.width = size + 'px';
                 el.style.height = Math.round(size * 1.15) + 'px';
                 el.style.left = x + 'px';
@@ -1120,8 +1121,14 @@ void main() {
             };
 
             document.addEventListener('mousemove', (e) => {
-                // Only bloom over BLANK space — never over photos,
-                // buttons, links, text, navbar, loader, etc.
+                // 1) ONLY inside the marked band (hero bottom → gallery top)
+                if (zoneTopEl && zoneBottomEl) {
+                    const bandTop = zoneTopEl.getBoundingClientRect().bottom;
+                    const bandBottom = zoneBottomEl.getBoundingClientRect().top;
+                    if (e.clientY < bandTop || e.clientY > bandBottom) return;
+                }
+
+                // 2) Only over BLANK space (never over photos, text, buttons…)
                 if (e.target.closest('a, button, img, canvas, video, input, textarea, select, .masonry-item, .polaroid, .navbar, .loader, .lightbox, .social-links, p, h1, h2, h3, .section-tag, .greeting')) return;
 
                 if (lastX === null) { lastX = e.clientX; lastY = e.clientY; return; }
