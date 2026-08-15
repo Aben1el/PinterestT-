@@ -5,14 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tsi's | my little corner ♡</title>
     <meta name="description" content="a cozy space for aesthetics, inspiration, and pretty things">
+
+    <!-- =========================================
+         PRETTY LINK PREVIEW (Open Graph / Twitter)
+         ========================================= -->
+    <meta property="og:title" content="Tsi's | my little corner ♡">
+    <meta property="og:description" content="a cozy space for aesthetics, pretty things, and quiet inspiration. 💗">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://aben1el.github.io/PinterestT-/">
+    <meta property="og:image" content="https://aben1el.github.io/PinterestT-/images/photo3.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tsi's | my little corner ♡">
+    <meta name="twitter:description" content="a cozy space for aesthetics, pretty things, and quiet inspiration. 💗">
+    <meta name="twitter:image" content="https://aben1el.github.io/PinterestT-/images/photo3.jpg">
+    <meta name="theme-color" content="#F5EDE4">
     
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 88.5C50 88.5 10 60 10 35C10 20 22 10 35 10C42 10 48 14 50 20C52 14 58 10 65 10C78 10 90 20 90 35C90 60 50 88.5 50 88.5Z' fill='%23B56B6B'/></svg>">
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts (now with handwritten Caveat accent) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Quicksand:wght@300;400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -49,7 +63,29 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+            /* pink scrollbar (Firefox) */
+            scrollbar-width: thin;
+            scrollbar-color: var(--rose) var(--warm-white);
+        }
+
+        /* =========================================
+           PINK TEXT SELECTION + PINK SCROLLBAR
+           ========================================= */
+        ::selection {
+            background: var(--blush);
+            color: var(--text-dark);
+        }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--warm-white); }
+        ::-webkit-scrollbar-thumb {
+            background: var(--rose);
+            border-radius: 10px;
+            border: 2px solid var(--warm-white);
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--deep-rose); }
 
         body {
             font-family: 'Quicksand', sans-serif;
@@ -471,23 +507,23 @@
         }
         .polaroid-caption {
             position: absolute;
-            bottom: 0.75rem; left: 50%;
+            bottom: 0.6rem; left: 50%;
             transform: translateX(-50%);
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 0.95rem;
+            font-family: 'Caveat', cursive;   /* handwritten accent */
+            font-size: 1.3rem;
+            font-weight: 600;
             color: var(--text-light);
         }
         .section-tag {
             display: inline-block;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-family: 'Caveat', cursive;   /* handwritten accent */
+            font-size: 1.2rem;
+            font-weight: 700;
             color: var(--soft-red);
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             text-transform: lowercase;
             margin-bottom: 1rem;
-            padding: 6px 16px;
+            padding: 4px 18px;
             background: rgba(255, 249, 243, 0.65);
             backdrop-filter: blur(10px);
             border-radius: var(--radius-xl);
@@ -504,6 +540,36 @@
             color: var(--text-light);
             font-size: 1rem;
             line-height: 1.8;
+        }
+
+        /* =========================================
+           SOFT SCROLL RIBBON (marquee divider)
+           ========================================= */
+        .ribbon {
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+            padding: 1.1rem 0;
+            border-top: 1px dashed rgba(201, 155, 155, 0.35);
+            border-bottom: 1px dashed rgba(201, 155, 155, 0.35);
+            background: rgba(255, 249, 243, 0.4);
+        }
+        .ribbon-track {
+            display: flex;
+            width: max-content;
+            animation: ribbonScroll 36s linear infinite;
+        }
+        .ribbon-track span {
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--deep-rose);
+            opacity: 0.75;
+            white-space: nowrap;
+            padding-right: 2.5rem;
+        }
+        @keyframes ribbonScroll {
+            to { transform: translateX(-50%); }
         }
 
         /* =========================================
@@ -633,6 +699,7 @@
             gap: 0.5rem;
         }
         .footer-text { color: var(--text-light); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.6; }
+        .say-hi { margin-bottom: 1.6rem; }
         .social-links { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
         .social-links a {
             width: 44px; height: 44px;
@@ -658,6 +725,38 @@
             font-size: 0.85rem;
             color: var(--text-light);
         }
+
+        /* =========================================
+           FLOATING BACK-TO-TOP HEART
+           ========================================= */
+        .back-to-top {
+            position: fixed;
+            right: 1.4rem; bottom: 1.4rem;
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            border: none;
+            background: var(--gradient-rose);
+            color: var(--white);
+            font-size: 1.3rem;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(139, 90, 90, 0.3);
+            opacity: 0;
+            transform: translateY(18px) scale(0.9);
+            pointer-events: none;
+            transition: opacity 0.45s var(--ease-out-expo), transform 0.45s var(--ease-out-expo), box-shadow 0.3s ease;
+            z-index: 940;
+        }
+        .back-to-top.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        .back-to-top:hover {
+            transform: translateY(-4px) scale(1.06);
+            box-shadow: 0 12px 30px rgba(139, 90, 90, 0.4);
+        }
+        .back-to-top:active { transform: translateY(-1px) scale(0.96); }
 
         /* =========================================
            LIGHTBOX
@@ -727,6 +826,7 @@
         @media (prefers-reduced-motion: reduce) {
             .fade-up, .pop-in { transition: opacity 0.4s ease; transform: none; filter: none; }
             .blob, .bokeh, .sparkle, .deco, .floating-heart, .loader-logo { animation: none; }
+            .ribbon-track { animation: none; }
         }
 
         /* =========================================
@@ -782,7 +882,9 @@
             .polaroid { max-width: 260px; padding: 1rem 1rem 2.25rem; margin-bottom: 0.5rem; }
             .polaroid img { height: 280px; }
             .about-content h2 { font-size: 1.7rem; }
-            .section-tag { font-size: 0.75rem; }
+            .section-tag { font-size: 1.05rem; }
+
+            .ribbon-track span { font-size: 1.3rem; }
 
             .masonry-grid { column-count: 2; column-gap: 0.8rem; margin-top: 2rem; }
             .masonry-item { margin-bottom: 0.8rem; border-radius: 14px; }
@@ -798,6 +900,8 @@
             .footer-text { font-size: 0.9rem; }
             .social-links a { width: 48px; height: 48px; }
             .social-links { gap: 1.1rem; }
+
+            .back-to-top { right: 1rem; bottom: 1rem; width: 48px; height: 48px; font-size: 1.15rem; }
 
             .lightbox-close { top: 1rem; right: 1rem; width: 46px; height: 46px; font-size: 1.35rem; }
             .lightbox-content { max-width: 94%; }
@@ -829,6 +933,7 @@
             .logo:hover span { animation: none; }
             .social-links a:hover { transform: none; background: var(--gradient-warm); color: var(--soft-red); box-shadow: none; }
             .polaroid:hover { transform: rotate(-2deg); box-shadow: var(--shadow-medium); }
+            .back-to-top:hover { transform: translateY(0) scale(1); }
         }
     </style>
 </head>
@@ -900,6 +1005,14 @@
         </div>
     </section>
 
+    <!-- SOFT SCROLL RIBBON -->
+    <div class="ribbon" aria-hidden="true">
+        <div class="ribbon-track">
+            <span>stay cozy ✿ be kind ✿ dream soft ✿ collect pretty moments ✿ stay warm  keep smiling ✿ love gently ✿</span>
+            <span>stay cozy ✿ be kind ✿ dream soft ✿ collect pretty moments ✿ stay warm  keep smiling ✿ love gently ✿</span>
+        </div>
+    </div>
+
     <section id="gallery" class="section">
         <div class="container">
             <div class="fade-up" style="text-align: center; margin-bottom: 2rem;">
@@ -916,6 +1029,9 @@
             <div class="footer-content">
                 <div class="footer-logo"><span>💗</span> Tsi's</div>
                 <p class="footer-text">a little corner of the internet filled with pretty things and cozy vibes ✿</p>
+                <!-- "say hi" button — currently opens your Instagram.
+                     To use email instead, change the href to: mailto:your-email@example.com -->
+                <a href="https://www.instagram.com/heartz_blizz?igsh=MTJtMzRwMG9wdHFoZg==" target="_blank" rel="noopener noreferrer" class="btn-cute btn-soft say-hi">say hi 💌</a>
                 <div class="social-links">
                     <a href="https://www.pinterest.com/TSION1201/" target="_blank" aria-label="Pinterest"><i class="fa-brands fa-pinterest"></i></a>
                     <a href="https://www.instagram.com/heartz_blizz?igsh=MTJtMzRwMG9wdHFoZg==" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
@@ -927,6 +1043,9 @@
             </div>
         </div>
     </footer>
+
+    <!-- FLOATING BACK-TO-TOP HEART -->
+    <button class="back-to-top" id="backToTop" aria-label="back to top">💗</button>
 
     <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
         <span class="lightbox-close" onclick="closeLightbox(event)"><i class="fa-solid fa-xmark"></i></span>
@@ -1075,25 +1194,22 @@ void main() {
 
         // ==========================================
         //  CURSOR IMAGE TRAIL ✨ (zone-limited)
-        //  Blooms ONLY in the space between the
-        //  "explore gallery" buttons and the
-        //  "gallery / latest inspirations" header.
         // ==========================================
         const canTrail = window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
                          !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         if (canTrail) {
-            const zoneTopEl = document.querySelector('.hero-buttons');        // band starts just below the buttons
-            const zoneBottomEl = document.querySelector('#gallery .fade-up'); // band ends just above the gallery header
+            const zoneTopEl = document.querySelector('.hero-buttons');
+            const zoneBottomEl = document.querySelector('#gallery .fade-up');
             let lastX = null, lastY = null, trailIndex = 0;
-            const MAX_TRAIL = 14;          // max photos alive at once
-            const TRAIL_GAP = 80;          // px between blooms (higher = sparser)
+            const MAX_TRAIL = 14;
+            const TRAIL_GAP = 80;
             const liveTrail = [];
 
             const spawnTrailImage = (x, y) => {
                 const el = document.createElement('div');
                 el.className = 'trail-img';
-                const size = Math.round(95 + Math.random() * 55);   // 95–150px
+                const size = Math.round(95 + Math.random() * 55);
                 el.style.width = size + 'px';
                 el.style.height = Math.round(size * 1.15) + 'px';
                 el.style.left = x + 'px';
@@ -1121,16 +1237,15 @@ void main() {
             };
 
             document.addEventListener('mousemove', (e) => {
-                // 1) ONLY inside the marked circle:
-                //    below "explore gallery" → above "latest inspirations"
+                // 1) ONLY inside the marked band
                 if (zoneTopEl && zoneBottomEl) {
                     const bandTop = zoneTopEl.getBoundingClientRect().bottom;
                     const bandBottom = zoneBottomEl.getBoundingClientRect().top;
                     if (e.clientY < bandTop || e.clientY > bandBottom) return;
                 }
 
-                // 2) Only over BLANK space (never over photos, text, buttons…)
-                if (e.target.closest('a, button, img, canvas, video, input, textarea, select, .masonry-item, .polaroid, .navbar, .loader, .lightbox, .social-links, p, h1, h2, h3, .section-tag, .greeting')) return;
+                // 2) Only over BLANK space (ribbon included in skip list)
+                if (e.target.closest('a, button, img, canvas, video, input, textarea, select, .masonry-item, .polaroid, .navbar, .loader, .lightbox, .social-links, .ribbon, p, h1, h2, h3, .section-tag, .greeting')) return;
 
                 if (lastX === null) { lastX = e.clientX; lastY = e.clientY; return; }
                 const dist = Math.hypot(e.clientX - lastX, e.clientY - lastY);
@@ -1154,6 +1269,17 @@ void main() {
         }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
         spySections.forEach(s => spyObserver.observe(s));
 
+        // ==========================================
+        //  FLOATING BACK-TO-TOP HEART 💗
+        // ==========================================
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('show', window.scrollY > 600);
+        }, { passive: true });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
         // Background decorations
         const bokehLayer = document.getElementById('bokehLayer');
         const sparkleLayer = document.getElementById('sparkleLayer');
@@ -1172,7 +1298,7 @@ void main() {
             bokehLayer.appendChild(b);
         }
 
-        const sparkleSymbols = ['✦', '✧', '✵'];
+        const sparkleSymbols = ['✦', '', '✵'];
         for (let i = 0; i < (isMobile ? 8 : 14); i++) {
             const s = document.createElement('div');
             s.className = 'sparkle';
