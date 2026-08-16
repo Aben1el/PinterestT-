@@ -1,0 +1,62 @@
+name: Sync Pinterest Pins
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # every hour
+  workflow_dispatch:       # manual run button
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch latest pins and write pins.json
+        env:
+          ACCESS: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+        run: |
+          curl -s -H "Authorization: Bearer $ACCESS" \
+            "https://api.pinterest.com/v5/pins?page_size=25" -o pins_raw.json
+          python3 - <<'PY'
+          import json
+          raw = json.load(open('pins_raw.json'))
+          if 'items' not in raw:
+              print("Pinterest said:", json.dumps(raw)[:300])
+              raise SystemExit("No pins returned - token may be invalid or expired")
+          pins = []
+          for p in raw['items']:
+              media = p.get('media', {})
+              if media.get('media_type') not in (None, 'IMAGE'):
+                  continue
+              img = media.get('url') or p.get('images', {}).get('originals', {}).get('url')
+              if not img:
+                  continue
+              pins.append({
+                  "id": p.get('id'),
+                  "image": img,
+                  "url": p.get('link') or f"https://www.pinterest.com/pin/{p.get('id')}/",
+                  "alt": (p.get('title') or p.get('description') or 'pin').strip()
+              })
+              if len(pins) >= 12:
+                  break
+          if pins:
+              json.dump(pins, open('pins.json', 'w'), indent=2, ensure_ascii=False)
+              print(f"Wrote {len(pins)} pins to pins.json")
+          else:
+              print("No image pins found; pins.json left unchanged")
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pins.json
+          if git diff --cached --quiet; then
+            echo "No new pins."
+          else
+            git commit -m "chore: sync latest pins from Pinterest"
+            git push
+          fi
