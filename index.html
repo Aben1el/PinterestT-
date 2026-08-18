@@ -6,7 +6,7 @@
     <title>Tsi's | my little corner ♡</title>
     <meta name="description" content="a cozy space for aesthetics, inspiration, and pretty things">
 
-    <!-- PRETTY LINK PREVIEW (Open Graph / Twitter) -->
+    <!-- PRETTY LINK PREVIEW -->
     <meta property="og:title" content="Tsi's | my little corner ♡">
     <meta property="og:description" content="a cozy space for aesthetics, pretty things, and quiet inspiration. 💗">
     <meta property="og:type" content="website">
@@ -87,9 +87,12 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -webkit-tap-highlight-color: transparent;
-            background-image: 
+            /* soft heart wallpaper + warm glows */
+            background-image:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' transform='translate(22 26) scale(1.5)' fill='%23c99b9b' fill-opacity='0.09'/%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' transform='translate(98 102) scale(1.2) rotate(-14 12 12)' fill='%23e8c4c4' fill-opacity='0.11'/%3E%3C/svg%3E"),
                 radial-gradient(circle at 20% 30%, rgba(232, 196, 196, 0.35) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(232, 200, 184, 0.3) 0%, transparent 50%);
+            background-size: 160px 160px, auto, auto;
         }
 
         h1, h2, h3 {
@@ -140,41 +143,45 @@
         .bokeh {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,249,243,0.6) 0%, rgba(232,196,196,0.3) 40%, transparent 70%);
+            background: radial-gradient(circle, rgba(255,249,243,0.75) 0%, rgba(232,196,196,0.4) 40%, transparent 70%);
             filter: blur(2px);
             opacity: 0;
             animation: bokehFloat 18s infinite ease-in-out;
         }
         @keyframes bokehFloat {
             0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; }
-            50% { transform: translate(20px, -40px) scale(1.1); opacity: 0.6; }
+            50% { transform: translate(20px, -40px) scale(1.1); opacity: 0.7; }
         }
 
         .sparkle-layer { z-index: 4; }
         .sparkle {
             position: absolute;
-            color: var(--cream);
-            text-shadow: 0 0 8px rgba(232, 196, 196, 0.8);
+            color: #fff;
+            text-shadow: 0 0 10px rgba(232, 196, 196, 0.9), 0 0 18px rgba(201, 155, 155, 0.5);
             opacity: 0;
             animation: sparkleTwinkle 4s infinite ease-in-out;
         }
         @keyframes sparkleTwinkle {
-            0%, 100% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 0.8; transform: scale(1); }
+            0%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+            50% { opacity: 0.9; transform: scale(1.15) rotate(90deg); }
         }
 
+        /* FLOATING HEARTS — livelier, swaying, glowing */
         .decorations { z-index: 5; }
         .deco {
             position: absolute;
             color: var(--rose);
             opacity: 0;
-            animation: decoFloat 15s infinite ease-in-out;
-            font-size: 1.2rem;
+            animation: decoFloat 14s infinite ease-in-out;
+            font-size: 1.4rem;
+            filter: drop-shadow(0 2px 6px rgba(201, 155, 155, 0.35));
         }
         @keyframes decoFloat {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10%, 90% { opacity: 0.3; }
-            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+            0%   { transform: translateY(100vh) translateX(0) rotate(0deg) scale(0.9); opacity: 0; }
+            10%  { opacity: 0.55; }
+            50%  { transform: translateY(45vh) translateX(26px) rotate(12deg) scale(1.05); opacity: 0.5; }
+            90%  { opacity: 0.45; }
+            100% { transform: translateY(-8vh) translateX(-18px) rotate(-10deg) scale(1); opacity: 0; }
         }
 
         /* =========================================
@@ -471,7 +478,6 @@
             max-width: 320px;
             margin: 0 auto;
         }
-        /* washi tape */
         .polaroid::before {
             content: '';
             position: absolute;
@@ -482,7 +488,6 @@
             border-radius: 3px;
             box-shadow: 0 2px 6px rgba(139, 90, 90, 0.12);
         }
-        /* keep the little heart badge on the first polaroid */
         .polaroid-1::after {
             content: '♡';
             position: absolute;
@@ -513,19 +518,8 @@
             color: var(--text-light);
             white-space: nowrap;
         }
-        /* the scattered stack */
-        .polaroid-stack {
-            position: relative;
-            height: 560px;
-            max-width: 430px;
-            margin: 0 auto;
-        }
-        .polaroid-stack .polaroid {
-            position: absolute;
-            width: 250px;
-            max-width: none;
-            margin: 0;
-        }
+        .polaroid-stack { position: relative; height: 560px; max-width: 430px; margin: 0 auto; }
+        .polaroid-stack .polaroid { position: absolute; width: 250px; max-width: none; margin: 0; }
         .polaroid-1 { top: 10px; left: 0; transform: rotate(-6deg); z-index: 1; }
         .polaroid-2 { top: 60px; right: 0; transform: rotate(5deg); z-index: 2; }
         .polaroid-2::before { background: rgba(232, 200, 184, 0.75); transform: translateX(-50%) rotate(3deg); }
@@ -662,7 +656,7 @@
         .masonry-item:nth-child(7n) { margin-bottom: 1.75rem; }
 
         /* =========================================
-           TINY HEARTS (love a photo)
+           TINY HEARTS
            ========================================= */
         .love-btn {
             position: absolute;
@@ -1040,7 +1034,6 @@
     <section id="about" class="section">
         <div class="container">
             <div class="about-grid">
-                <!-- SCATTERED POLAROIDS -->
                 <div class="polaroid-stack fade-up">
                     <div class="polaroid polaroid-1">
                         <img src="images/photo1.jpg" alt="me" loading="lazy">
@@ -1068,7 +1061,7 @@
     <!-- SOFT SCROLL RIBBON -->
     <div class="ribbon" aria-hidden="true">
         <div class="ribbon-track">
-            <span>stay cozy ✿ be kind ✿ dream soft ✿ collect pretty moments ✿ stay warm  keep smiling ✿ love gently ✿</span>
+            <span>stay cozy ✿ be kind  dream soft ✿ collect pretty moments ✿ stay warm ✿ keep smiling ✿ love gently ✿</span>
             <span>stay cozy ✿ be kind ✿ dream soft ✿ collect pretty moments ✿ stay warm ✿ keep smiling ✿ love gently ✿</span>
         </div>
     </div>
@@ -1214,42 +1207,81 @@ void main() {
     <!-- MAIN SCRIPTS -->
     <script>
         // ==========================================
-        //  YOUR GALLERY IMAGE LIST 🌟
+        //  AUTO-SYNCED GALLERY ✨
         // ==========================================
-        const galleryImages = [
-            "photo1.jpg",
-            "photo2.jpg",
-            "photo3.jpg",
-            "photo4.jpg",
-            "photo5.jpg",
-            "photo6.jpg",
-            "photo7.jpg",
-            "photo8.jpg",
-            "photo9.jpg"
-            // "photo10.jpg",  <-- add more like this
+        const fallbackImages = [
+            "photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg","photo5.jpg",
+            "photo6.jpg","photo7.jpg","photo8.jpg","photo9.jpg"
         ];
 
-        // Loved photos (saved in each visitor's browser)
         let lovedPhotos = [];
         try { lovedPhotos = JSON.parse(localStorage.getItem('tsi-loved-photos') || '[]'); } catch (e) { lovedPhotos = []; }
 
         const galleryContainer = document.getElementById('auto-gallery');
-        galleryImages.forEach((img, index) => {
-            const delayClass = `delay-${(index % 3) + 1}`;
-            const isLoved = lovedPhotos.includes(img);
-            const html = `
-                <a href="https://www.pinterest.com/TSION1201/" target="_blank" rel="noopener noreferrer" class="masonry-item pop-in ${delayClass}" data-photo="${img}">
-                    <img src="images/${img}" alt="Gallery ${index + 1}" loading="lazy">
+        let trailSources = [];
+
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.fade-up').forEach(el => revealObserver.observe(el));
+
+        function buildGallery(items) {
+            galleryContainer.innerHTML = '';
+            trailSources = items.map(i => i.image);
+            items.forEach((item, index) => {
+                const delayClass = `delay-${(index % 3) + 1}`;
+                const id = String(item.id);
+                const isLoved = lovedPhotos.includes(id);
+                const a = document.createElement('a');
+                a.href = item.url;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.className = `masonry-item pop-in ${delayClass}`;
+                a.dataset.photo = id;
+                a.innerHTML = `
+                    <img src="${item.image}" alt="${escapeHtml(item.alt || 'pin')}" loading="lazy">
                     <span class="love-btn${isLoved ? ' loved' : ''}" role="button" tabindex="0" aria-label="love this photo">
                         <i class="${isLoved ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
                     </span>
                     <div class="masonry-overlay"><span><i class="fa-solid fa-expand"></i> view</span></div>
-                </a>
-            `;
-            galleryContainer.innerHTML += html;
-        });
+                `;
+                galleryContainer.appendChild(a);
+            });
+            document.querySelectorAll('.pop-in').forEach(el => revealObserver.observe(el));
+        }
 
-        // Tiny hearts — tap to "love" a photo (never opens the Pinterest link)
+        (async function loadGallery() {
+            let pins = null;
+            try {
+                const res = await fetch('pins.json', { cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (Array.isArray(data) && data.length) pins = data;
+                }
+            } catch (e) { /* use fallback */ }
+
+            if (pins) {
+                buildGallery(pins);
+            } else {
+                buildGallery(fallbackImages.map((f, i) => ({
+                    id: f,
+                    image: 'images/' + f,
+                    url: 'https://www.pinterest.com/TSION1201/',
+                    alt: 'Gallery ' + (i + 1)
+                })));
+            }
+        })();
+
+        // Tiny hearts — tap to "love" (never opens the link)
         galleryContainer.addEventListener('click', (e) => {
             const btn = e.target.closest('.love-btn');
             if (!btn) return;
@@ -1273,17 +1305,6 @@ void main() {
             }
         });
 
-        // Scroll-reveal observer
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-        document.querySelectorAll('.fade-up, .pop-in').forEach(el => revealObserver.observe(el));
-
         // ==========================================
         //  CURSOR IMAGE TRAIL ✨ (zone-limited)
         // ==========================================
@@ -1299,6 +1320,7 @@ void main() {
             const liveTrail = [];
 
             const spawnTrailImage = (x, y) => {
+                if (!trailSources.length) return;
                 const el = document.createElement('div');
                 el.className = 'trail-img';
                 const size = Math.round(95 + Math.random() * 55);
@@ -1309,7 +1331,7 @@ void main() {
                 el.style.setProperty('--rot', (Math.random() * 24 - 12).toFixed(1) + 'deg');
 
                 const img = document.createElement('img');
-                img.src = 'images/' + galleryImages[trailIndex % galleryImages.length];
+                img.src = trailSources[trailIndex % trailSources.length];
                 img.alt = '';
                 img.draggable = false;
                 trailIndex++;
@@ -1368,13 +1390,15 @@ void main() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Background decorations
+        // ==========================================
+        //  BACKGROUND DECORATIONS — LIVELIER 💗
+        // ==========================================
         const bokehLayer = document.getElementById('bokehLayer');
         const sparkleLayer = document.getElementById('sparkleLayer');
         const decorationsContainer = document.getElementById('decorations');
         const isMobile = window.innerWidth < 768;
 
-        for (let i = 0; i < (isMobile ? 6 : 10); i++) {
+        for (let i = 0; i < (isMobile ? 8 : 12); i++) {
             const b = document.createElement('div');
             b.className = 'bokeh';
             const size = Math.random() * 60 + 20;
@@ -1386,33 +1410,33 @@ void main() {
             bokehLayer.appendChild(b);
         }
 
-        const sparkleSymbols = ['✦', '✧', '✵'];
-        for (let i = 0; i < (isMobile ? 8 : 14); i++) {
+        const sparkleSymbols = ['✦', '✧', '✵', '˚'];
+        for (let i = 0; i < (isMobile ? 10 : 18); i++) {
             const s = document.createElement('div');
             s.className = 'sparkle';
             s.textContent = sparkleSymbols[Math.floor(Math.random() * sparkleSymbols.length)];
             s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
-            s.style.fontSize = (Math.random() * 0.6 + 0.5) + 'rem';
+            s.style.fontSize = (Math.random() * 0.7 + 0.7) + 'rem';
             s.style.animationDuration = (Math.random() * 3 + 3) + 's';
             s.style.animationDelay = (Math.random() * 5) + 's';
             s.dataset.parallax = (Math.random() * 0.4 + 0.15).toFixed(2);
             sparkleLayer.appendChild(s);
         }
 
-        const decoSymbols = ['💗', '', '✨', '✿', '♡'];
+        const decoSymbols = ['💗', '💕', '💖', '♡', '✿', '🌸', ''];
         function createDeco() {
             const deco = document.createElement('div');
             deco.className = 'deco';
             deco.textContent = decoSymbols[Math.floor(Math.random() * decoSymbols.length)];
             deco.style.left = Math.random() * 100 + '%';
-            deco.style.fontSize = (Math.random() * 1 + 0.8) + 'rem';
-            deco.style.animationDuration = (Math.random() * 10 + 12) + 's';
+            deco.style.fontSize = (Math.random() * 1.2 + 1) + 'rem';
+            deco.style.animationDuration = (Math.random() * 8 + 10) + 's';
             deco.style.animationDelay = Math.random() * 3 + 's';
             decorationsContainer.appendChild(deco);
-            setTimeout(() => deco.remove(), 22000);
+            setTimeout(() => deco.remove(), 20000);
         }
-        for (let i = 0; i < (isMobile ? 4 : 8); i++) setTimeout(createDeco, i * 1000);
-        setInterval(createDeco, 3500);
+        for (let i = 0; i < (isMobile ? 6 : 12); i++) setTimeout(createDeco, i * 700);
+        setInterval(createDeco, isMobile ? 3000 : 2200);
 
         // Parallax
         const parallaxElements = document.querySelectorAll('[data-parallax]');
