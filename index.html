@@ -87,12 +87,12 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -webkit-tap-highlight-color: transparent;
-            /* soft heart wallpaper + warm glows */
+            /* soft scattered polka-dot wallpaper + warm glows */
             background-image:
-                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' transform='translate(22 26) scale(1.5)' fill='%23c99b9b' fill-opacity='0.09'/%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' transform='translate(98 102) scale(1.2) rotate(-14 12 12)' fill='%23e8c4c4' fill-opacity='0.11'/%3E%3C/svg%3E"),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Ccircle cx='34' cy='42' r='3' fill='%23c99b9b' fill-opacity='0.10'/%3E%3Ccircle cx='146' cy='24' r='2' fill='%23e8c4c4' fill-opacity='0.12'/%3E%3Ccircle cx='206' cy='96' r='3.5' fill='%23c99b9b' fill-opacity='0.09'/%3E%3Ccircle cx='86' cy='128' r='2.5' fill='%23e8c4c4' fill-opacity='0.11'/%3E%3Ccircle cx='172' cy='186' r='3' fill='%23c99b9b' fill-opacity='0.10'/%3E%3Ccircle cx='42' cy='206' r='2' fill='%23e8c4c4' fill-opacity='0.12'/%3E%3Ccircle cx='120' cy='70' r='1.8' fill='%23c99b9b' fill-opacity='0.08'/%3E%3Ccircle cx='228' cy='228' r='2.2' fill='%23e8c4c4' fill-opacity='0.10'/%3E%3C/svg%3E"),
                 radial-gradient(circle at 20% 30%, rgba(232, 196, 196, 0.35) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(232, 200, 184, 0.3) 0%, transparent 50%);
-            background-size: 160px 160px, auto, auto;
+            background-size: 240px 240px, auto, auto;
         }
 
         h1, h2, h3 {
@@ -687,13 +687,13 @@
         }
 
         /* =========================================
-           CURSOR IMAGE TRAIL
+           CURSOR IMAGE TRAIL (squares & rectangles)
            ========================================= */
         .trail-img {
             position: fixed;
             z-index: 900;
             pointer-events: none;
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
             background: var(--white);
             padding: 5px;
@@ -707,7 +707,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 5px;
             display: block;
         }
         @keyframes trailLife {
@@ -1061,7 +1061,7 @@
     <!-- SOFT SCROLL RIBBON -->
     <div class="ribbon" aria-hidden="true">
         <div class="ribbon-track">
-            <span>stay cozy ✿ be kind  dream soft ✿ collect pretty moments ✿ stay warm ✿ keep smiling ✿ love gently ✿</span>
+            <span>stay cozy ✿ be kind  dream soft ✿ collect pretty moments ✿ stay warm  keep smiling ✿ love gently ✿</span>
             <span>stay cozy ✿ be kind ✿ dream soft ✿ collect pretty moments ✿ stay warm ✿ keep smiling ✿ love gently ✿</span>
         </div>
     </div>
@@ -1306,7 +1306,10 @@ void main() {
         });
 
         // ==========================================
-        //  CURSOR IMAGE TRAIL ✨ (zone-limited)
+        //  CURSOR IMAGE TRAIL ✨
+        //  Every photo gets its OWN shape & size —
+        //  squares and rectangles only, like little
+        //  scattered prints.
         // ==========================================
         const canTrail = window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
                          !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1319,13 +1322,17 @@ void main() {
             const TRAIL_GAP = 80;
             const liveTrail = [];
 
+            // shape pool: squares + portrait/landscape rectangles (height = width × ratio)
+            const trailRatios = [1, 1, 0.75, 0.8, 1.25, 1.35];
+
             const spawnTrailImage = (x, y) => {
                 if (!trailSources.length) return;
                 const el = document.createElement('div');
                 el.className = 'trail-img';
-                const size = Math.round(95 + Math.random() * 55);
-                el.style.width = size + 'px';
-                el.style.height = Math.round(size * 1.15) + 'px';
+                const base = Math.round(85 + Math.random() * 65);                    // 85–150px wide
+                const ratio = trailRatios[Math.floor(Math.random() * trailRatios.length)];
+                el.style.width = base + 'px';
+                el.style.height = Math.round(base * ratio) + 'px';
                 el.style.left = x + 'px';
                 el.style.top = y + 'px';
                 el.style.setProperty('--rot', (Math.random() * 24 - 12).toFixed(1) + 'deg');
@@ -1391,7 +1398,7 @@ void main() {
         });
 
         // ==========================================
-        //  BACKGROUND DECORATIONS — LIVELIER 💗
+        //  BACKGROUND DECORATIONS
         // ==========================================
         const bokehLayer = document.getElementById('bokehLayer');
         const sparkleLayer = document.getElementById('sparkleLayer');
@@ -1423,7 +1430,7 @@ void main() {
             sparkleLayer.appendChild(s);
         }
 
-        const decoSymbols = ['💗', '💕', '💖', '♡', '✿', '🌸', ''];
+        const decoSymbols = ['💗', '', '💖', '♡', '✿', '🌸', ''];
         function createDeco() {
             const deco = document.createElement('div');
             deco.className = 'deco';
