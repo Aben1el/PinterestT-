@@ -1,9 +1,9 @@
 name: Sync Pinterest Pins
 
 on:
-  schedule:
-    - cron: "0 * * * *"   # every hour
-  workflow_dispatch:       # manual run button
+  # schedule:
+  #   - cron: "0 * * * *"   # runs every hour — UNCOMMENT these 2 lines once Pinterest approves the app
+  workflow_dispatch:         # manual run button (keeps it quiet for now)
 
 permissions:
   contents: write
