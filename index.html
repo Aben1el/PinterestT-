@@ -687,16 +687,16 @@
         }
 
         /* =========================================
-           CURSOR IMAGE TRAIL (squares & rectangles)
+           CURSOR IMAGE TRAIL — one perfect uniform print
            ========================================= */
         .trail-img {
             position: fixed;
             z-index: 900;
             pointer-events: none;
-            border-radius: 8px;
+            border-radius: 14px;
             overflow: hidden;
             background: var(--white);
-            padding: 5px;
+            padding: 6px;
             box-shadow: 0 10px 30px rgba(139, 90, 90, 0.25);
             opacity: 0;
             transform: translate(-50%, -50%) scale(0.4) rotate(var(--rot, 0deg));
@@ -707,7 +707,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 5px;
+            border-radius: 10px;
             display: block;
         }
         @keyframes trailLife {
@@ -1061,8 +1061,8 @@
     <!-- SOFT SCROLL RIBBON -->
     <div class="ribbon" aria-hidden="true">
         <div class="ribbon-track">
-            <span>stay cozy ✿ be kind  dream soft ✿ collect pretty moments ✿ stay warm  keep smiling ✿ love gently ✿</span>
-            <span>stay cozy ✿ be kind ✿ dream soft ✿ collect pretty moments ✿ stay warm ✿ keep smiling ✿ love gently ✿</span>
+            <span>stay cozy ✿ be kind ✿ dream soft ✿ collect pretty moments ✿ stay warm ✿ keep smiling  love gently ✿</span>
+            <span>stay cozy ✿ be kind ✿ dream soft ✿ collect pretty moments ✿ stay warm  keep smiling ✿ love gently </span>
         </div>
     </div>
 
@@ -1307,9 +1307,9 @@ void main() {
 
         // ==========================================
         //  CURSOR IMAGE TRAIL ✨
-        //  Every photo gets its OWN shape & size —
-        //  squares and rectangles only, like little
-        //  scattered prints.
+        //  Every trail is the SAME perfect print:
+        //  140 × 175 portrait rectangle with a soft
+        //  white frame — just like the one you loved.
         // ==========================================
         const canTrail = window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
                          !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1322,17 +1322,12 @@ void main() {
             const TRAIL_GAP = 80;
             const liveTrail = [];
 
-            // shape pool: squares + portrait/landscape rectangles (height = width × ratio)
-            const trailRatios = [1, 1, 0.75, 0.8, 1.25, 1.35];
-
             const spawnTrailImage = (x, y) => {
                 if (!trailSources.length) return;
                 const el = document.createElement('div');
                 el.className = 'trail-img';
-                const base = Math.round(85 + Math.random() * 65);                    // 85–150px wide
-                const ratio = trailRatios[Math.floor(Math.random() * trailRatios.length)];
-                el.style.width = base + 'px';
-                el.style.height = Math.round(base * ratio) + 'px';
+                el.style.width = '140px';    // uniform size, a little bigger
+                el.style.height = '175px';
                 el.style.left = x + 'px';
                 el.style.top = y + 'px';
                 el.style.setProperty('--rot', (Math.random() * 24 - 12).toFixed(1) + 'deg');
