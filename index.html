@@ -95,6 +95,9 @@
             background-size: 240px 240px, auto, auto;
         }
 
+        /* smoother, faster touch feel on phones */
+        a, button, .love-btn { touch-action: manipulation; }
+
         h1, h2, h3 {
             font-family: 'Playfair Display', serif;
             color: var(--text-dark);
@@ -182,6 +185,22 @@
             50%  { transform: translateY(45vh) translateX(26px) rotate(12deg) scale(1.05); opacity: 0.5; }
             90%  { opacity: 0.45; }
             100% { transform: translateY(-8vh) translateX(-18px) rotate(-10deg) scale(1); opacity: 0; }
+        }
+
+        /* TAP HEART BURST (phones) */
+        .tap-heart {
+            position: fixed;
+            z-index: 950;
+            pointer-events: none;
+            font-size: 1.1rem;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+            animation: tapHeart 1s var(--ease-out-expo) forwards;
+        }
+        @keyframes tapHeart {
+            0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+            20%  { opacity: 1; }
+            100% { opacity: 0; transform: translate(-50%, -140%) scale(1.1) rotate(10deg); }
         }
 
         /* =========================================
@@ -687,7 +706,7 @@
         }
 
         /* =========================================
-           CURSOR IMAGE TRAIL — one perfect uniform print
+           CURSOR / TAP IMAGE TRAIL
            ========================================= */
         .trail-img {
             position: fixed;
@@ -716,8 +735,8 @@
             70%  { opacity: 1; }
             100% { opacity: 0; transform: translate(-50%, -62%) scale(0.85) rotate(var(--rot, 0deg)); }
         }
-        @media (hover: none), (prefers-reduced-motion: reduce) {
-            .trail-img { display: none; }
+        @media (prefers-reduced-motion: reduce) {
+            .trail-img, .tap-heart { display: none; }
         }
 
         /* =========================================
@@ -868,9 +887,14 @@
         }
 
         /* =========================================
-           RESPONSIVE
+           RESPONSIVE (mobile-love pass 💗)
            ========================================= */
         @media (max-width: 768px) {
+            /* lighter blobs = smoother scrolling on phones */
+            .blob { filter: blur(50px); opacity: 0.35; }
+            .blob-1 { width: 260px; height: 260px; }
+            .blob-2 { width: 300px; height: 300px; }
+
             .navbar {
                 top: 0; width: 100%; max-width: 100%;
                 border-radius: 0; border-left: none; border-right: none; border-top: none;
@@ -939,7 +963,12 @@
             .social-links a { width: 48px; height: 48px; }
             .social-links { gap: 1.1rem; }
 
-            .back-to-top { right: 1rem; bottom: 1rem; width: 48px; height: 48px; font-size: 1.15rem; }
+            /* respect notched phones */
+            .back-to-top {
+                right: 1rem;
+                bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+                width: 48px; height: 48px; font-size: 1.15rem;
+            }
 
             .lightbox-close { top: 1rem; right: 1rem; width: 46px; height: 46px; font-size: 1.35rem; }
             .lightbox-content { max-width: 94%; }
@@ -1061,8 +1090,8 @@
     <!-- SOFT SCROLL RIBBON -->
     <div class="ribbon" aria-hidden="true">
         <div class="ribbon-track">
-            <span>stay cozy ✿ be kind ✿ dream soft ✿ collect pretty moments ✿ stay warm ✿ keep smiling  love gently ✿</span>
-            <span>stay cozy ✿ be kind ✿ dream soft ✿ collect pretty moments ✿ stay warm  keep smiling ✿ love gently </span>
+            <span>stay cozy ✿ be kind  dream soft ✿ collect pretty moments ✿ stay warm  keep smiling  love gently ✿</span>
+            <span>stay cozy ✿ be kind ✿ dream soft ✿ collect pretty moments ✿ stay warm  keep smiling ✿ love gently ✿</span>
         </div>
     </div>
 
@@ -1105,7 +1134,7 @@
         <img class="lightbox-content" id="lightbox-img" src="" alt="Lightbox Image">
     </div>
 
-    <!-- SIDE RAYS -->
+    <!-- SIDE RAYS (phone-friendly quality) -->
     <script type="module">
         import { Renderer, Program, Triangle, Mesh } from 'https://unpkg.com/ogl@1.0.8/dist/ogl.mjs';
 
@@ -1124,7 +1153,10 @@
                 saturation: 0.85, blend: 0.55, falloff: 2.4, opacity: 0.55
             };
 
-            const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 2), alpha: true, antialias: true });
+            // phones get a lighter render quality → smoother + better battery
+            const maxDpr = window.matchMedia('(pointer: coarse)').matches ? 1.5 : 2;
+
+            const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, maxDpr), alpha: true, antialias: true });
             const gl = renderer.gl;
             gl.canvas.style.width = '100%'; gl.canvas.style.height = '100%';
             gl.clearColor(0, 0, 0, 0);
@@ -1183,7 +1215,7 @@ void main() {
 
             const updateSize = () => {
                 if (!container || !renderer) return;
-                renderer.dpr = Math.min(window.devicePixelRatio, 2);
+                renderer.dpr = Math.min(window.devicePixelRatio, maxDpr);
                 const w = container.clientWidth, h = container.clientHeight;
                 renderer.setSize(w, h);
                 uniforms.iResolution.value = [w * renderer.dpr, h * renderer.dpr];
@@ -1306,10 +1338,7 @@ void main() {
         });
 
         // ==========================================
-        //  CURSOR IMAGE TRAIL ✨
-        //  Every trail is the SAME perfect print:
-        //  140 × 175 portrait rectangle with a soft
-        //  white frame — just like the one you loved.
+        //  CURSOR IMAGE TRAIL ✨ (desktop)
         // ==========================================
         const canTrail = window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
                          !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1326,7 +1355,7 @@ void main() {
                 if (!trailSources.length) return;
                 const el = document.createElement('div');
                 el.className = 'trail-img';
-                el.style.width = '140px';    // uniform size, a little bigger
+                el.style.width = '140px';
                 el.style.height = '175px';
                 el.style.left = x + 'px';
                 el.style.top = y + 'px';
@@ -1366,6 +1395,50 @@ void main() {
                 if (dist > TRAIL_GAP) {
                     lastX = e.clientX; lastY = e.clientY;
                     spawnTrailImage(e.clientX, e.clientY);
+                }
+            }, { passive: true });
+        }
+
+        // ==========================================
+        //  TOUCH MAGIC 💗 (Android / phones)
+        //  Tap blank space → little print + heart burst
+        // ==========================================
+        const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+        if (isTouch && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.addEventListener('pointerdown', (e) => {
+                if (e.pointerType !== 'touch') return;
+                if (e.target.closest('a, button, img, canvas, video, input, textarea, select, .masonry-item, .polaroid, .navbar, .loader, .lightbox, .social-links, .ribbon, .love-btn, .back-to-top, p, h1, h2, h3, .section-tag, .greeting')) return;
+
+                // one little print at the tap spot
+                if (trailSources.length) {
+                    const el = document.createElement('div');
+                    el.className = 'trail-img';
+                    el.style.width = '110px';
+                    el.style.height = '138px';
+                    el.style.left = e.clientX + 'px';
+                    el.style.top = e.clientY + 'px';
+                    el.style.setProperty('--rot', (Math.random() * 16 - 8).toFixed(1) + 'deg');
+                    const img = document.createElement('img');
+                    img.src = trailSources[Math.floor(Math.random() * trailSources.length)];
+                    img.alt = '';
+                    img.draggable = false;
+                    el.appendChild(img);
+                    document.body.appendChild(el);
+                    setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 1500);
+                }
+
+                // tiny heart burst
+                const burst = ['💗', '💕', '✨'];
+                for (let i = 0; i < 3; i++) {
+                    const h = document.createElement('span');
+                    h.className = 'tap-heart';
+                    h.textContent = burst[i % 3];
+                    h.style.left = (e.clientX + (Math.random() * 44 - 22)) + 'px';
+                    h.style.top = (e.clientY + (Math.random() * 24 - 12)) + 'px';
+                    h.style.animationDelay = (i * 0.08) + 's';
+                    document.body.appendChild(h);
+                    setTimeout(() => { if (h.parentNode) h.parentNode.removeChild(h); }, 1300);
                 }
             }, { passive: true });
         }
@@ -1425,7 +1498,7 @@ void main() {
             sparkleLayer.appendChild(s);
         }
 
-        const decoSymbols = ['💗', '', '💖', '♡', '✿', '🌸', ''];
+        const decoSymbols = ['💗', '', '💖', '♡', '✿', '', ''];
         function createDeco() {
             const deco = document.createElement('div');
             deco.className = 'deco';
@@ -1437,8 +1510,8 @@ void main() {
             decorationsContainer.appendChild(deco);
             setTimeout(() => deco.remove(), 20000);
         }
-        for (let i = 0; i < (isMobile ? 6 : 12); i++) setTimeout(createDeco, i * 700);
-        setInterval(createDeco, isMobile ? 3000 : 2200);
+        for (let i = 0; i < (isMobile ? 8 : 12); i++) setTimeout(createDeco, i * 700);
+        setInterval(createDeco, isMobile ? 2800 : 2200);
 
         // Parallax
         const parallaxElements = document.querySelectorAll('[data-parallax]');
